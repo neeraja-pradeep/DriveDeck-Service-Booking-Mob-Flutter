@@ -350,7 +350,7 @@
       "languageVersion": "3.4"
     },
     {
-      "name": "myapp",
+      "name": "newapp",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.9"

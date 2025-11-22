@@ -1,10 +1,10 @@
 {
   "roots": [
-    "myapp"
+    "newapp"
   ],
   "packages": [
     {
-      "name": "myapp",
+      "name": "newapp",
       "version": "1.0.0+1",
       "dependencies": [
         "cupertino_icons",
