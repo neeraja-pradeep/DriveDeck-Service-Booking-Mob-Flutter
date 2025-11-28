@@ -17,44 +17,30 @@ If-Modified-Since - Sun, 26 Oct 2025 09:51:00 GMT
 
 Note:- The timestamp mentioned here must be the timestamp fetched from the header of the responses.  
 
-Signin / Login with OTP
-Screen : Signin
-a) Enter phone number
-Swagger Endpoint:
-http://156.67.104.149:8110/api/docs/swagger/#/Authentication/otp_login
+App Pages
+Screen : Home
+a) Profile 
+Endpoint:
+http://156.67.104.149:8110/api/docs/swagger/#/User%20Profile/user_profile_get
 
-POST endpoint: http://156.67.104.149:8110/api/accounts/send-otp/
-Payload:
-{
-phone:"1234567890"
-}
-Required field: phone
+Required Field : name, latitude and longitude
 
-b) Enter otp code
+b) Search
 
-Swagger endpoint: http://156.67.104.149:8110/api/docs/swagger/#/Authentication/verify_otp_login
-Post endpoint: http://156.67.104.149:8110/api/accounts/verify-otp/
-Payload:
-{
-  "phone": "9876543210",
-  "otp_code": "123456",
-  "new_password": "newsecurepassword"
-}
+Endpoint:
 
-Required fields : phone, otp_code , new_password[if its password reset]
+http://156.67.104.149:8110/api/docs/swagger/#/shop/shop_shops_list
 
-Signup
-Screen : Register 
-Register 
-Swagger Endpoint: http://156.67.104.149:8110/api/docs/swagger/#/Authentication/auth_register
-POST endpoint: http://156.67.104.149:8110/api/accounts/register/
-payload:
-{
-  "phone": "1234567890",
-  "username": "newuser",
-  "password": "securepassword123",
-  "password_confirm": "securepassword123"
-}
-Required Field : phone, username, password, password_confirm 
+Note:- Use search query params
+
+c) Services
+
+http://156.67.104.149:8110/api/docs/swagger/#/shop/shop_shop_categories_list
+
+Required Fields : name
+
+d) Shops
+
+http://156.67.104.149:8110/api/docs/swagger/#/Shops/shops_near_you
 
 
