@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../../core/network/api_client.dart';
 import '../../../../core/storage/secure_store.dart';
@@ -21,13 +20,10 @@ import 'register_notifier.dart';
 
 // Core providers
 
-/// Provider for SecureStore.
+/// Provider for SecureStore with platform-specific configuration.
+/// Uses Keychain on iOS and EncryptedSharedPreferences on Android.
 final secureStoreProvider = Provider<SecureStore>((ref) {
-  const storage = FlutterSecureStorage(
-    aOptions: AndroidOptions(encryptedSharedPreferences: true),
-    iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
-  );
-  return SecureStore(storage);
+  return SecureStore.create();
 });
 
 /// Provider for ApiClient.

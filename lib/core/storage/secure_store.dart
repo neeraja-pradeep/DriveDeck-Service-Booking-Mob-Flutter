@@ -8,6 +8,29 @@ class SecureStore {
 
   final FlutterSecureStorage _storage;
 
+  /// Creates a SecureStore with platform-specific options.
+  /// For iOS: Uses Keychain with accessibility settings for background access.
+  /// For Android: Uses EncryptedSharedPreferences.
+  factory SecureStore.create() {
+    const iOSOptions = IOSOptions(
+      accessibility: KeychainAccessibility.first_unlock_this_device,
+      accountName: 'com.example.newapp',
+    );
+
+    const androidOptions = AndroidOptions(
+      encryptedSharedPreferences: true,
+      sharedPreferencesName: 'drivedeck_secure_prefs',
+      preferencesKeyPrefix: 'dd_',
+    );
+
+    const storage = FlutterSecureStorage(
+      iOptions: iOSOptions,
+      aOptions: androidOptions,
+    );
+
+    return SecureStore(storage);
+  }
+
   // Key constants
   static const String sessionIdKey = 'secure_session_id';
   static const String xcsrfTokenKey = 'secure_xcsrf_token';
