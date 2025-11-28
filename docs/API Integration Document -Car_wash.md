@@ -17,22 +17,13 @@ If-Modified-Since - Sun, 26 Oct 2025 09:51:00 GMT
 
 Note:- The timestamp mentioned here must be the timestamp fetched from the header of the responses.  
 
-Screen : Shop page
-a) Shop details
-Swagger link: http://156.67.104.149:8110/api/docs/swagger/#/shop/shop_shops_retrieve
-Get endpoint: http://156.67.104.149:8110/api/shop/shops/{id}/
-Required Field : normal1_image_url, normal2_image_url, normal3_image_url, normal4_image_url, name, latitude, longitude, description 
+Screen : Profile
+a) Display Profile
+Swagger link: http://156.67.104.149:8110/api/docs/swagger/#/User%20Profile/user_profile_get
+get endpoint: http://156.67.104.149:8110/api/accounts/profile/
+Required Fields : username
 
-b) Services
+b) Update Profile 
 
-Swagger link: http://156.67.104.149:8110/api/docs/swagger/#/shop/shop_shop_services_list
-Get endpoint: http://156.67.104.149:8110/api/shop/shop-services/
-Query Params : shop [eg: ?shop=1]
-
-Required fields : name, duration_in_slots, price
-
-Screen : Time
-a) Availability 
-swagger link: http://156.67.104.149:8110/api/docs/swagger/#/shop/shop_schedule
-Get endpoint: http://156.67.104.149:8110/api/shop/shops/{id}/date-day/
-
+Swagger link: http://156.67.104.149:8110/api/docs/swagger/#/User%20Profile/user_profile_update
+patch endpoint: http://156.67.104.149:8110/api/accounts/profile/
