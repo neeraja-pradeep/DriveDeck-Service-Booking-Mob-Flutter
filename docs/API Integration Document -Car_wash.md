@@ -17,28 +17,22 @@ If-Modified-Since - Sun, 26 Oct 2025 09:51:00 GMT
 
 Note:- The timestamp mentioned here must be the timestamp fetched from the header of the responses.  
 
-App Pages
-Screen : Home
-a) Profile 
-Swagger link: http://156.67.104.149:8110/api/docs/swagger/#/User%20Profile/user_profile_get
-Get endpoint: http://156.67.104.149:8110/api/accounts/profile/
-Required Field : name, latitude and longitude
+Screen : Shop page
+a) Shop details
+Swagger link: http://156.67.104.149:8110/api/docs/swagger/#/shop/shop_shops_retrieve
+Get endpoint: http://156.67.104.149:8110/api/shop/shops/{id}/
+Required Field : normal1_image_url, normal2_image_url, normal3_image_url, normal4_image_url, name, latitude, longitude, description 
 
-b) Search
+b) Services
 
-Swagger link: http://156.67.104.149:8110/api/docs/swagger/#/shop/shop_shops_list
-get endpoint: http://156.67.104.149:8110/api/shop/shops/?page=1&page_size=1&search=s
-Note:- Use search query params
+Swagger link: http://156.67.104.149:8110/api/docs/swagger/#/shop/shop_shop_services_list
+Get endpoint: http://156.67.104.149:8110/api/shop/shop-services/
+Query Params : shop [eg: ?shop=1]
 
-c) Services
+Required fields : name, duration_in_slots, price
 
-swagger link: http://156.67.104.149:8110/api/docs/swagger/#/shop/shop_shop_categories_list
-get endpoint: http://156.67.104.149:8110/api/shop/shop-categories/
-Required Fields : name
-
-d) Shops
-
-swagger link: http://156.67.104.149:8110/api/docs/swagger/#/Shops/shops_near_you
-get endpoint: http://156.67.104.149:8110/api/shop/shops/near-you/
-
+Screen : Time
+a) Availability 
+swagger link: http://156.67.104.149:8110/api/docs/swagger/#/shop/shop_schedule
+Get endpoint: http://156.67.104.149:8110/api/shop/shops/{id}/date-day/
 
