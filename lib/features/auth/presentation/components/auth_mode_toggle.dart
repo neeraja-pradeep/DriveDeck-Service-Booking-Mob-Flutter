@@ -20,7 +20,7 @@ class AuthModeToggle extends StatelessWidget {
     return Container(
       height: 48.h,
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Colors.grey[300],
         borderRadius: BorderRadius.circular(24.r),
       ),
       child: Row(
@@ -28,7 +28,7 @@ class AuthModeToggle extends StatelessWidget {
           Expanded(
             child: _buildTab(
               context,
-              label: 'Login',
+              label: 'Sign in',
               isSelected: currentMode == AuthMode.login,
               onTap: () => onModeChanged(AuthMode.login),
             ),
@@ -58,8 +58,17 @@ class AuthModeToggle extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         margin: EdgeInsets.all(4.w),
         decoration: BoxDecoration(
-          color: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
+          color: isSelected ? Colors.white : Colors.transparent,
           borderRadius: BorderRadius.circular(20.r),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : null,
         ),
         child: Center(
           child: Text(
@@ -67,7 +76,7 @@ class AuthModeToggle extends StatelessWidget {
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
-              color: isSelected ? Colors.white : Colors.grey[600],
+              color: Colors.black,
             ),
           ),
         ),

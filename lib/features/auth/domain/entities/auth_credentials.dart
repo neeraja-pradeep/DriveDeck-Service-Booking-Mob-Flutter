@@ -5,9 +5,8 @@ part 'auth_credentials.freezed.dart';
 /// Credentials for requesting an OTP.
 @freezed
 class OtpRequestCredentials with _$OtpRequestCredentials {
-  const factory OtpRequestCredentials({
-    required String phoneNumber,
-  }) = _OtpRequestCredentials;
+  const factory OtpRequestCredentials({required String phoneNumber}) =
+      _OtpRequestCredentials;
 }
 
 /// Credentials for verifying an OTP.

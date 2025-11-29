@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+// import 'package:flutter/foundation.dart';
 
 import '../../../../core/error/failure.dart';
 import '../../../../core/network/network_exceptions.dart';
@@ -13,10 +14,7 @@ import '../models/auth_request_models.dart';
 
 /// Implementation of AuthRepository.
 class AuthRepositoryImpl implements AuthRepository {
-  AuthRepositoryImpl({
-    required this.authApi,
-    required this.localDataSource,
-  });
+  AuthRepositoryImpl({required this.authApi, required this.localDataSource});
 
   final AuthApi authApi;
   final AuthLocalDataSource localDataSource;
@@ -26,12 +24,29 @@ class AuthRepositoryImpl implements AuthRepository {
     OtpRequestCredentials credentials,
   ) async {
     try {
-      final dto = OtpRequestDto(phone: credentials.phoneNumber);
+      // debugPrint(
+      //   '📝 Repository: Starting OTP request for phone: ${credentials.phoneNumber}',
+      // );
+
+      // Format phone number with country code for API request
+      final formattedPhone = _formatPhoneWithCountryCode(
+        credentials.phoneNumber,
+      );
+      final dto = OtpRequestDto(phone: formattedPhone);
+      // debugPrint('📦 Repository: Created OTP request DTO: ${dto.toJson()}');
+
       final result = await authApi.requestOtp(dto);
+      // debugPrint('✅ Repository: OTP request successful');
+
       return Right(result.toDomain());
     } on DioException catch (e) {
+      // debugPrint('❌ Repository: DioException during OTP request: ${e.message}');
+      // debugPrint('📊 Repository: Response data: ${e.response?.data}');
+      // debugPrint('🔢 Repository: Status code: ${e.response?.statusCode}');
+      // debugPrint('🌐 Repository: Request URL: ${e.requestOptions.uri}');
       return Left(NetworkExceptions.mapDioException(e));
     } catch (e) {
+      // debugPrint('💥 Repository: Unexpected error during OTP request: $e');
       return Left(NetworkExceptions.mapException(e));
     }
   }
@@ -41,11 +56,25 @@ class AuthRepositoryImpl implements AuthRepository {
     OtpVerifyCredentials credentials,
   ) async {
     try {
+      // debugPrint(
+      //   '📝 Repository: Starting OTP verification for phone: ${credentials.phoneNumber}',
+      // );
+      // debugPrint('🔐 Repository: OTP code: ${credentials.otp}');
+
+      // Format phone number with country code for API request
+      final formattedPhone = _formatPhoneWithCountryCode(
+        credentials.phoneNumber,
+      );
+      // debugPrint('📱 Repository: Formatted phone: $formattedPhone');
+
       final dto = OtpVerifyDto(
-        phone: credentials.phoneNumber,
+        phone: formattedPhone,
         otpCode: credentials.otp,
         newPassword: credentials.newPassword,
       );
+      // debugPrint(
+      //   '📦 Repository: Created OTP verification DTO: ${dto.toJson()}',
+      // );
       final result = await authApi.verifyOtp(dto);
       final session = result.toDomain();
 
@@ -71,22 +100,43 @@ class AuthRepositoryImpl implements AuthRepository {
     RegisterCredentials credentials,
   ) async {
     try {
+      // debugPrint(
+      //   '📝 Repository: Starting registration for phone: ${credentials.phoneNumber}',
+      // );
+
+      // Format phone number with country code for API request
+      final formattedPhone = _formatPhoneWithCountryCode(
+        credentials.phoneNumber,
+      );
       final dto = RegisterRequestDto(
-        phone: credentials.phoneNumber,
+        phone: formattedPhone,
         username: credentials.username,
         password: credentials.password,
         passwordConfirm: credentials.confirmPassword,
       );
+
+      // debugPrint('📦 Repository: Created DTO: ${dto.toJson()}');
+
       final result = await authApi.register(dto);
       final session = result.toDomain();
+
+      // debugPrint('✅ Repository: Registration successful, saving session');
 
       // Save session locally
       await localDataSource.saveSession(session);
 
+      // debugPrint('💾 Repository: Session saved locally');
+
       return Right(session);
     } on DioException catch (e) {
+      // debugPrint(
+      //   '❌ Repository: DioException during registration: ${e.message}',
+      // );
+      // debugPrint('📊 Repository: Response data: ${e.response?.data}');
+      // debugPrint('🔢 Repository: Status code: ${e.response?.statusCode}');
       return Left(NetworkExceptions.mapDioException(e));
     } catch (e) {
+      // debugPrint('💥 Repository: Unexpected error during registration: $e');
       return Left(NetworkExceptions.mapException(e));
     }
   }
@@ -142,5 +192,20 @@ class AuthRepositoryImpl implements AuthRepository {
     } catch (e) {
       return Left(Failure.cache(message: e.toString()));
     }
+  }
+
+  /// Formats phone number with +91 country code if not already present.
+  String _formatPhoneWithCountryCode(String phoneNumber) {
+    // Remove any existing country code or special characters
+    final cleanPhone = phoneNumber.replaceAll(RegExp(r'[^\d]'), '');
+
+    // If phone starts with 91, remove it first
+    final phoneWithoutCountryCode =
+        cleanPhone.startsWith('91') && cleanPhone.length > 10
+        ? cleanPhone.substring(2)
+        : cleanPhone;
+
+    // Add +91 prefix
+    return '+91$phoneWithoutCountryCode';
   }
 }

@@ -37,18 +37,32 @@ class _LoginFormSectionState extends ConsumerState<LoginFormSection> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Phone number field
-          PhoneNumberField(
-            controller: _phoneController,
-            errorText: _phoneError,
-            enabled: !isLoading,
-            onChanged: (_) {
-              if (_phoneError != null) {
-                setState(() {
-                  _phoneError = null;
-                });
-              }
-            },
+          // Phone number field with label
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Phone number',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey[700],
+                ),
+              ),
+              SizedBox(height: 8.h),
+              PhoneNumberField(
+                controller: _phoneController,
+                errorText: _phoneError,
+                enabled: !isLoading,
+                onChanged: (_) {
+                  if (_phoneError != null) {
+                    setState(() {
+                      _phoneError = null;
+                    });
+                  }
+                },
+              ),
+            ],
           ),
 
           SizedBox(height: 16.h),
@@ -71,6 +85,7 @@ class _LoginFormSectionState extends ConsumerState<LoginFormSection> {
             child: ElevatedButton(
               onPressed: isLoading ? null : _onContinue,
               style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF4FC3F7),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.r),
                 ),
@@ -89,9 +104,27 @@ class _LoginFormSectionState extends ConsumerState<LoginFormSection> {
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
+                        color: Colors.white,
                       ),
                     ),
             ),
+          ),
+
+          SizedBox(height: 24.h),
+
+          // Divider with "Other sign in options" text
+          Row(
+            children: [
+              Expanded(child: Divider(color: Colors.grey[300])),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Text(
+                  'Other sign in options',
+                  style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+                ),
+              ),
+              Expanded(child: Divider(color: Colors.grey[300])),
+            ],
           ),
         ],
       ),
@@ -99,16 +132,26 @@ class _LoginFormSectionState extends ConsumerState<LoginFormSection> {
   }
 
   void _onContinue() {
+    // debugPrint('🎯 UI: Continue button pressed on Sign In screen');
+
     final phoneNumber = _phoneController.text.trim();
+    // debugPrint('📱 UI: Phone number entered: $phoneNumber');
+    // debugPrint('✅ UI: Remember me checked: $_rememberMe');
 
     // Validate phone number
     final error = Validators.validatePhoneNumber(phoneNumber);
     if (error != null) {
+      // debugPrint('❌ UI: Phone number validation failed: $error');
       setState(() {
         _phoneError = error;
       });
       return;
     }
+
+    // debugPrint('✅ UI: Phone number validation passed');
+
+    // Send only the 10-digit phone number (API expects exactly 10 digits)
+    // debugPrint('🚀 UI: Requesting OTP for phone number: $phoneNumber');
 
     // Request OTP
     ref.read(loginStateProvider.notifier).requestOtp(phoneNumber);

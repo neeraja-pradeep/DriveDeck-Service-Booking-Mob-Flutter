@@ -22,6 +22,8 @@ class RememberMeCheckbox extends StatelessWidget {
           child: Checkbox(
             value: value,
             onChanged: (newValue) => onChanged(newValue ?? false),
+            activeColor: const Color(0xFF4FC3F7),
+            checkColor: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4.r),
             ),
@@ -32,10 +34,7 @@ class RememberMeCheckbox extends StatelessWidget {
           onTap: () => onChanged(!value),
           child: Text(
             'Remember me',
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.grey[700],
-            ),
+            style: TextStyle(fontSize: 14.sp, color: Colors.grey[700]),
           ),
         ),
       ],

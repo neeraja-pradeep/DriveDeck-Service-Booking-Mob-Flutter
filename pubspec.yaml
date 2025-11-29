@@ -63,9 +63,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-#  Custom lint plugin (your own rule package)
-  naming_conventions_lint:
-    path: ../naming_conventions_lint
+# #  Custom lint plugin (your own rule package)
+#   naming_conventions_lint:
+#     path: ../naming_conventions_lint
 
   # Code Generators
   build_runner: ^2.4.8

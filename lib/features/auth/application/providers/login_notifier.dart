@@ -22,17 +22,28 @@ class LoginNotifier extends StateNotifier<LoginState> {
 
   /// Requests an OTP for the given phone number.
   Future<void> requestOtp(String phoneNumber) async {
+    // debugPrint('🎯 LoginNotifier: Starting OTP request for $phoneNumber');
+
     state = const LoginState.requestingOtp();
     _currentPhoneNumber = phoneNumber;
 
     final credentials = OtpRequestCredentials(phoneNumber: phoneNumber);
+    // debugPrint('📋 LoginNotifier: Created credentials for OTP request');
+
     final result = await requestOtpUsecase(credentials);
 
     result.fold(
       (failure) {
+        // debugPrint(
+        //   '❌ LoginNotifier: OTP request failed with failure: ${failure.runtimeType}',
+        // );
+        // debugPrint('💬 LoginNotifier: Failure message: ${failure.userMessage}');
         state = LoginState.error(failure: failure);
       },
       (otpState) {
+        // debugPrint('✅ LoginNotifier: OTP request successful');
+        // debugPrint('📱 LoginNotifier: OTP sent to: ${otpState.otpSentTo}');
+        // debugPrint('💬 LoginNotifier: OTP message: ${otpState.message}');
         state = LoginState.otpSent(otpState: otpState);
       },
     );

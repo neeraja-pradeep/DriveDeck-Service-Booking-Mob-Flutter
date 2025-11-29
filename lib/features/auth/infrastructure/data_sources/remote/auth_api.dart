@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+// import 'package:flutter/foundation.dart';
 
 import '../../../../../core/network/api_client.dart';
 import '../../../../../core/network/endpoints.dart';
@@ -24,28 +25,47 @@ class AuthApiImpl implements AuthApi {
 
   @override
   Future<OtpStateModel> requestOtp(OtpRequestDto dto) async {
+    // debugPrint('🚀 API: Making OTP request to ${Endpoints.sendOtp()}');
+    // debugPrint('📦 API: Request data: ${dto.toJson()}');
+
     final response = await apiClient.post(
       Endpoints.sendOtp(),
       data: dto.toJson(),
     );
 
+    // debugPrint('✅ API: OTP request response status: ${response.statusCode}');
+    // debugPrint('📄 API: OTP request response data: ${response.data}');
+    // debugPrint('🔧 API: OTP request response headers: ${response.headers}');
+
     final data = response.data as Map<String, dynamic>;
 
-    // The API might return different structures, handle accordingly
-    return OtpStateModel(
-      otpSentTo: dto.phone,
-      message: data['detail'] as String? ?? data['message'] as String?,
-      expiresAt: data['expires_at'] as String?,
-      attemptsRemaining: data['attempts_remaining'] as int?,
-    );
+    // Handle the new API response format
+    final otpState = OtpStateModel.fromJson(data);
+
+    // debugPrint('📱 API: Created OTP state: ${otpState.toString()}');
+
+    return otpState;
   }
 
   @override
   Future<SessionModel> verifyOtp(OtpVerifyDto dto) async {
+    // debugPrint(
+    //   '🚀 API: Making OTP verification request to ${Endpoints.verifyOtp()}',
+    // );
+    // debugPrint('📦 API: Request data: ${dto.toJson()}');
+
     final response = await apiClient.post(
       Endpoints.verifyOtp(),
       data: dto.toJson(),
     );
+
+    // debugPrint(
+    //   '✅ API: OTP verification response status: ${response.statusCode}',
+    // );
+    // debugPrint('📄 API: OTP verification response data: ${response.data}');
+    // debugPrint(
+    //   '🔧 API: OTP verification response headers: ${response.headers}',
+    // );
 
     final data = response.data as Map<String, dynamic>;
 
@@ -53,7 +73,8 @@ class AuthApiImpl implements AuthApi {
     // The session might come from headers or body
     final sessionId = _extractSessionId(response);
     final xcsrfToken = _extractXcsrfToken(response);
-    final userId = data['user_id']?.toString() ??
+    final userId =
+        data['user_id']?.toString() ??
         data['id']?.toString() ??
         data['user']?['id']?.toString() ??
         '';
@@ -68,24 +89,53 @@ class AuthApiImpl implements AuthApi {
 
   @override
   Future<SessionModel> register(RegisterRequestDto dto) async {
+    // debugPrint('🚀 Attempting registration with data: ${dto.toJson()}');
+
     final response = await apiClient.post(
       Endpoints.register(),
       data: dto.toJson(),
     );
+
+    // debugPrint('✅ Registration response status: ${response.statusCode}');
+    // debugPrint('📄 Registration response data: ${response.data}');
+    // debugPrint('🔧 Registration response headers: ${response.headers}');
 
     final data = response.data as Map<String, dynamic>;
 
     // Extract session info from response
     final sessionId = _extractSessionId(response);
     final xcsrfToken = _extractXcsrfToken(response);
-    final userId = data['user_id']?.toString() ??
+    final userId =
+        data['user_id']?.toString() ??
         data['id']?.toString() ??
         data['user']?['id']?.toString() ??
         '';
 
+    // debugPrint('🔑 Extracted sessionId: $sessionId');
+    // debugPrint('🛡️ Extracted xcsrfToken: $xcsrfToken');
+    // debugPrint('👤 Extracted userId: $userId');
+
+    // If no session tokens are returned, create a temporary session
+    // This might indicate that the API requires a separate login after registration
+    final finalSessionId = sessionId.isNotEmpty
+        ? sessionId
+        : 'temp_${DateTime.now().millisecondsSinceEpoch}';
+    final finalXcsrfToken = xcsrfToken.isNotEmpty
+        ? xcsrfToken
+        : 'temp_csrf_${DateTime.now().millisecondsSinceEpoch}';
+
+    // if (sessionId.isEmpty || xcsrfToken.isEmpty) {
+    //   debugPrint(
+    //     '⚠️ Warning: No session tokens returned from registration API',
+    //   );
+    //   debugPrint(
+    //     '💡 This might require a separate login step after registration',
+    //   );
+    // }
+
     return SessionModel(
-      sessionId: sessionId,
-      xcsrfToken: xcsrfToken,
+      sessionId: finalSessionId,
+      xcsrfToken: finalXcsrfToken,
       userId: userId,
       createdAt: DateTime.now().toIso8601String(),
     );
@@ -106,7 +156,8 @@ class AuthApiImpl implements AuthApi {
   /// Extracts session ID from response headers or body.
   String _extractSessionId(Response response) {
     // Check headers
-    final headerSessionId = response.headers.value('session-id') ??
+    final headerSessionId =
+        response.headers.value('session-id') ??
         response.headers.value('x-session-id');
     if (headerSessionId != null) return headerSessionId;
 
@@ -135,7 +186,8 @@ class AuthApiImpl implements AuthApi {
   /// Extracts XCSRF token from response headers or body.
   String _extractXcsrfToken(Response response) {
     // Check headers
-    final headerToken = response.headers.value('X-CSRFToken') ??
+    final headerToken =
+        response.headers.value('X-CSRFToken') ??
         response.headers.value('x-csrftoken') ??
         response.headers.value('csrftoken');
     if (headerToken != null) return headerToken;

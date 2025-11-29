@@ -9,46 +9,22 @@ class SocialLoginSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Divider with text
-        Row(
-          children: [
-            Expanded(
-              child: Divider(color: Colors.grey[300]),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              child: Text(
-                'Or continue with',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: Colors.grey[600],
-                ),
-              ),
-            ),
-            Expanded(
-              child: Divider(color: Colors.grey[300]),
-            ),
-          ],
-        ),
-
-        SizedBox(height: 24.h),
+        SizedBox(height: 16.h),
 
         // Social login buttons
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _SocialButton(
               icon: Icons.facebook,
               color: const Color(0xFF1877F2),
               onTap: () => _showComingSoon(context),
             ),
-            SizedBox(width: 24.w),
             _SocialButton(
               icon: Icons.g_mobiledata,
               color: const Color(0xFFDB4437),
               onTap: () => _showComingSoon(context),
             ),
-            SizedBox(width: 24.w),
             _SocialButton(
               icon: Icons.apple,
               color: Colors.black,
@@ -85,19 +61,15 @@ class _SocialButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(50.r),
+      borderRadius: BorderRadius.circular(12.r),
       child: Container(
-        width: 56.w,
-        height: 56.w,
+        width: 108.w,
+        height: 56.h,
         decoration: BoxDecoration(
-          shape: BoxShape.circle,
+          borderRadius: BorderRadius.circular(12.r),
           border: Border.all(color: Colors.grey[300]!),
         ),
-        child: Icon(
-          icon,
-          size: 28.sp,
-          color: color,
-        ),
+        child: Icon(icon, size: 28.sp, color: color),
       ),
     );
   }

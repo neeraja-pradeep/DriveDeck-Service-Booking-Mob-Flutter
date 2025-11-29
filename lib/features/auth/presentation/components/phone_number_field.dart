@@ -29,34 +29,20 @@ class PhoneNumberField extends StatelessWidget {
         LengthLimitingTextInputFormatter(10),
       ],
       decoration: InputDecoration(
-        labelText: 'Phone Number',
-        hintText: '9876543210',
+        hintText: 'number',
         errorText: errorText,
         counterText: '',
-        prefixIcon: Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '+91',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              SizedBox(width: 8.w),
-              Container(
-                width: 1,
-                height: 24.h,
-                color: Colors.grey[300],
-              ),
-            ],
-          ),
-        ),
-        prefixIconConstraints: BoxConstraints(minWidth: 0, minHeight: 0),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
+          borderSide: BorderSide(color: Colors.grey[300]!),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.r),
+          borderSide: BorderSide(color: Colors.grey[300]!),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.r),
+          borderSide: BorderSide(color: Theme.of(context).primaryColor),
         ),
       ),
       onChanged: onChanged,

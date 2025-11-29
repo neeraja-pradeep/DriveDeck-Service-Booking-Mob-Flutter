@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../app/router/routes.dart';
+// import '../../../../core/error/failure.dart';
 import '../../application/providers/auth_providers.dart';
 import '../../application/states/login_state.dart';
 import '../../application/states/register_state.dart';
@@ -27,34 +30,76 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     ref.listen<LoginState>(loginStateProvider, (previous, next) {
       next.whenOrNull(
         otpSent: (otpState) {
-          // Navigate to OTP screen
-          Navigator.of(context).pushNamed(
-            '/otp-verification',
-            arguments: {
-              'phoneNumber': otpState.otpSentTo,
-              'rememberMe': false,
-            },
+          // debugPrint(
+          //   '🎯 UI: OTP sent successfully, navigating to verification screen',
+          // );
+          // debugPrint('📱 UI: Phone number: ${otpState.otpSentTo}');
+
+          // Navigate to OTP verification screen using GoRouter
+          context.go(
+            Routes.otpVerification,
+            extra: {'phoneNumber': otpState.otpSentTo, 'rememberMe': false},
           );
         },
         error: (failure) {
+          // debugPrint(
+          //   '❌ UI: Login failed with error type: ${failure.runtimeType}',
+          // );
+
+          final errorMessage = failure.when(
+            network: (msg) {
+              // debugPrint('🌐 UI: Network error: $msg');
+              return msg;
+            },
+            server: (msg, statusCode) {
+              // debugPrint('🔥 UI: Server error: $msg (Status: $statusCode)');
+              return msg;
+            },
+            cache: (msg) {
+              // debugPrint('💾 UI: Cache error: $msg');
+              return msg;
+            },
+            unknown: (msg) {
+              // debugPrint('❓ UI: Unknown error: $msg');
+              return msg;
+            },
+            invalidOtp: (msg, _) {
+              // debugPrint('🔢 UI: Invalid OTP error: $msg');
+              return msg;
+            },
+            otpExpired: (msg) {
+              // debugPrint('⏰ UI: OTP expired error: $msg');
+              return msg;
+            },
+            phoneNumberAlreadyExists: (msg) {
+              // debugPrint('📱 UI: Phone number already exists error: $msg');
+              return msg;
+            },
+            invalidCredentials: (msg) {
+              // debugPrint('🔐 UI: Invalid credentials error: $msg');
+              return msg;
+            },
+            sessionExpired: (msg) {
+              // debugPrint('⏳ UI: Session expired error: $msg');
+              return msg;
+            },
+            accountNotFound: (msg) {
+              // debugPrint('👤 UI: Account not found error: $msg');
+              return msg;
+            },
+            validation: (msg, _) {
+              // debugPrint('✅ UI: Validation error: $msg');
+              return msg;
+            },
+          );
+
+          // debugPrint(
+          //   '📢 UI: Showing error snackbar with message: $errorMessage',
+          // );
+
           // Show error snackbar
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(failure.when(
-                network: (msg) => msg,
-                server: (msg, _) => msg,
-                cache: (msg) => msg,
-                unknown: (msg) => msg,
-                invalidOtp: (msg, _) => msg,
-                otpExpired: (msg) => msg,
-                phoneNumberAlreadyExists: (msg) => msg,
-                invalidCredentials: (msg) => msg,
-                sessionExpired: (msg) => msg,
-                accountNotFound: (msg) => msg,
-                validation: (msg, _) => msg,
-              )),
-              backgroundColor: Colors.red,
-            ),
+            SnackBar(content: Text(errorMessage), backgroundColor: Colors.red),
           );
         },
       );
@@ -64,29 +109,33 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     ref.listen<RegisterState>(registerStateProvider, (previous, next) {
       next.whenOrNull(
         success: (session) {
-          // Navigate to home
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            '/home',
-            (route) => false,
-          );
+          // debugPrint('🎉 UI: Registration successful! Navigating to home...');
+          // Navigate to home using GoRouter
+          context.go(Routes.home);
         },
         error: (failure) {
+          // debugPrint(
+          //   '❌ UI: Registration failed with error: ${failure.userMessage}',
+          // );
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(failure.when(
-                network: (msg) => msg,
-                server: (msg, _) => msg,
-                cache: (msg) => msg,
-                unknown: (msg) => msg,
-                invalidOtp: (msg, _) => msg,
-                otpExpired: (msg) => msg,
-                phoneNumberAlreadyExists: (msg) => msg,
-                invalidCredentials: (msg) => msg,
-                sessionExpired: (msg) => msg,
-                accountNotFound: (msg) => msg,
-                validation: (msg, _) => msg,
-              )),
+              content: Text(
+                failure.when(
+                  network: (msg) => msg,
+                  server: (msg, _) => msg,
+                  cache: (msg) => msg,
+                  unknown: (msg) => msg,
+                  invalidOtp: (msg, _) => msg,
+                  otpExpired: (msg) => msg,
+                  phoneNumberAlreadyExists: (msg) => msg,
+                  invalidCredentials: (msg) => msg,
+                  sessionExpired: (msg) => msg,
+                  accountNotFound: (msg) => msg,
+                  validation: (msg, _) => msg,
+                ),
+              ),
               backgroundColor: Colors.red,
+              duration: const Duration(seconds: 5),
             ),
           );
         },
@@ -136,6 +185,42 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               const SocialLoginSection(),
 
               SizedBox(height: 24.h),
+
+              // "Already have an account?" text for register mode
+              if (_currentMode == AuthMode.register)
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _currentMode = AuthMode.login;
+                      });
+                      // Reset states when switching modes
+                      ref.read(loginStateProvider.notifier).resetState();
+                      ref.read(registerStateProvider.notifier).resetState();
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'Already have an account? ',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.grey[600],
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'Log in',
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+              SizedBox(height: 24.h),
             ],
           ),
         ),
@@ -146,35 +231,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget _buildLogo() {
     return Column(
       children: [
-        // App icon/logo placeholder
-        Container(
-          width: 80.w,
-          height: 80.w,
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.circular(16.r),
-          ),
-          child: Icon(
-            Icons.car_repair,
-            size: 48.sp,
-            color: Colors.white,
-          ),
-        ),
-        SizedBox(height: 16.h),
+        SizedBox(height: 40.h),
         Text(
-          'DriveDeck',
+          'DriveTo',
           style: TextStyle(
-            fontSize: 28.sp,
+            fontSize: 32.sp,
             fontWeight: FontWeight.bold,
-            color: Theme.of(context).primaryColor,
-          ),
-        ),
-        SizedBox(height: 8.h),
-        Text(
-          'Car Wash Service Booking',
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: Colors.grey[600],
+            color: Colors.black,
           ),
         ),
       ],

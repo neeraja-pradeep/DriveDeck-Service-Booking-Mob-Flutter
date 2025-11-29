@@ -12,6 +12,7 @@ class OtpState with _$OtpState {
     required DateTime expiresAt,
     int? attemptsRemaining,
     String? message,
+    String? status,
   }) = _OtpState;
 
   /// Checks if the OTP has expired.

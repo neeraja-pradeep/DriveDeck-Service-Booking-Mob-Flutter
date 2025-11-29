@@ -22,107 +22,118 @@ import 'register_notifier.dart';
 
 /// Provider for SecureStore with platform-specific configuration.
 /// Uses Keychain on iOS and EncryptedSharedPreferences on Android.
-final secureStoreProvider = Provider<SecureStore>((ref) {
+final Provider<SecureStore> secureStoreProvider = Provider<SecureStore>((ref) {
   return SecureStore.create();
 });
 
 /// Provider for ApiClient.
-final apiClientProvider = Provider<ApiClient>((ref) {
+/// Session expiry handling is done without direct dependency on authStateProvider
+/// to break the circular dependency.
+final Provider<ApiClient> apiClientProvider = Provider<ApiClient>((ref) {
   final secureStore = ref.watch(secureStoreProvider);
-  final authNotifier = ref.read(authStateProvider.notifier);
-
   return ApiClient(
     secureStore: secureStore,
-    onSessionExpired: () {
-      authNotifier.handleSessionExpiry();
-    },
+    onSessionExpired: null, // No callback to avoid circular dependency
   );
 });
 
 // Data source providers
 
 /// Provider for AuthApi.
-final authApiProvider = Provider<AuthApi>((ref) {
+final Provider<AuthApi> authApiProvider = Provider<AuthApi>((ref) {
   final apiClient = ref.watch(apiClientProvider);
   return AuthApiImpl(apiClient: apiClient);
 });
 
 /// Provider for AuthLocalDataSource.
-final authLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
-  final secureStore = ref.watch(secureStoreProvider);
-  return AuthLocalDataSourceImpl(secureStore: secureStore);
-});
+final Provider<AuthLocalDataSource> authLocalDataSourceProvider =
+    Provider<AuthLocalDataSource>((ref) {
+      final secureStore = ref.watch(secureStoreProvider);
+      return AuthLocalDataSourceImpl(secureStore: secureStore);
+    });
 
 // Repository provider
 
 /// Provider for AuthRepository.
-final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  final authApi = ref.watch(authApiProvider);
-  final localDataSource = ref.watch(authLocalDataSourceProvider);
-  return AuthRepositoryImpl(
-    authApi: authApi,
-    localDataSource: localDataSource,
-  );
-});
+final Provider<AuthRepository> authRepositoryProvider =
+    Provider<AuthRepository>((ref) {
+      final authApi = ref.watch(authApiProvider);
+      final localDataSource = ref.watch(authLocalDataSourceProvider);
+      return AuthRepositoryImpl(
+        authApi: authApi,
+        localDataSource: localDataSource,
+      );
+    });
 
 // Use case providers
 
 /// Provider for RequestOtpUsecase.
-final requestOtpUsecaseProvider = Provider<RequestOtpUsecase>((ref) {
-  final repository = ref.watch(authRepositoryProvider);
-  return RequestOtpUsecase(repository: repository);
-});
+final Provider<RequestOtpUsecase> requestOtpUsecaseProvider =
+    Provider<RequestOtpUsecase>((ref) {
+      final repository = ref.watch(authRepositoryProvider);
+      return RequestOtpUsecase(repository: repository);
+    });
 
 /// Provider for VerifyOtpUsecase.
-final verifyOtpUsecaseProvider = Provider<VerifyOtpUsecase>((ref) {
-  final repository = ref.watch(authRepositoryProvider);
-  return VerifyOtpUsecase(repository: repository);
-});
+final Provider<VerifyOtpUsecase> verifyOtpUsecaseProvider =
+    Provider<VerifyOtpUsecase>((ref) {
+      final repository = ref.watch(authRepositoryProvider);
+      return VerifyOtpUsecase(repository: repository);
+    });
 
 /// Provider for RegisterUsecase.
-final registerUsecaseProvider = Provider<RegisterUsecase>((ref) {
-  final repository = ref.watch(authRepositoryProvider);
-  return RegisterUsecase(repository: repository);
-});
+final Provider<RegisterUsecase> registerUsecaseProvider =
+    Provider<RegisterUsecase>((ref) {
+      final repository = ref.watch(authRepositoryProvider);
+      return RegisterUsecase(repository: repository);
+    });
 
 /// Provider for LogoutUsecase.
-final logoutUsecaseProvider = Provider<LogoutUsecase>((ref) {
+final Provider<LogoutUsecase> logoutUsecaseProvider = Provider<LogoutUsecase>((
+  ref,
+) {
   final repository = ref.watch(authRepositoryProvider);
   return LogoutUsecase(repository: repository);
 });
 
 /// Provider for CheckSessionUsecase.
-final checkSessionUsecaseProvider = Provider<CheckSessionUsecase>((ref) {
-  final repository = ref.watch(authRepositoryProvider);
-  return CheckSessionUsecase(repository: repository);
-});
+final Provider<CheckSessionUsecase> checkSessionUsecaseProvider =
+    Provider<CheckSessionUsecase>((ref) {
+      final repository = ref.watch(authRepositoryProvider);
+      return CheckSessionUsecase(repository: repository);
+    });
 
 // State providers
 
 /// Main auth state provider.
-final authStateProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-  final checkSessionUsecase = ref.watch(checkSessionUsecaseProvider);
-  final logoutUsecase = ref.watch(logoutUsecaseProvider);
-  return AuthNotifier(
-    checkSessionUsecase: checkSessionUsecase,
-    logoutUsecase: logoutUsecase,
-  );
-});
+final StateNotifierProvider<AuthNotifier, AuthState> authStateProvider =
+    StateNotifierProvider<AuthNotifier, AuthState>((ref) {
+      final checkSessionUsecase = ref.watch(checkSessionUsecaseProvider);
+      final logoutUsecase = ref.watch(logoutUsecaseProvider);
+      return AuthNotifier(
+        checkSessionUsecase: checkSessionUsecase,
+        logoutUsecase: logoutUsecase,
+      );
+    });
 
 /// Login flow state provider.
-final loginStateProvider = StateNotifierProvider<LoginNotifier, LoginState>((ref) {
-  final requestOtpUsecase = ref.watch(requestOtpUsecaseProvider);
-  final verifyOtpUsecase = ref.watch(verifyOtpUsecaseProvider);
-  final authNotifier = ref.read(authStateProvider.notifier);
-  return LoginNotifier(
-    requestOtpUsecase: requestOtpUsecase,
-    verifyOtpUsecase: verifyOtpUsecase,
-    authNotifier: authNotifier,
-  );
-});
+final StateNotifierProvider<LoginNotifier, LoginState> loginStateProvider =
+    StateNotifierProvider<LoginNotifier, LoginState>((ref) {
+      final requestOtpUsecase = ref.watch(requestOtpUsecaseProvider);
+      final verifyOtpUsecase = ref.watch(verifyOtpUsecaseProvider);
+      final authNotifier = ref.read(authStateProvider.notifier);
+      return LoginNotifier(
+        requestOtpUsecase: requestOtpUsecase,
+        verifyOtpUsecase: verifyOtpUsecase,
+        authNotifier: authNotifier,
+      );
+    });
 
 /// Register flow state provider.
-final registerStateProvider = StateNotifierProvider<RegisterNotifier, RegisterState>((ref) {
+final StateNotifierProvider<RegisterNotifier, RegisterState>
+registerStateProvider = StateNotifierProvider<RegisterNotifier, RegisterState>((
+  ref,
+) {
   final registerUsecase = ref.watch(registerUsecaseProvider);
   final authNotifier = ref.read(authStateProvider.notifier);
   return RegisterNotifier(
@@ -132,7 +143,9 @@ final registerStateProvider = StateNotifierProvider<RegisterNotifier, RegisterSt
 });
 
 /// Current XCSRF token provider.
-final xcsrfTokenProvider = FutureProvider<String?>((ref) async {
+final FutureProvider<String?> xcsrfTokenProvider = FutureProvider<String?>((
+  ref,
+) async {
   final secureStore = ref.watch(secureStoreProvider);
   return secureStore.getXcsrfToken();
 });
