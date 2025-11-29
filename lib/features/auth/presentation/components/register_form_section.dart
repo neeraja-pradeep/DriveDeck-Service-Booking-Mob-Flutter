@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../app/theme/colors.dart';
 import '../../../../core/utils/validators.dart';
 import '../../application/providers/auth_providers.dart';
 import '../../domain/entities/auth_credentials.dart';
@@ -246,7 +247,7 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
             child: ElevatedButton(
               onPressed: isLoading ? null : _onRegister,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF4FC3F7),
+                backgroundColor: AppColors.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.r),
                 ),
@@ -261,7 +262,7 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
                       ),
                     )
                   : Text(
-                      'Log in',
+                      'Sign up',
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,

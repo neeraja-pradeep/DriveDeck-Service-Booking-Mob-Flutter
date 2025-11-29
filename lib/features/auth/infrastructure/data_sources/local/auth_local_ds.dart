@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-import '../../../../../core/storage/hive/boxes.dart';
+import '../../../../../app/bootstrap/app_bootstrap.dart';
 import '../../../../../core/storage/hive/keys.dart';
 import '../../../../../core/storage/secure_store.dart';
 import '../../../domain/entities/session.dart';
@@ -18,18 +18,12 @@ abstract class AuthLocalDataSource {
 
 /// Implementation of AuthLocalDataSource using Hive and SecureStore.
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
-  AuthLocalDataSourceImpl({
-    required this.secureStore,
-  });
+  AuthLocalDataSourceImpl({required this.secureStore});
 
   final SecureStore secureStore;
 
-  Box<dynamic>? _authBox;
-
-  Future<Box<dynamic>> get _box async {
-    _authBox ??= await Hive.openBox(HiveBoxes.auth);
-    return _authBox!;
-  }
+  /// Get the pre-opened auth box from AppBootstrap.
+  Box<dynamic> get _box => AppBootstrap.authBox;
 
   @override
   Future<void> saveSession(Session session) async {
@@ -38,11 +32,16 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     await secureStore.saveXcsrfToken(session.xcsrfToken);
     await secureStore.saveUserId(session.userId);
 
-    // Save non-sensitive data in Hive
-    final box = await _box;
-    await box.put(HiveKeys.sessionCreatedAt, session.createdAt.toIso8601String());
+    // Save non-sensitive data in Hive using pre-opened box
+    await _box.put(
+      HiveKeys.sessionCreatedAt,
+      session.createdAt.toIso8601String(),
+    );
     if (session.expiresAt != null) {
-      await box.put(HiveKeys.sessionExpiresAt, session.expiresAt!.toIso8601String());
+      await _box.put(
+        HiveKeys.sessionExpiresAt,
+        session.expiresAt!.toIso8601String(),
+      );
     }
   }
 
@@ -52,18 +51,24 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     final xcsrfToken = await secureStore.getXcsrfToken();
     final userId = await secureStore.getUserId();
 
-    if (sessionId == null || sessionId.isEmpty) {
+    // Validate all required session fields
+    if (sessionId == null ||
+        sessionId.isEmpty ||
+        xcsrfToken == null ||
+        xcsrfToken.isEmpty ||
+        userId == null ||
+        userId.isEmpty) {
       return null;
     }
 
-    final box = await _box;
-    final createdAtStr = box.get(HiveKeys.sessionCreatedAt) as String?;
-    final expiresAtStr = box.get(HiveKeys.sessionExpiresAt) as String?;
+    // Use pre-opened box directly
+    final createdAtStr = _box.get(HiveKeys.sessionCreatedAt) as String?;
+    final expiresAtStr = _box.get(HiveKeys.sessionExpiresAt) as String?;
 
     return Session(
       sessionId: sessionId,
-      xcsrfToken: xcsrfToken ?? '',
-      userId: userId ?? '',
+      xcsrfToken: xcsrfToken,
+      userId: userId,
       createdAt: createdAtStr != null
           ? DateTime.tryParse(createdAtStr) ?? DateTime.now()
           : DateTime.now(),
@@ -74,32 +79,27 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   @override
   Future<void> clearSession() async {
     await secureStore.clearAuthData();
-    final box = await _box;
-    await box.delete(HiveKeys.sessionCreatedAt);
-    await box.delete(HiveKeys.sessionExpiresAt);
+    // Clear all auth-related data from Hive box
+    await AppBootstrap.clearAuthData();
   }
 
   @override
   Future<void> saveRememberMe(bool value) async {
-    final box = await _box;
-    await box.put(HiveKeys.rememberMe, value);
+    await _box.put(HiveKeys.rememberMe, value);
   }
 
   @override
   Future<bool> getRememberMe() async {
-    final box = await _box;
-    return box.get(HiveKeys.rememberMe, defaultValue: false) as bool;
+    return _box.get(HiveKeys.rememberMe, defaultValue: false) as bool;
   }
 
   @override
   Future<void> saveLastPhoneNumber(String phoneNumber) async {
-    final box = await _box;
-    await box.put(HiveKeys.lastPhoneNumber, phoneNumber);
+    await _box.put(HiveKeys.lastPhoneNumber, phoneNumber);
   }
 
   @override
   Future<String?> getLastPhoneNumber() async {
-    final box = await _box;
-    return box.get(HiveKeys.lastPhoneNumber) as String?;
+    return _box.get(HiveKeys.lastPhoneNumber) as String?;
   }
 }

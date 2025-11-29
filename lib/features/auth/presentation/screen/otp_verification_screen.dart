@@ -6,8 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/router/routes.dart';
+import '../../../../app/theme/colors.dart';
 import '../../application/providers/auth_providers.dart';
 import '../../application/states/login_state.dart';
+import '../widgets/otp_input_field.dart';
 
 /// OTP verification screen.
 class OtpVerificationScreen extends ConsumerStatefulWidget {
@@ -34,12 +36,18 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
 
   // Timer variable for countdown
   Timer? _timer;
-  int _countdown = 30;
-  bool _canResend = false;
+
+  // Use ValueNotifier for countdown to avoid unnecessary rebuilds
+  late final ValueNotifier<int> _countdownNotifier;
+  late final ValueNotifier<bool> _canResendNotifier;
 
   @override
   void initState() {
     super.initState();
+    // Initialize ValueNotifiers
+    _countdownNotifier = ValueNotifier<int>(30);
+    _canResendNotifier = ValueNotifier<bool>(false);
+
     // debugPrint(
     //   '🚀 OTP Screen: initState - Phone: ${widget.phoneNumber}, RememberMe: ${widget.rememberMe}',
     // );
@@ -67,6 +75,11 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
     // debugPrint('🗑️ OTP Screen: dispose - Cleaning up resources');
     // Always cancel timers to prevent memory leaks
     _timer?.cancel();
+
+    // Dispose ValueNotifiers
+    _countdownNotifier.dispose();
+    _canResendNotifier.dispose();
+
     for (final controller in _controllers) {
       controller.dispose();
     }
@@ -79,30 +92,24 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
   void _startCountdown() {
     // debugPrint('⏰ OTP Screen: Starting countdown timer');
     // Reset state for a new countdown
-    setState(() {
-      _countdown = 30;
-      _canResend = false;
-    });
+    _countdownNotifier.value = 30;
+    _canResendNotifier.value = false;
 
     // Cancel existing timer if running
     _timer?.cancel();
 
     // Start a new periodic timer
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_countdown == 0) {
+      if (_countdownNotifier.value == 0) {
         // Stop the timer when we reach 0
         // debugPrint('⏰ OTP Screen: Countdown finished - Enabling resend');
         timer.cancel();
-        setState(() {
-          _canResend = true;
-        });
+        _canResendNotifier.value = true;
       } else {
         // Decrement
-        setState(() {
-          _countdown--;
-        });
-        if (_countdown % 10 == 0) {
-          // debugPrint('⏰ OTP Screen: Countdown at $_countdown seconds');
+        _countdownNotifier.value--;
+        if (_countdownNotifier.value % 10 == 0) {
+          // debugPrint('⏰ OTP Screen: Countdown at ${_countdownNotifier.value} seconds');
         }
       }
     });
@@ -204,7 +211,7 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                 style: TextStyle(
                   fontSize: 28.sp,
                   fontWeight: FontWeight.w600,
-                  color: const Color(0xFF4A90E2),
+                  color: AppColors.primary,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -236,74 +243,41 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(6, (index) {
-                  return Container(
-                    width: 45.w,
-                    height: 55.h,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12.r),
-                      border: Border.all(
-                        color: _focusNodes[index].hasFocus
-                            ? Colors.black
-                            : _controllers[index].text.isNotEmpty
-                            ? const Color(0xFF4A90E2)
-                            : Colors.grey[300]!,
-                        width: 1.5,
-                      ),
-                    ),
-                    child: TextField(
-                      controller: _controllers[index],
-                      focusNode: _focusNodes[index],
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.number,
-                      maxLength: 1,
-                      style: TextStyle(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                      decoration: const InputDecoration(
-                        counterText: '',
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        focusedErrorBorder: InputBorder.none,
-                        contentPadding: EdgeInsets.zero,
-                        filled: false,
-                        fillColor: Colors.transparent,
-                      ),
-                      onChanged: (value) {
-                        // debugPrint(
-                        //   '📝 OTP Screen: Field $index changed to "$value"',
-                        // );
-                        if (value.isNotEmpty) {
-                          if (index < 5) {
-                            // debugPrint(
-                            //   '➡️ OTP Screen: Moving focus to field ${index + 1}',
-                            // );
-                            _focusNodes[index + 1].requestFocus();
-                          } else {
-                            // debugPrint(
-                            //   '✅ OTP Screen: Last field filled, unfocusing',
-                            // );
-                            _focusNodes[index].unfocus();
-                            if (_otp.length == 6) {
-                              // debugPrint(
-                              //   '🎯 OTP Screen: All 6 digits entered, auto-verifying',
-                              // );
-                              _verifyOtp();
-                            }
-                          }
-                        } else if (value.isEmpty && index > 0) {
+                  return OtpInputField(
+                    controller: _controllers[index],
+                    focusNode: _focusNodes[index],
+                    index: index,
+                    isEnabled: !isLoading,
+                    onChanged: (value) {
+                      // debugPrint(
+                      //   '📝 OTP Screen: Field $index changed to "$value"',
+                      // );
+                      if (value.isNotEmpty) {
+                        if (index < 5) {
                           // debugPrint(
-                          //   '⬅️ OTP Screen: Field $index cleared, moving focus to field ${index - 1}',
+                          //   '➡️ OTP Screen: Moving focus to field ${index + 1}',
                           // );
-                          _focusNodes[index - 1].requestFocus();
+                          _focusNodes[index + 1].requestFocus();
+                        } else {
+                          // debugPrint(
+                          //   '✅ OTP Screen: Last field filled, unfocusing',
+                          // );
+                          _focusNodes[index].unfocus();
+                          if (_otp.length == 6) {
+                            // debugPrint(
+                            //   '🎯 OTP Screen: All 6 digits entered, auto-verifying',
+                            // );
+                            _verifyOtp();
+                          }
                         }
-                        setState(() {});
-                      },
-                    ),
+                      } else if (value.isEmpty && index > 0) {
+                        // debugPrint(
+                        //   '⬅️ OTP Screen: Field $index cleared, moving focus to field ${index - 1}',
+                        // );
+                        _focusNodes[index - 1].requestFocus();
+                      }
+                      setState(() {});
+                    },
                   );
                 }),
               ),
@@ -317,8 +291,8 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
                 child: ElevatedButton(
                   onPressed: isLoading || _otp.length != 6 ? null : _verifyOtp,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF4A90E2),
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: AppColors.onPrimary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.r),
                     ),
@@ -347,35 +321,45 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
 
               // Resend Code Section
               Center(
-                child: _canResend
-                    ? GestureDetector(
-                        onTap: _resendOtp,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 24.w,
-                            vertical: 12.h,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          child: Text(
-                            'Send code again',
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              color: const Color(0xFF4A90E2),
-                              fontWeight: FontWeight.w500,
+                child: ValueListenableBuilder<bool>(
+                  valueListenable: _canResendNotifier,
+                  builder: (context, canResend, child) {
+                    return canResend
+                        ? GestureDetector(
+                            onTap: _resendOtp,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 24.w,
+                                vertical: 12.h,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              child: Text(
+                                'Send code again',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      )
-                    : Text(
-                        'Send code again  00:${_countdown.toString().padLeft(2, '0')}',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          color: Colors.grey[600],
-                        ),
-                      ),
+                          )
+                        : ValueListenableBuilder<int>(
+                            valueListenable: _countdownNotifier,
+                            builder: (context, countdown, child) {
+                              return Text(
+                                'Send code again  00:${countdown.toString().padLeft(2, '0')}',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.grey[600],
+                                ),
+                              );
+                            },
+                          );
+                  },
+                ),
               ),
             ],
           ),

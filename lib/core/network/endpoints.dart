@@ -1,9 +1,11 @@
+import '../../app/config/env.dart';
+
 /// API endpoint paths for the application.
 class Endpoints {
   Endpoints._();
 
-  /// Base URL for the API.
-  static const String baseUrl = 'http://156.67.104.149:8110';
+  /// Base URL for the API (environment-aware).
+  static String get baseUrl => Env.apiBaseUrl;
 
   // Authentication endpoints
   static String sendOtp() => '/api/accounts/send-otp/';

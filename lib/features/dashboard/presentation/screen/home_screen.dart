@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../app/router/routes.dart';
 import '../../../auth/application/providers/auth_providers.dart';
 
 /// Home screen - placeholder for dashboard.
@@ -12,10 +14,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'DriveDeck',
-          style: TextStyle(fontSize: 20.sp),
-        ),
+        title: Text('DriveDeck', style: TextStyle(fontSize: 20.sp)),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -41,6 +40,10 @@ class HomeScreen extends ConsumerWidget {
 
               if (shouldLogout == true) {
                 await ref.read(authStateProvider.notifier).logout();
+                // Explicitly navigate to login and clear navigation stack
+                if (context.mounted) {
+                  context.go(Routes.login);
+                }
               }
             },
           ),
@@ -58,26 +61,17 @@ class HomeScreen extends ConsumerWidget {
             SizedBox(height: 24.h),
             Text(
               'Welcome to DriveDeck!',
-              style: TextStyle(
-                fontSize: 24.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.h),
             Text(
               'Your car wash booking app',
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: Colors.grey[600],
-              ),
+              style: TextStyle(fontSize: 16.sp, color: Colors.grey[600]),
             ),
             SizedBox(height: 32.h),
             Text(
               'Home screen content coming soon...',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.grey[500],
-              ),
+              style: TextStyle(fontSize: 14.sp, color: Colors.grey[500]),
             ),
           ],
         ),

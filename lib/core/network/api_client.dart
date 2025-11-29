@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 
+import '../../app/config/env.dart';
 import '../storage/secure_store.dart';
 import 'endpoints.dart';
 import 'interceptors/logging_interceptor.dart';
+import 'interceptors/retry_interceptor.dart';
 import 'interceptors/session_interceptor.dart';
 import 'interceptors/xcsrf_interceptor.dart';
 
@@ -14,8 +16,8 @@ class ApiClient {
   ApiClient({
     required SecureStore secureStore,
     SessionExpiryCallback? onSessionExpired,
-  })  : _secureStore = secureStore,
-        _onSessionExpired = onSessionExpired {
+  }) : _secureStore = secureStore,
+       _onSessionExpired = onSessionExpired {
     _dio = Dio(_baseOptions);
     _setupInterceptors();
   }
@@ -24,19 +26,24 @@ class ApiClient {
   final SessionExpiryCallback? _onSessionExpired;
   late final Dio _dio;
 
-  static final BaseOptions _baseOptions = BaseOptions(
-    baseUrl: Endpoints.baseUrl,
-    connectTimeout: const Duration(seconds: 30),
-    receiveTimeout: const Duration(seconds: 30),
-    sendTimeout: const Duration(seconds: 30),
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },
-  );
+  static BaseOptions get _baseOptions {
+    final timeoutMs = Env.config['apiTimeout'] as int;
+    final timeout = Duration(milliseconds: timeoutMs);
+
+    return BaseOptions(
+      baseUrl: Endpoints.baseUrl,
+      connectTimeout: timeout,
+      receiveTimeout: timeout,
+      sendTimeout: timeout,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    );
+  }
 
   void _setupInterceptors() {
-    // Order: Logging -> Session -> XCSRF -> Error
+    // Order: Logging -> Session -> XCSRF -> Retry
     _dio.interceptors.addAll([
       LoggingInterceptor(),
       SessionInterceptor(
@@ -44,6 +51,10 @@ class ApiClient {
         onSessionExpired: _onSessionExpired,
       ),
       XcsrfInterceptor(secureStore: _secureStore),
+      RetryInterceptor(
+        maxRetries: Env.config['maxRetries'] as int,
+        retryDelay: const Duration(seconds: 1),
+      ),
     ]);
   }
 

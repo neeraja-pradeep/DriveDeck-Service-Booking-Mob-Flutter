@@ -3,17 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // import '../../../../core/error/failure.dart';
 import '../../domain/entities/auth_credentials.dart';
+import '../../domain/entities/session.dart';
 import '../states/register_state.dart';
 import '../usecases/register_usecase.dart';
-import 'auth_notifier.dart';
 
 /// Notifier for managing registration flow state.
 class RegisterNotifier extends StateNotifier<RegisterState> {
-  RegisterNotifier({required this.registerUsecase, required this.authNotifier})
+  RegisterNotifier({required this.registerUsecase, required this.onAuthSuccess})
     : super(const RegisterState.initial());
 
   final RegisterUsecase registerUsecase;
-  final AuthNotifier authNotifier;
+  final void Function(Session session) onAuthSuccess;
 
   /// Registers a new user.
   Future<void> register(RegisterCredentials credentials) async {
@@ -36,8 +36,8 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
         // debugPrint('✅ RegisterNotifier: Registration successful!');
         // debugPrint('🔑 Session ID: ${session.sessionId}');
         state = RegisterState.success(session: session);
-        // Update main auth state
-        authNotifier.setAuthenticated(session);
+        // Update main auth state via callback
+        onAuthSuccess(session);
       },
     );
   }

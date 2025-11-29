@@ -79,6 +79,18 @@ class AuthApiImpl implements AuthApi {
         data['user']?['id']?.toString() ??
         '';
 
+    // Validate that proper session tokens are returned from the server
+    if (sessionId.isEmpty || xcsrfToken.isEmpty || userId.isEmpty) {
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.badResponse,
+        error:
+            'OTP verification successful but server did not return valid session tokens. '
+            'Please try logging in again.',
+      );
+    }
+
     return SessionModel(
       sessionId: sessionId,
       xcsrfToken: xcsrfToken,
@@ -115,27 +127,21 @@ class AuthApiImpl implements AuthApi {
     // debugPrint('🛡️ Extracted xcsrfToken: $xcsrfToken');
     // debugPrint('👤 Extracted userId: $userId');
 
-    // If no session tokens are returned, create a temporary session
-    // This might indicate that the API requires a separate login after registration
-    final finalSessionId = sessionId.isNotEmpty
-        ? sessionId
-        : 'temp_${DateTime.now().millisecondsSinceEpoch}';
-    final finalXcsrfToken = xcsrfToken.isNotEmpty
-        ? xcsrfToken
-        : 'temp_csrf_${DateTime.now().millisecondsSinceEpoch}';
-
-    // if (sessionId.isEmpty || xcsrfToken.isEmpty) {
-    //   debugPrint(
-    //     '⚠️ Warning: No session tokens returned from registration API',
-    //   );
-    //   debugPrint(
-    //     '💡 This might require a separate login step after registration',
-    //   );
-    // }
+    // Validate that proper session tokens are returned from the server
+    if (sessionId.isEmpty || xcsrfToken.isEmpty || userId.isEmpty) {
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.badResponse,
+        error:
+            'Registration successful but server did not return valid session tokens. '
+            'Please login with your credentials to continue.',
+      );
+    }
 
     return SessionModel(
-      sessionId: finalSessionId,
-      xcsrfToken: finalXcsrfToken,
+      sessionId: sessionId,
+      xcsrfToken: xcsrfToken,
       userId: userId,
       createdAt: DateTime.now().toIso8601String(),
     );

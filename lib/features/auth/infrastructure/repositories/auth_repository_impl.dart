@@ -78,6 +78,9 @@ class AuthRepositoryImpl implements AuthRepository {
       final result = await authApi.verifyOtp(dto);
       final session = result.toDomain();
 
+      // Clear any previous session data before saving new session
+      await localDataSource.clearSession();
+
       // Save session locally
       await localDataSource.saveSession(session);
 
@@ -121,6 +124,9 @@ class AuthRepositoryImpl implements AuthRepository {
       final session = result.toDomain();
 
       // debugPrint('✅ Repository: Registration successful, saving session');
+
+      // Clear any previous session data before saving new session
+      await localDataSource.clearSession();
 
       // Save session locally
       await localDataSource.saveSession(session);

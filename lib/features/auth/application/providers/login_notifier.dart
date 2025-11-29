@@ -1,22 +1,22 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entities/auth_credentials.dart';
+import '../../domain/entities/session.dart';
 import '../states/login_state.dart';
 import '../usecases/request_otp_usecase.dart';
 import '../usecases/verify_otp_usecase.dart';
-import 'auth_notifier.dart';
 
 /// Notifier for managing login flow state.
 class LoginNotifier extends StateNotifier<LoginState> {
   LoginNotifier({
     required this.requestOtpUsecase,
     required this.verifyOtpUsecase,
-    required this.authNotifier,
+    required this.onAuthSuccess,
   }) : super(const LoginState.initial());
 
   final RequestOtpUsecase requestOtpUsecase;
   final VerifyOtpUsecase verifyOtpUsecase;
-  final AuthNotifier authNotifier;
+  final void Function(Session session) onAuthSuccess;
 
   String? _currentPhoneNumber;
 
@@ -70,8 +70,8 @@ class LoginNotifier extends StateNotifier<LoginState> {
       },
       (session) {
         state = LoginState.success(session: session);
-        // Update main auth state
-        authNotifier.setAuthenticated(session);
+        // Update main auth state via callback
+        onAuthSuccess(session);
       },
     );
   }
