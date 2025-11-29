@@ -1,0 +1,49 @@
+// import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// import '../../../../core/error/failure.dart';
+import '../../domain/entities/auth_credentials.dart';
+import '../states/register_state.dart';
+import '../usecases/register_usecase.dart';
+import 'auth_notifier.dart';
+
+/// Notifier for managing registration flow state.
+class RegisterNotifier extends StateNotifier<RegisterState> {
+  RegisterNotifier({required this.registerUsecase, required this.authNotifier})
+    : super(const RegisterState.initial());
+
+  final RegisterUsecase registerUsecase;
+  final AuthNotifier authNotifier;
+
+  /// Registers a new user.
+  Future<void> register(RegisterCredentials credentials) async {
+    // debugPrint('🎯 RegisterNotifier: Starting registration process');
+    // debugPrint('📱 Phone: ${credentials.phoneNumber}');
+    // debugPrint('👤 Username: ${credentials.username}');
+
+    state = const RegisterState.loading();
+
+    final result = await registerUsecase(credentials);
+
+    result.fold(
+      (failure) {
+        // debugPrint(
+        //   '❌ RegisterNotifier: Registration failed with error: ${failure.userMessage}',
+        // );
+        state = RegisterState.error(failure: failure);
+      },
+      (session) {
+        // debugPrint('✅ RegisterNotifier: Registration successful!');
+        // debugPrint('🔑 Session ID: ${session.sessionId}');
+        state = RegisterState.success(session: session);
+        // Update main auth state
+        authNotifier.setAuthenticated(session);
+      },
+    );
+  }
+
+  /// Resets the registration state.
+  void resetState() {
+    state = const RegisterState.initial();
+  }
+}
