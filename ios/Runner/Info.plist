@@ -45,5 +45,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>DriveDeck needs your location to show car wash services near you.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>DriveDeck needs your location to show car wash services near you.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>DriveDeck needs your location to show car wash services near you.</string>
 </dict>
 </plist>
