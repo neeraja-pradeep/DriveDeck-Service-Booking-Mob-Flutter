@@ -38,12 +38,10 @@ class AppTheme {
           statusBarBrightness: Brightness.light,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 2,
         color: AppColors.cardBackground,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -51,9 +49,7 @@ class AppTheme {
           foregroundColor: AppColors.textOnPrimary,
           elevation: 2,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -61,9 +57,7 @@ class AppTheme {
           foregroundColor: AppColors.primary,
           side: const BorderSide(color: AppColors.primary),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -95,9 +89,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(color: AppColors.error),
         ),
-        hintStyle: AppTypography.bodyMedium.copyWith(
-          color: AppColors.textHint,
-        ),
+        hintStyle: AppTypography.bodyMedium.copyWith(color: AppColors.textHint),
       ),
       dividerTheme: const DividerThemeData(
         color: AppColors.divider,
@@ -111,12 +103,12 @@ class AppTheme {
         type: BottomNavigationBarType.fixed,
         elevation: 8,
       ),
-      tabBarTheme: const TabBarTheme(
+      tabBarTheme: const TabBarThemeData(
         labelColor: AppColors.primary,
         unselectedLabelColor: AppColors.grey500,
         indicatorSize: TabBarIndicatorSize.tab,
       ),
-      textTheme: TextTheme(
+      textTheme: const TextTheme(
         displayLarge: AppTypography.displayLarge,
         displayMedium: AppTypography.displayMedium,
         displaySmall: AppTypography.displaySmall,
@@ -164,12 +156,10 @@ class AppTheme {
           statusBarBrightness: Brightness.dark,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 2,
         color: AppColors.grey800,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }

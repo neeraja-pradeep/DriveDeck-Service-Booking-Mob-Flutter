@@ -11,6 +11,17 @@ abstract class HomeRepository {
   /// Fetches the current user's profile.
   Future<Either<Failure, UserProfile>> getUserProfile();
 
+  /// Updates the current user's profile.
+  Future<Either<Failure, UserProfile>> updateUserProfile({
+    String? name,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phone,
+    double? latitude,
+    double? longitude,
+  });
+
   /// Fetches service categories with conditional caching.
   /// Returns cached data if [ifModifiedSince] results in 304.
   Future<Either<Failure, List<ServiceCategory>>> getServiceCategories({
@@ -32,9 +43,7 @@ abstract class HomeRepository {
   });
 
   /// Toggles wishlist status for a shop.
-  Future<Either<Failure, bool>> toggleWishlist({
-    required int shopId,
-  });
+  Future<Either<Failure, bool>> toggleWishlist({required int shopId});
 
   /// Gets the current user location.
   Future<Either<Failure, UserLocation>> getCurrentLocation();

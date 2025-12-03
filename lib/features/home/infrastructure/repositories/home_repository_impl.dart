@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-
 import '../../../../core/error/failure.dart';
 import '../../../../core/network/network_exceptions.dart';
 import '../../../../core/utils/logger.dart';
@@ -31,8 +30,8 @@ class HomeRepositoryImpl implements HomeRepository {
   HomeRepositoryImpl({
     required HomeApi homeApi,
     required HomeLocalDataSource localDs,
-  })  : _homeApi = homeApi,
-        _localDs = localDs;
+  }) : _homeApi = homeApi,
+       _localDs = localDs;
 
   @override
   Future<Either<Failure, UserProfile>> getUserProfile() async {
@@ -41,11 +40,39 @@ class HomeRepositoryImpl implements HomeRepository {
       return Right(model.toEntity());
     } on NetworkException catch (e) {
       AppLogger.e('Failed to get user profile', e);
-      return Left(
-        ServerFailure(message: e.message, statusCode: e.statusCode),
-      );
+      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
     } catch (e, stackTrace) {
       AppLogger.e('Unexpected error getting user profile', e, stackTrace);
+      return Left(UnknownFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserProfile>> updateUserProfile({
+    String? name,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phone,
+    double? latitude,
+    double? longitude,
+  }) async {
+    try {
+      final model = await _homeApi.updateUserProfile(
+        name: name,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        latitude: latitude,
+        longitude: longitude,
+      );
+      return Right(model.toEntity());
+    } on NetworkException catch (e) {
+      AppLogger.e('Failed to update user profile', e);
+      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
+    } catch (e, stackTrace) {
+      AppLogger.e('Unexpected error updating user profile', e, stackTrace);
       return Left(UnknownFailure(message: e.toString()));
     }
   }
@@ -87,9 +114,7 @@ class HomeRepositoryImpl implements HomeRepository {
         return Right(cached.map((m) => m.toEntity()).toList());
       }
 
-      return Left(
-        ServerFailure(message: e.message, statusCode: e.statusCode),
-      );
+      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
     } catch (e, stackTrace) {
       AppLogger.e('Unexpected error getting service categories', e, stackTrace);
 
@@ -139,9 +164,7 @@ class HomeRepositoryImpl implements HomeRepository {
         return Right(cached.map((m) => m.toEntity()).toList());
       }
 
-      return Left(
-        ServerFailure(message: e.message, statusCode: e.statusCode),
-      );
+      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
     } catch (e, stackTrace) {
       AppLogger.e('Unexpected error getting shops near you', e, stackTrace);
 
@@ -170,9 +193,7 @@ class HomeRepositoryImpl implements HomeRepository {
       return Right(response.results.map((m) => m.toEntity()).toList());
     } on NetworkException catch (e) {
       AppLogger.e('Failed to search shops', e);
-      return Left(
-        ServerFailure(message: e.message, statusCode: e.statusCode),
-      );
+      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
     } catch (e, stackTrace) {
       AppLogger.e('Unexpected error searching shops', e, stackTrace);
       return Left(UnknownFailure(message: e.toString()));
@@ -186,9 +207,7 @@ class HomeRepositoryImpl implements HomeRepository {
       return Right(result);
     } on NetworkException catch (e) {
       AppLogger.e('Failed to toggle wishlist', e);
-      return Left(
-        ServerFailure(message: e.message, statusCode: e.statusCode),
-      );
+      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
     } catch (e, stackTrace) {
       AppLogger.e('Unexpected error toggling wishlist', e, stackTrace);
       return Left(UnknownFailure(message: e.toString()));
@@ -314,7 +333,8 @@ class HomeRepositoryImpl implements HomeRepository {
   }
 
   @override
-  Future<Either<Failure, List<ServiceCategory>?>> getCachedServiceCategories() async {
+  Future<Either<Failure, List<ServiceCategory>?>>
+  getCachedServiceCategories() async {
     try {
       final cached = _localDs.getServiceCategories();
       if (cached == null) return const Right(null);

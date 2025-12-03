@@ -11,6 +11,12 @@ class Endpoints {
 
   // ============ Auth Endpoints ============
 
+  /// Send OTP endpoint.
+  static String sendOtp() => '$apiPrefix/auth/send-otp/';
+
+  /// Verify OTP endpoint.
+  static String verifyOtp() => '$apiPrefix/auth/verify-otp/';
+
   /// User profile endpoint.
   static String profile() => '$apiPrefix/accounts/profile/';
 

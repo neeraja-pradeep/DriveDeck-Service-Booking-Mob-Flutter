@@ -10,23 +10,20 @@ import '../states/home_state.dart';
 /// Provider for the HomeNotifier.
 final homeNotifierProvider =
     StateNotifierProvider.autoDispose<HomeNotifier, HomeState>((ref) {
-  return HomeNotifier(ref);
-});
+      return HomeNotifier(ref);
+    });
 
 /// State notifier for managing home screen state.
 class HomeNotifier extends StateNotifier<HomeState> {
   final Ref _ref;
 
-  HomeNotifier(this._ref) : super(const HomeState()) {
+  HomeNotifier(this._ref) : super(HomeState.initial()) {
     _init();
   }
 
   /// Initializes the home screen by loading all required data.
   Future<void> _init() async {
-    await Future.wait([
-      loadUserProfile(),
-      _loadLocationAndData(),
-    ]);
+    await Future.wait([loadUserProfile(), _loadLocationAndData()]);
   }
 
   /// Loads location and then location-dependent data.
@@ -36,25 +33,49 @@ class HomeNotifier extends StateNotifier<HomeState> {
     // Load data that depends on location
     final location = state.locationState.valueOrNull;
     if (location != null && location.isValid) {
-      await Future.wait([
-        loadServiceCategories(),
-        loadShopsNearYou(),
-      ]);
+      // Update user profile with location first
+      await _updateProfileWithLocation(location);
+      await Future.wait([loadServiceCategories(), loadShopsNearYou()]);
     } else {
       // Still try to load categories even without location
       await loadServiceCategories();
       // Set shops to empty with a note about location
-      state = state.copyWith(
-        shopsNearYouState: const AsyncValue.data([]),
-      );
+      state = state.copyWith(shopsNearYouState: const AsyncValue.data([]));
     }
+  }
+
+  /// Updates the user profile with location coordinates.
+  Future<void> _updateProfileWithLocation(UserLocation location) async {
+    final currentProfile = state.profileState.valueOrNull;
+
+    // Check if profile already has the same location to avoid unnecessary API calls
+    if (currentProfile != null &&
+        currentProfile.latitude == location.latitude &&
+        currentProfile.longitude == location.longitude) {
+      return; // Profile already has this location
+    }
+
+    final repository = _ref.read(homeRepositoryProvider);
+    final result = await repository.updateUserProfile(
+      latitude: location.latitude,
+      longitude: location.longitude,
+    );
+
+    result.fold(
+      (failure) {
+        // Log the error but don't fail the entire flow
+        state = state.copyWith(lastError: failure);
+      },
+      (updatedProfile) {
+        // Update the profile state with the new location data
+        state = state.copyWith(profileState: AsyncValue.data(updatedProfile));
+      },
+    );
   }
 
   /// Loads the user profile.
   Future<void> loadUserProfile() async {
-    state = state.copyWith(
-      profileState: const AsyncValue.loading(),
-    );
+    state = state.copyWith(profileState: const AsyncValue.loading());
 
     final repository = _ref.read(homeRepositoryProvider);
     final result = await repository.getUserProfile();
@@ -67,9 +88,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
         );
       },
       (profile) {
-        state = state.copyWith(
-          profileState: AsyncValue.data(profile),
-        );
+        state = state.copyWith(profileState: AsyncValue.data(profile));
       },
     );
   }
@@ -89,9 +108,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
       (_) {}, // Ignore cache errors
       (cached) {
         if (cached != null) {
-          state = state.copyWith(
-            locationState: AsyncValue.data(cached),
-          );
+          state = state.copyWith(locationState: AsyncValue.data(cached));
         }
       },
     );
@@ -112,18 +129,14 @@ class HomeNotifier extends StateNotifier<HomeState> {
         }
       },
       (location) {
-        state = state.copyWith(
-          locationState: AsyncValue.data(location),
-        );
+        state = state.copyWith(locationState: AsyncValue.data(location));
       },
     );
   }
 
   /// Loads service categories.
   Future<void> loadServiceCategories() async {
-    state = state.copyWith(
-      categoriesState: const AsyncValue.loading(),
-    );
+    state = state.copyWith(categoriesState: const AsyncValue.loading());
 
     final repository = _ref.read(homeRepositoryProvider);
     final result = await repository.getServiceCategories();
@@ -136,9 +149,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
         );
       },
       (categories) {
-        state = state.copyWith(
-          categoriesState: AsyncValue.data(categories),
-        );
+        state = state.copyWith(categoriesState: AsyncValue.data(categories));
       },
     );
   }
@@ -147,17 +158,17 @@ class HomeNotifier extends StateNotifier<HomeState> {
   Future<void> loadShopsNearYou() async {
     final location = state.locationState.valueOrNull;
     if (location == null || !location.isValid) {
-      state = state.copyWith(
-        shopsNearYouState: const AsyncValue.data([]),
-      );
+      state = state.copyWith(shopsNearYouState: const AsyncValue.data([]));
       return;
     }
 
-    state = state.copyWith(
-      shopsNearYouState: const AsyncValue.loading(),
-    );
+    state = state.copyWith(shopsNearYouState: const AsyncValue.loading());
 
     final repository = _ref.read(homeRepositoryProvider);
+
+    // First ensure the profile has the location data
+    await _updateProfileWithLocation(location);
+
     final result = await repository.getShopsNearYou(
       latitude: location.latitude,
       longitude: location.longitude,
@@ -171,9 +182,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
         );
       },
       (shops) {
-        state = state.copyWith(
-          shopsNearYouState: AsyncValue.data(shops),
-        );
+        state = state.copyWith(shopsNearYouState: AsyncValue.data(shops));
       },
     );
   }
@@ -185,10 +194,18 @@ class HomeNotifier extends StateNotifier<HomeState> {
     await Future.wait([
       loadUserProfile(),
       loadServiceCategories(),
-      loadShopsNearYou(),
+      _loadLocationAndData(), // This will handle location update and shops loading
     ]);
 
     state = state.copyWith(isRefreshing: false);
+  }
+
+  /// Manually retry loading shops near you (useful for error recovery).
+  Future<void> retryShopsNearYou() async {
+    final location = state.locationState.valueOrNull;
+    if (location != null && location.isValid) {
+      await loadShopsNearYou();
+    }
   }
 
   /// Searches for shops by query.
@@ -283,9 +300,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
         return shop;
       }).toList();
 
-      state = state.copyWith(
-        shopsNearYouState: AsyncValue.data(updatedShops),
-      );
+      state = state.copyWith(shopsNearYouState: AsyncValue.data(updatedShops));
     }
 
     // Update in search results
@@ -322,6 +337,41 @@ class HomeNotifier extends StateNotifier<HomeState> {
     }
   }
 
+  /// Updates the user profile with location data.
+  Future<void> updateUserProfileWithLocation({
+    double? latitude,
+    double? longitude,
+    String? name,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phone,
+  }) async {
+    final repository = _ref.read(homeRepositoryProvider);
+    final result = await repository.updateUserProfile(
+      latitude: latitude,
+      longitude: longitude,
+      name: name,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phone: phone,
+    );
+
+    result.fold(
+      (failure) {
+        state = state.copyWith(lastError: failure);
+      },
+      (updatedProfile) {
+        state = state.copyWith(profileState: AsyncValue.data(updatedProfile));
+        // Reload shops near you with the new location
+        if (latitude != null && longitude != null) {
+          loadShopsNearYou();
+        }
+      },
+    );
+  }
+
   /// Clears the last error.
   void clearError() {
     state = state.copyWith(lastError: null);
@@ -331,34 +381,42 @@ class HomeNotifier extends StateNotifier<HomeState> {
 // ============ Convenience Providers ============
 
 /// Provider for user profile.
-final userProfileProvider = Provider.autoDispose<AsyncValue<UserProfile?>>((ref) {
+final userProfileProvider = Provider.autoDispose<AsyncValue<UserProfile?>>((
+  ref,
+) {
   return ref.watch(homeNotifierProvider.select((state) => state.profileState));
 });
 
 /// Provider for user location.
-final userLocationProvider = Provider.autoDispose<AsyncValue<UserLocation?>>((ref) {
+final userLocationProvider = Provider.autoDispose<AsyncValue<UserLocation?>>((
+  ref,
+) {
   return ref.watch(homeNotifierProvider.select((state) => state.locationState));
 });
 
 /// Provider for service categories.
 final serviceCategoriesProvider =
     Provider.autoDispose<AsyncValue<List<ServiceCategory>>>((ref) {
-  return ref.watch(homeNotifierProvider.select((state) => state.categoriesState));
-});
+      return ref.watch(
+        homeNotifierProvider.select((state) => state.categoriesState),
+      );
+    });
 
 /// Provider for shops near you.
 final shopsNearYouProvider =
     Provider.autoDispose<AsyncValue<List<CarWashShop>>>((ref) {
-  return ref.watch(homeNotifierProvider.select((state) => state.shopsNearYouState));
-});
+      return ref.watch(
+        homeNotifierProvider.select((state) => state.shopsNearYouState),
+      );
+    });
 
 /// Provider for search results.
 final searchResultsProvider =
     Provider.autoDispose<AsyncValue<List<CarWashShop>>>((ref) {
-  return ref.watch(
-    homeNotifierProvider.select((state) => state.searchResultsState),
-  );
-});
+      return ref.watch(
+        homeNotifierProvider.select((state) => state.searchResultsState),
+      );
+    });
 
 /// Provider for search query.
 final searchQueryProvider = Provider.autoDispose<String>((ref) {
@@ -377,5 +435,7 @@ final greetingProvider = Provider.autoDispose<String>((ref) {
 
 /// Provider for location string.
 final locationStringProvider = Provider.autoDispose<String>((ref) {
-  return ref.watch(homeNotifierProvider.select((state) => state.locationString));
+  return ref.watch(
+    homeNotifierProvider.select((state) => state.locationString),
+  );
 });

@@ -26,26 +26,57 @@ class HomeApi {
     return UserProfileModel.fromJson(response.data!);
   }
 
-  /// Fetches service categories with conditional caching support.
-  Future<ConditionalApiResponse<List<ServiceCategoryModel>>> getServiceCategories({
-    DateTime? ifModifiedSince,
+  /// Updates the current user's profile with location data.
+  Future<UserProfileModel> updateUserProfile({
+    String? name,
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phone,
+    double? latitude,
+    double? longitude,
   }) async {
+    final updateData = <String, dynamic>{};
+
+    if (name != null) updateData['name'] = name;
+    if (firstName != null) updateData['first_name'] = firstName;
+    if (lastName != null) updateData['last_name'] = lastName;
+    if (email != null) updateData['email'] = email;
+    if (phone != null) updateData['phone'] = phone;
+    if (latitude != null) updateData['latitude'] = latitude;
+    if (longitude != null) updateData['longitude'] = longitude;
+
+    final response = await _apiClient.patch<Map<String, dynamic>>(
+      Endpoints.profile(),
+      data: updateData,
+    );
+
+    return UserProfileModel.fromJson(response.data!);
+  }
+
+  /// Fetches service categories with conditional caching support.
+  Future<ConditionalApiResponse<List<ServiceCategoryModel>>>
+  getServiceCategories({DateTime? ifModifiedSince}) async {
     return _apiClient.getConditional<List<ServiceCategoryModel>>(
       Endpoints.shopCategories(),
       ifModifiedSince: ifModifiedSince,
       fromJson: (data) {
         if (data is List) {
           return data
-              .map((item) =>
-                  ServiceCategoryModel.fromJson(item as Map<String, dynamic>))
+              .map(
+                (item) =>
+                    ServiceCategoryModel.fromJson(item as Map<String, dynamic>),
+              )
               .toList();
         }
         // Handle paginated response
         final response = data as Map<String, dynamic>;
         if (response.containsKey('results')) {
           return (response['results'] as List)
-              .map((item) =>
-                  ServiceCategoryModel.fromJson(item as Map<String, dynamic>))
+              .map(
+                (item) =>
+                    ServiceCategoryModel.fromJson(item as Map<String, dynamic>),
+              )
               .toList();
         }
         return <ServiceCategoryModel>[];
@@ -69,16 +100,20 @@ class HomeApi {
       fromJson: (data) {
         if (data is List) {
           return data
-              .map((item) =>
-                  CarWashShopModel.fromJson(item as Map<String, dynamic>))
+              .map(
+                (item) =>
+                    CarWashShopModel.fromJson(item as Map<String, dynamic>),
+              )
               .toList();
         }
         // Handle paginated response
         final response = data as Map<String, dynamic>;
         if (response.containsKey('results')) {
           return (response['results'] as List)
-              .map((item) =>
-                  CarWashShopModel.fromJson(item as Map<String, dynamic>))
+              .map(
+                (item) =>
+                    CarWashShopModel.fromJson(item as Map<String, dynamic>),
+              )
               .toList();
         }
         return <CarWashShopModel>[];

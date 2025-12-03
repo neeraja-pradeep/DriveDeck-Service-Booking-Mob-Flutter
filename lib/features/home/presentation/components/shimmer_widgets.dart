@@ -39,8 +39,8 @@ class ShimmerWidgets {
   static Widget categoryCard() {
     return _shimmerWrapper(
       child: Container(
-        width: 80.w,
-        height: 100.h,
+        width: 75.w,
+        height: 75.h,
         decoration: BoxDecoration(
           color: AppColors.shimmerBase,
           borderRadius: BorderRadius.circular(12.r),
@@ -49,17 +49,17 @@ class ShimmerWidgets {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 48.w,
-              height: 48.h,
+              width: 40.w,
+              height: 40.h,
               decoration: BoxDecoration(
                 color: AppColors.shimmerHighlight,
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(10.r),
               ),
             ),
-            SizedBox(height: 8.h),
+            SizedBox(height: 6.h),
             Container(
-              width: 60.w,
-              height: 12.h,
+              width: 50.w,
+              height: 10.h,
               decoration: BoxDecoration(
                 color: AppColors.shimmerHighlight,
                 borderRadius: BorderRadius.circular(4.r),
@@ -181,7 +181,7 @@ class ShimmerWidgets {
       child: Container(
         width: size.w,
         height: size.h,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColors.shimmerBase,
           shape: BoxShape.circle,
         ),
@@ -204,10 +204,7 @@ class ShimmerWidgets {
   }
 
   /// Shimmer for button.
-  static Widget button({
-    double width = 100,
-    double height = 40,
-  }) {
+  static Widget button({double width = 100, double height = 40}) {
     return _shimmerWrapper(
       child: Container(
         width: width.w,

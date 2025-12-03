@@ -36,9 +36,7 @@ class ConditionalApiResponse<T> {
 
   /// Response was not modified (304 Not Modified).
   factory ConditionalApiResponse.notModified() {
-    return const ConditionalApiResponse._(
-      isModified: false,
-    );
+    return const ConditionalApiResponse._(isModified: false);
   }
 }
 
@@ -62,17 +60,37 @@ class ApiClient {
 
     _dio.interceptors.addAll([
       _AuthInterceptor(),
-      LogInterceptor(
-        requestBody: true,
-        responseBody: true,
-        error: true,
-      ),
+      LogInterceptor(requestBody: true, responseBody: true, error: true),
     ]);
   }
 
   /// Sets the user ID header for API requests.
   void setUserId(String userId) {
     _dio.options.headers['dev'] = userId;
+  }
+
+  /// Sets the session tokens for authenticated requests.
+  void setSession({
+    required String sessionId,
+    required String xcsrfToken,
+    required String userId,
+  }) {
+    _dio.options.headers['sessionid'] = sessionId;
+    _dio.options.headers['X-CSRFToken'] = xcsrfToken;
+    _dio.options.headers['dev'] = userId;
+  }
+
+  /// Clears the session tokens.
+  void clearSession() {
+    _dio.options.headers.remove('sessionid');
+    _dio.options.headers.remove('X-CSRFToken');
+    _dio.options.headers['dev'] = '2'; // Default to superadmin
+  }
+
+  /// Check if session is set.
+  bool get hasSession {
+    return _dio.options.headers.containsKey('sessionid') &&
+        _dio.options.headers.containsKey('X-CSRFToken');
   }
 
   /// Performs a GET request.
@@ -120,14 +138,16 @@ class ApiClient {
         return ConditionalApiResponse.notModified();
       }
 
-      final lastModifiedHeader = response.headers.value('Last-Modified') ??
+      final lastModifiedHeader =
+          response.headers.value('Last-Modified') ??
           response.headers.value('last-modified');
       final lastModified = lastModifiedHeader != null
           ? _parseHttpDate(lastModifiedHeader)
           : DateTime.now();
 
-      final data =
-          fromJson != null ? fromJson(response.data) : response.data as T;
+      final data = fromJson != null
+          ? fromJson(response.data)
+          : response.data as T;
 
       return ConditionalApiResponse.modified(
         data: data,
@@ -169,6 +189,25 @@ class ApiClient {
   }) async {
     try {
       return await _dio.put<T>(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+      );
+    } on DioException catch (e) {
+      throw NetworkException.fromDioException(e);
+    }
+  }
+
+  /// Performs a PATCH request.
+  Future<Response<T>> patch<T>(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) async {
+    try {
+      return await _dio.patch<T>(
         path,
         data: data,
         queryParameters: queryParameters,
@@ -268,6 +307,11 @@ class _AuthInterceptor extends Interceptor {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     // Add default user ID header if not set
     options.headers['dev'] ??= '2'; // Default to superadmin
+
+    // Debug: Print headers being sent
+    // ignore: avoid_print
+    print('🔵 API Request Headers: ${options.headers}');
+
     handler.next(options);
   }
 

@@ -20,32 +20,13 @@ class ServiceCategoriesSection extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Section header
+        // Section header (removed "See All")
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Services',
-                style: AppTypography.sectionTitle,
-              ),
-              TextButton(
-                onPressed: () {
-                  // TODO: Navigate to all services
-                },
-                child: Text(
-                  'See All',
-                  style: AppTypography.labelMedium.copyWith(
-                    color: AppColors.primary,
-                  ),
-                ),
-              ),
-            ],
-          ),
+          child: const Text('Services', style: AppTypography.sectionTitle),
         ),
 
-        SizedBox(height: 12.h),
+        SizedBox(height: 16.h),
 
         // Categories list
         categoriesState.when(
@@ -71,12 +52,12 @@ class ServiceCategoriesSection extends ConsumerWidget {
     }
 
     return SizedBox(
-      height: 100.h,
+      height: 110.h,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         itemCount: categories.length,
-        separatorBuilder: (_, __) => SizedBox(width: 12.w),
+        separatorBuilder: (_, _) => SizedBox(width: 12.w),
         itemBuilder: (context, index) {
           return _CategoryCard(category: categories[index]);
         },
@@ -86,12 +67,12 @@ class ServiceCategoriesSection extends ConsumerWidget {
 
   Widget _buildShimmerList() {
     return SizedBox(
-      height: 100.h,
+      height: 110.h,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         itemCount: 5,
-        separatorBuilder: (_, __) => SizedBox(width: 12.w),
+        separatorBuilder: (_, _) => SizedBox(width: 12.w),
         itemBuilder: (context, index) {
           return ShimmerWidgets.categoryCard();
         },
@@ -106,9 +87,7 @@ class ServiceCategoriesSection extends ConsumerWidget {
         children: [
           Text(
             'Failed to load services',
-            style: AppTypography.bodyMedium.copyWith(
-              color: AppColors.error,
-            ),
+            style: AppTypography.bodyMedium.copyWith(color: AppColors.error),
           ),
           SizedBox(height: 8.h),
           TextButton(
@@ -136,66 +115,68 @@ class _CategoryCard extends StatelessWidget {
         // TODO: Navigate to category detail
       },
       child: Container(
-        width: 80.w,
+        width: 75.w,
+        height: 75.h,
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(12.r),
           boxShadow: [
-            BoxShadow(
+            const BoxShadow(
               color: AppColors.shadow,
               blurRadius: 4,
-              offset: const Offset(0, 2),
+              offset: Offset(0, 2),
             ),
           ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Icon/Image
+            // Image/Icon (prioritize image from API)
             Container(
-              width: 48.w,
-              height: 48.h,
+              width: 40.w,
+              height: 40.h,
               decoration: BoxDecoration(
                 color: AppColors.primaryLight.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(10.r),
               ),
-              child: category.image != null
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(12.r),
-                      child: CachedNetworkImage(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10.r),
+                child: category.image != null && category.image!.isNotEmpty
+                    ? CachedNetworkImage(
                         imageUrl: category.image!,
                         fit: BoxFit.cover,
-                        placeholder: (_, __) => Icon(
-                          Icons.local_car_wash,
-                          size: 24.sp,
+                        placeholder: (_, _) => Icon(
+                          _getCategoryIcon(category.name),
+                          size: 20.sp,
                           color: AppColors.primary,
                         ),
-                        errorWidget: (_, __, ___) => Icon(
-                          Icons.local_car_wash,
-                          size: 24.sp,
+                        errorWidget: (_, _, _) => Icon(
+                          _getCategoryIcon(category.name),
+                          size: 20.sp,
                           color: AppColors.primary,
                         ),
+                      )
+                    : Icon(
+                        _getCategoryIcon(category.name),
+                        size: 20.sp,
+                        color: AppColors.primary,
                       ),
-                    )
-                  : Icon(
-                      _getCategoryIcon(category.name),
-                      size: 24.sp,
-                      color: AppColors.primary,
-                    ),
+              ),
             ),
 
-            SizedBox(height: 8.h),
+            SizedBox(height: 6.h),
 
             // Name
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4.w),
+              padding: EdgeInsets.symmetric(horizontal: 2.w),
               child: Text(
                 category.name,
                 style: AppTypography.labelSmall.copyWith(
                   color: AppColors.textPrimary,
+                  fontSize: 10.sp,
                 ),
                 textAlign: TextAlign.center,
-                maxLines: 2,
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -210,7 +191,9 @@ class _CategoryCard extends StatelessWidget {
     if (nameLower.contains('wash')) return Icons.local_car_wash;
     if (nameLower.contains('detail')) return Icons.auto_awesome;
     if (nameLower.contains('polish')) return Icons.auto_fix_high;
-    if (nameLower.contains('interior')) return Icons.airline_seat_recline_normal;
+    if (nameLower.contains('interior')) {
+      return Icons.airline_seat_recline_normal;
+    }
     if (nameLower.contains('tire')) return Icons.trip_origin;
     if (nameLower.contains('wax')) return Icons.water_drop;
     return Icons.local_car_wash;

@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/error/failure.dart';
 import '../../domain/entities/car_wash_shop.dart';
@@ -11,29 +12,38 @@ part 'home_state.freezed.dart';
 /// State for the home screen.
 @freezed
 class HomeState with _$HomeState {
-  const factory HomeState({
+  factory HomeState({
     // User profile
-    @Default(AsyncValue.loading()) AsyncValue<UserProfile?> profileState,
+    required AsyncValue<UserProfile?> profileState,
 
     // User location
-    @Default(AsyncValue.loading()) AsyncValue<UserLocation?> locationState,
+    required AsyncValue<UserLocation?> locationState,
     @Default(false) bool isLocationPermissionRequested,
 
     // Service categories
-    @Default(AsyncValue.loading()) AsyncValue<List<ServiceCategory>> categoriesState,
+    required AsyncValue<List<ServiceCategory>> categoriesState,
 
     // Car wash shops near you
-    @Default(AsyncValue.loading()) AsyncValue<List<CarWashShop>> shopsNearYouState,
+    required AsyncValue<List<CarWashShop>> shopsNearYouState,
 
     // Search
     @Default('') String searchQuery,
-    @Default(AsyncValue.data([])) AsyncValue<List<CarWashShop>> searchResultsState,
+    required AsyncValue<List<CarWashShop>> searchResultsState,
     @Default(false) bool isSearching,
 
     // General
     @Default(false) bool isRefreshing,
     Failure? lastError,
   }) = _HomeState;
+
+  /// Creates initial state with loading values.
+  factory HomeState.initial() => HomeState(
+    profileState: const AsyncValue.loading(),
+    locationState: const AsyncValue.loading(),
+    categoriesState: const AsyncValue.loading(),
+    shopsNearYouState: const AsyncValue.loading(),
+    searchResultsState: const AsyncValue.data([]),
+  );
 
   const HomeState._();
 
@@ -78,19 +88,4 @@ class HomeState with _$HomeState {
     }
     return 'Set location';
   }
-}
-
-/// Async value extension for easier state handling.
-extension AsyncValueX<T> on AsyncValue<T> {
-  /// Returns true if the value is loading.
-  bool get isLoading => this is AsyncLoading<T>;
-
-  /// Returns true if the value has data.
-  bool get hasValue => valueOrNull != null;
-
-  /// Returns true if there's an error.
-  bool get hasError => this is AsyncError<T>;
-
-  /// Returns the error if present.
-  Object? get error => (this as AsyncError<T>?)?.error;
 }

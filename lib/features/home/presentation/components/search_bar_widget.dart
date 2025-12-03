@@ -52,10 +52,10 @@ class _SearchBarWidgetState extends ConsumerState<SearchBarWidget> {
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
-          BoxShadow(
+          const BoxShadow(
             color: AppColors.shadow,
             blurRadius: 8,
-            offset: const Offset(0, 2),
+            offset: Offset(0, 2),
           ),
         ],
       ),
@@ -92,10 +92,7 @@ class _SearchBarWidgetState extends ConsumerState<SearchBarWidget> {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12.r),
-            borderSide: BorderSide(
-              color: AppColors.primary,
-              width: 2,
-            ),
+            borderSide: const BorderSide(color: AppColors.primary, width: 2),
           ),
           filled: true,
           fillColor: AppColors.surface,
@@ -115,7 +112,7 @@ class _SearchBarWidgetState extends ConsumerState<SearchBarWidget> {
         child: SizedBox(
           width: 20.w,
           height: 20.h,
-          child: CircularProgressIndicator(
+          child: const CircularProgressIndicator(
             strokeWidth: 2,
             color: AppColors.primary,
           ),
@@ -126,11 +123,7 @@ class _SearchBarWidgetState extends ConsumerState<SearchBarWidget> {
     if (searchQuery.isNotEmpty) {
       return IconButton(
         onPressed: _clearSearch,
-        icon: Icon(
-          Icons.close,
-          size: 20.sp,
-          color: AppColors.textSecondary,
-        ),
+        icon: Icon(Icons.close, size: 20.sp, color: AppColors.textSecondary),
       );
     }
 

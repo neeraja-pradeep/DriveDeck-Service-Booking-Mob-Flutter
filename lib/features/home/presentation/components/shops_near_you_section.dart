@@ -33,7 +33,7 @@ class ShopsNearYouSection extends ConsumerWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 'Car Wash Near You',
                 style: AppTypography.sectionTitle,
               ),
@@ -73,7 +73,7 @@ class ShopsNearYouSection extends ConsumerWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Text(
+          child: const Text(
             'Search Results',
             style: AppTypography.sectionTitle,
           ),
@@ -99,7 +99,7 @@ class ShopsNearYouSection extends ConsumerWidget {
                         color: AppColors.textSecondary,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'Try a different search term',
                       style: AppTypography.bodySmall,
                     ),
@@ -123,11 +123,7 @@ class ShopsNearYouSection extends ConsumerWidget {
         child: Column(
           children: [
             SizedBox(height: 24.h),
-            Icon(
-              Icons.location_off,
-              size: 48.sp,
-              color: AppColors.grey400,
-            ),
+            Icon(Icons.location_off, size: 48.sp, color: AppColors.grey400),
             SizedBox(height: 12.h),
             Text(
               'No car wash shops nearby',
@@ -135,7 +131,7 @@ class ShopsNearYouSection extends ConsumerWidget {
                 color: AppColors.textSecondary,
               ),
             ),
-            Text(
+            const Text(
               'Try expanding your search area',
               style: AppTypography.bodySmall,
             ),
@@ -149,7 +145,7 @@ class ShopsNearYouSection extends ConsumerWidget {
       physics: const NeverScrollableScrollPhysics(),
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       itemCount: shops.length,
-      separatorBuilder: (_, __) => SizedBox(height: 12.h),
+      separatorBuilder: (_, _) => SizedBox(height: 12.h),
       itemBuilder: (context, index) {
         return ShopCard(
           shop: shops[index],
@@ -157,9 +153,9 @@ class ShopsNearYouSection extends ConsumerWidget {
             // TODO: Navigate to shop detail
           },
           onWishlistTap: () {
-            ref.read(homeNotifierProvider.notifier).toggleWishlist(
-                  shops[index].id,
-                );
+            ref
+                .read(homeNotifierProvider.notifier)
+                .toggleWishlist(shops[index].id);
           },
         );
       },
@@ -172,7 +168,7 @@ class ShopsNearYouSection extends ConsumerWidget {
       physics: const NeverScrollableScrollPhysics(),
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       itemCount: 3,
-      separatorBuilder: (_, __) => SizedBox(height: 12.h),
+      separatorBuilder: (_, _) => SizedBox(height: 12.h),
       itemBuilder: (context, index) {
         return ShimmerWidgets.shopCard();
       },
@@ -180,29 +176,45 @@ class ShopsNearYouSection extends ConsumerWidget {
   }
 
   Widget _buildErrorWidget(Object error, WidgetRef ref) {
+    // Check if this is a location-related error
+    final errorMessage = error.toString().toLowerCase();
+    final isLocationError =
+        errorMessage.contains('latitude') ||
+        errorMessage.contains('longitude') ||
+        errorMessage.contains('location') ||
+        errorMessage.contains('profile is missing');
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
         children: [
           SizedBox(height: 24.h),
           Icon(
-            Icons.error_outline,
+            isLocationError ? Icons.location_off : Icons.error_outline,
             size: 48.sp,
             color: AppColors.error,
           ),
           SizedBox(height: 12.h),
           Text(
-            'Failed to load shops',
-            style: AppTypography.bodyMedium.copyWith(
-              color: AppColors.error,
+            isLocationError ? 'Location required' : 'Failed to load shops',
+            style: AppTypography.bodyMedium.copyWith(color: AppColors.error),
+          ),
+          SizedBox(height: 4.h),
+          Text(
+            isLocationError
+                ? 'Please enable location access to find nearby shops'
+                : 'Something went wrong while loading shops',
+            style: AppTypography.bodySmall.copyWith(
+              color: AppColors.textSecondary,
             ),
+            textAlign: TextAlign.center,
           ),
           SizedBox(height: 8.h),
           TextButton(
             onPressed: () {
-              ref.read(homeNotifierProvider.notifier).loadShopsNearYou();
+              ref.read(homeNotifierProvider.notifier).retryShopsNearYou();
             },
-            child: const Text('Retry'),
+            child: Text(isLocationError ? 'Enable Location' : 'Retry'),
           ),
         ],
       ),

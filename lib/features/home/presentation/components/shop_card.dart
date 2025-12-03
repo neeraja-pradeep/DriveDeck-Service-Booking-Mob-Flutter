@@ -28,10 +28,10 @@ class ShopCard extends StatelessWidget {
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(12.r),
           boxShadow: [
-            BoxShadow(
+            const BoxShadow(
               color: AppColors.shadow,
               blurRadius: 8,
-              offset: const Offset(0, 2),
+              offset: Offset(0, 2),
             ),
           ],
         ),
@@ -101,10 +101,7 @@ class ShopCard extends StatelessWidget {
 
                       // Price range
                       if (shop.priceRange != null)
-                        Text(
-                          shop.priceRange!,
-                          style: AppTypography.price,
-                        ),
+                        Text(shop.priceRange!, style: AppTypography.price),
                     ],
                   ),
                 ],
@@ -128,8 +125,8 @@ class ShopCard extends StatelessWidget {
                   height: 140.h,
                   width: double.infinity,
                   fit: BoxFit.cover,
-                  placeholder: (_, __) => _buildPlaceholderImage(),
-                  errorWidget: (_, __, ___) => _buildPlaceholderImage(),
+                  placeholder: (_, _) => _buildPlaceholderImage(),
+                  errorWidget: (_, _, _) => _buildPlaceholderImage(),
                 )
               : _buildPlaceholderImage(),
         ),
@@ -165,11 +162,7 @@ class ShopCard extends StatelessWidget {
       height: 140.h,
       width: double.infinity,
       color: AppColors.grey200,
-      child: Icon(
-        Icons.local_car_wash,
-        size: 48.sp,
-        color: AppColors.grey400,
-      ),
+      child: Icon(Icons.local_car_wash, size: 48.sp, color: AppColors.grey400),
     );
   }
 
@@ -193,11 +186,7 @@ class ShopCard extends StatelessWidget {
   Widget _buildRating() {
     return Row(
       children: [
-        Icon(
-          Icons.star,
-          size: 16.sp,
-          color: AppColors.starFilled,
-        ),
+        Icon(Icons.star, size: 16.sp, color: AppColors.starFilled),
         SizedBox(width: 4.w),
         Text(
           shop.formattedRating,
@@ -208,10 +197,7 @@ class ShopCard extends StatelessWidget {
         ),
         if (shop.reviewCount != null) ...[
           SizedBox(width: 4.w),
-          Text(
-            '(${shop.reviewCount})',
-            style: AppTypography.rating,
-          ),
+          Text('(${shop.reviewCount})', style: AppTypography.rating),
         ],
       ],
     );

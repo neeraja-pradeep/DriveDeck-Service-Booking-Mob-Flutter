@@ -20,6 +20,15 @@ class HomeHeader extends ConsumerWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Profile image
+        profileState.when(
+          data: (profile) => _buildProfileImage(profile?.profileImage),
+          loading: () => _buildProfileImageShimmer(),
+          error: (_, _) => _buildProfileImage(null),
+        ),
+
+        SizedBox(width: 12.w),
+
         // Greeting and location
         Expanded(
           child: Column(
@@ -32,7 +41,7 @@ class HomeHeader extends ConsumerWidget {
                   style: AppTypography.greeting,
                 ),
                 loading: () => ShimmerWidgets.text(width: 180.w, height: 24.h),
-                error: (_, __) => Text(
+                error: (_, _) => Text(
                   '${AppDateUtils.getGreeting()}, Guest',
                   style: AppTypography.greeting,
                 ),
@@ -46,29 +55,82 @@ class HomeHeader extends ConsumerWidget {
                   location?.shortAddress ?? 'Set your location',
                 ),
                 loading: () => ShimmerWidgets.text(width: 140.w, height: 16.h),
-                error: (_, __) => _buildLocationRow('Tap to set location'),
+                error: (_, _) => _buildLocationRow('Tap to set location'),
               ),
             ],
           ),
         ),
 
-        // Notification icon
-        IconButton(
-          onPressed: () {
-            // TODO: Navigate to notifications
+        // Car wash icon
+        GestureDetector(
+          onTap: () {
+            // TODO: Navigate to car wash services
           },
-          icon: Badge(
-            backgroundColor: AppColors.error,
-            smallSize: 8.r,
-            child: Icon(
-              Icons.notifications_outlined,
-              size: 28.sp,
-              color: AppColors.textPrimary,
+          child: Container(
+            width: 40.w,
+            height: 40.w,
+            padding: EdgeInsets.all(8.w),
+
+            child: Image.asset(
+              'assets/icons/car.png',
+              width: 24.w,
+              height: 24.w,
+              color: Colors.black,
+              errorBuilder: (context, error, stackTrace) {
+                // Fallback to icon if image not found
+                return Icon(
+                  Icons.local_car_wash,
+                  size: 24.sp,
+                  color: Colors.white,
+                );
+              },
             ),
           ),
         ),
       ],
     );
+  }
+
+  Widget _buildProfileImage(String? profileImageUrl) {
+    return GestureDetector(
+      onTap: () {
+        // TODO: Navigate to profile
+      },
+      child: Container(
+        width: 48.w,
+        height: 48.w,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: AppColors.grey200, width: 1.5),
+        ),
+        child: ClipOval(
+          child: profileImageUrl != null && profileImageUrl.isNotEmpty
+              ? Image.network(
+                  profileImageUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return _buildDefaultAvatar();
+                  },
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return _buildDefaultAvatar();
+                  },
+                )
+              : _buildDefaultAvatar(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDefaultAvatar() {
+    return Container(
+      color: AppColors.grey100,
+      child: Icon(Icons.person, size: 24.sp, color: AppColors.grey400),
+    );
+  }
+
+  Widget _buildProfileImageShimmer() {
+    return ShimmerWidgets.avatar(size: 48);
   }
 
   Widget _buildLocationRow(String location) {

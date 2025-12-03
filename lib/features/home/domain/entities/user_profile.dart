@@ -34,4 +34,9 @@ class UserProfile with _$UserProfile {
     }
     return name.split(' ').first;
   }
+
+  /// Returns true if the profile has valid location data.
+  bool get hasLocation {
+    return latitude != null && longitude != null;
+  }
 }

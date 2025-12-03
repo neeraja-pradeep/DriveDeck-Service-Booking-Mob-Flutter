@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../features/home/presentation/screens/home_screen.dart';
+import '../../features/auth/presentation/screen/auth_debug_screen.dart';
+import '../../features/auth/presentation/screen/login_screen.dart';
+import '../../features/auth/presentation/widgets/auth_wrapper.dart';
+import '../../features/dashboard/presentation/screen/dashboard_screen.dart';
 
 /// App routes constants.
 class AppRoutes {
@@ -9,6 +12,7 @@ class AppRoutes {
 
   static const String home = '/home';
   static const String login = '/login';
+  static const String authDebug = '/auth-debug';
   static const String serviceDetail = '/service/:serviceId';
   static const String categoryDetail = '/category/:categoryId';
   static const String search = '/search';
@@ -23,9 +27,20 @@ class AppRouter {
     debugLogDiagnostics: true,
     routes: [
       GoRoute(
+        path: AppRoutes.login,
+        name: 'login',
+        builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.authDebug,
+        name: 'authDebug',
+        builder: (context, state) => const AuthDebugScreen(),
+      ),
+      GoRoute(
         path: AppRoutes.home,
         name: 'home',
-        builder: (context, state) => const HomeScreen(),
+        builder: (context, state) =>
+            const AuthWrapper(child: DashboardScreen()),
       ),
       // Placeholder routes for future implementation
       GoRoute(
@@ -60,11 +75,8 @@ class AppRouter {
         },
       ),
     ],
-    errorBuilder: (context, state) => Scaffold(
-      body: Center(
-        child: Text('Page not found: ${state.uri}'),
-      ),
-    ),
+    errorBuilder: (context, state) =>
+        Scaffold(body: Center(child: Text('Page not found: ${state.uri}'))),
   );
 
   /// Navigate to home screen.
