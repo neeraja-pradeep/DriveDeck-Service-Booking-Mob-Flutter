@@ -35,16 +35,54 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
+  # State Management
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.3.3
+
+  # Networking
+  dio: ^5.4.0
+  connectivity_plus: ^5.0.2
+
+  # Local Storage
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  flutter_secure_storage: ^9.0.0
+
+  # Code Generation
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
+
+  # Functional Programming
+  dartz: ^0.10.1
+
+  # UI/UX
+  flutter_screenutil: ^5.9.0
+  cached_network_image: ^3.3.1
+  shimmer: ^3.0.0
+
+  # Utilities
+  intl: ^0.19.0
+  equatable: ^2.0.5
+  go_router: ^13.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
-#  Custom lint plugin (your own rule package)
+
+  # Code Generation
+  build_runner: ^2.4.8
+  freezed: ^2.4.6
+  json_serializable: ^6.7.1
+  hive_generator: ^2.0.1
+  riverpod_generator: ^2.3.9
+
+  # Custom lint plugin (your own rule package)
   naming_conventions_lint:
     path: ../naming_conventions_lint
 
-   #  Lint & Analysis tools
+  # Lint & Analysis tools
   custom_lint: ^0.6.4
-  very_good_analysis: ^10.0.0 
+  very_good_analysis: ^10.0.0
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
