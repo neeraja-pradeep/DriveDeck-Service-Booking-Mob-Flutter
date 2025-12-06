@@ -1,171 +1,96 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
+import '../error/failure.dart';
 
-/// Network exception types for error handling.
-enum NetworkExceptionType {
-  requestCancelled,
-  unauthorizedRequest,
-  badRequest,
-  notFound,
-  methodNotAllowed,
-  requestTimeout,
-  sendTimeout,
-  receiveTimeout,
-  conflict,
-  internalServerError,
-  notImplemented,
-  serviceUnavailable,
-  noInternetConnection,
-  formatException,
-  unableToProcess,
-  defaultError,
-  unexpectedError,
-  notModified,
-}
+/// Utility class for handling network exceptions.
+///
+/// Converts various exceptions into appropriate [Failure] types.
+class NetworkExceptions {
+  NetworkExceptions._();
 
-/// Network exception class for handling API errors.
-class NetworkException implements Exception {
-  final String message;
-  final NetworkExceptionType type;
-  final int? statusCode;
+  /// Converts any exception to a [Failure].
+  static Failure handleException(Object error) {
+    if (error is DioException) {
+      return getDioException(error);
+    }
 
-  const NetworkException({
-    required this.message,
-    required this.type,
-    this.statusCode,
-  });
+    if (error is SocketException) {
+      return const Failure.network(message: 'No internet connection');
+    }
 
-  /// Creates a NetworkException from a DioException.
-  factory NetworkException.fromDioException(DioException exception) {
-    switch (exception.type) {
-      case DioExceptionType.cancel:
-        return const NetworkException(
-          message: 'Request was cancelled',
-          type: NetworkExceptionType.requestCancelled,
-        );
+    if (error is FormatException) {
+      return const Failure.parsing(message: 'Invalid data format');
+    }
 
+    return Failure.generic(message: error.toString());
+  }
+
+  /// Converts a [DioException] to a [Failure].
+  static Failure getDioException(DioException error) {
+    switch (error.type) {
       case DioExceptionType.connectionTimeout:
-        return const NetworkException(
-          message: 'Connection timeout',
-          type: NetworkExceptionType.requestTimeout,
-        );
-
       case DioExceptionType.sendTimeout:
-        return const NetworkException(
-          message: 'Send timeout',
-          type: NetworkExceptionType.sendTimeout,
-        );
-
       case DioExceptionType.receiveTimeout:
-        return const NetworkException(
-          message: 'Receive timeout',
-          type: NetworkExceptionType.receiveTimeout,
-        );
-
-      case DioExceptionType.badResponse:
-        return _handleResponseError(exception.response);
+        return const Failure.network(message: 'Connection timeout');
 
       case DioExceptionType.badCertificate:
-        return const NetworkException(
-          message: 'Bad certificate',
-          type: NetworkExceptionType.unexpectedError,
-        );
+        return const Failure.network(message: 'Invalid certificate');
+
+      case DioExceptionType.badResponse:
+        return _handleBadResponse(error.response);
+
+      case DioExceptionType.cancel:
+        return const Failure.network(message: 'Request cancelled');
 
       case DioExceptionType.connectionError:
-        return const NetworkException(
-          message: 'No internet connection',
-          type: NetworkExceptionType.noInternetConnection,
-        );
+        return const Failure.network(message: 'No internet connection');
 
       case DioExceptionType.unknown:
-        if (exception.error is SocketException) {
-          return const NetworkException(
-            message: 'No internet connection',
-            type: NetworkExceptionType.noInternetConnection,
-          );
+        if (error.error is SocketException) {
+          return const Failure.network(message: 'No internet connection');
         }
-        return NetworkException(
-          message: exception.message ?? 'Unexpected error occurred',
-          type: NetworkExceptionType.unexpectedError,
-        );
+        return Failure.generic(message: error.message ?? 'Unknown error');
     }
   }
 
-  /// Handles response errors based on status code.
-  static NetworkException _handleResponseError(Response<dynamic>? response) {
-    final statusCode = response?.statusCode;
+  /// Handles bad response from server.
+  static Failure _handleBadResponse(Response<dynamic>? response) {
+    if (response == null) {
+      return const Failure.server(message: 'No response from server');
+    }
+
+    final statusCode = response.statusCode ?? 0;
+    final data = response.data;
+
+    String message = 'Server error';
+    if (data is Map<String, dynamic>) {
+      message =
+          data['message'] as String? ??
+          data['error'] as String? ??
+          data['detail'] as String? ??
+          'Server error';
+    }
 
     switch (statusCode) {
-      case 304:
-        return const NetworkException(
-          message: 'Not modified',
-          type: NetworkExceptionType.notModified,
-          statusCode: 304,
-        );
       case 400:
-        return NetworkException(
-          message: response?.data?['message']?.toString() ?? 'Bad request',
-          type: NetworkExceptionType.badRequest,
-          statusCode: 400,
-        );
+        return Failure.validation(message: message);
       case 401:
-        return const NetworkException(
-          message: 'Unauthorized',
-          type: NetworkExceptionType.unauthorizedRequest,
-          statusCode: 401,
-        );
+        return Failure.unauthorized(message: message);
       case 403:
-        return const NetworkException(
-          message: 'Forbidden',
-          type: NetworkExceptionType.unauthorizedRequest,
-          statusCode: 403,
-        );
+        return Failure.permission(message: message);
       case 404:
-        return const NetworkException(
-          message: 'Not found',
-          type: NetworkExceptionType.notFound,
-          statusCode: 404,
-        );
-      case 405:
-        return const NetworkException(
-          message: 'Method not allowed',
-          type: NetworkExceptionType.methodNotAllowed,
-          statusCode: 405,
-        );
+        return Failure.notFound(message: message);
       case 409:
-        return const NetworkException(
-          message: 'Conflict',
-          type: NetworkExceptionType.conflict,
-          statusCode: 409,
-        );
+        return Failure.server(message: message, statusCode: statusCode);
+      case 422:
+        return Failure.validation(message: message);
       case 500:
-        return const NetworkException(
-          message: 'Internal server error',
-          type: NetworkExceptionType.internalServerError,
-          statusCode: 500,
-        );
-      case 501:
-        return const NetworkException(
-          message: 'Not implemented',
-          type: NetworkExceptionType.notImplemented,
-          statusCode: 501,
-        );
+      case 502:
       case 503:
-        return const NetworkException(
-          message: 'Service unavailable',
-          type: NetworkExceptionType.serviceUnavailable,
-          statusCode: 503,
-        );
+      case 504:
+        return Failure.server(message: message, statusCode: statusCode);
       default:
-        return NetworkException(
-          message: 'Received invalid status code: $statusCode',
-          type: NetworkExceptionType.defaultError,
-          statusCode: statusCode,
-        );
+        return Failure.server(message: message, statusCode: statusCode);
     }
   }
-
-  @override
-  String toString() => 'NetworkException: $message (type: $type)';
 }

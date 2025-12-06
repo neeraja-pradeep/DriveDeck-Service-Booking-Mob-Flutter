@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../app/theme/colors.dart';
 import '../../../../app/theme/typography.dart';
 import '../../domain/entities/car_wash_shop.dart';
+import '../../../../core/utils/logger.dart';
 
 /// Card widget displaying a car wash shop.
 class ShopCard extends StatelessWidget {
@@ -119,14 +120,23 @@ class ShopCard extends StatelessWidget {
         // Shop image
         ClipRRect(
           borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
-          child: shop.image != null
+          child: shop.image != null && shop.image!.isNotEmpty
               ? CachedNetworkImage(
                   imageUrl: shop.image!,
                   height: 140.h,
                   width: double.infinity,
                   fit: BoxFit.cover,
-                  placeholder: (_, _) => _buildPlaceholderImage(),
-                  errorWidget: (_, _, _) => _buildPlaceholderImage(),
+                  placeholder: (context, url) => _buildLoadingImage(),
+                  errorWidget: (context, url, error) {
+                    // Log the error for debugging
+                    AppLogger.e(
+                      'Image loading error for shop ${shop.name}',
+                      error,
+                    );
+                    AppLogger.d('Failed image URL: $url');
+                    return _buildPlaceholderImage();
+                  },
+                  httpHeaders: const {'User-Agent': 'Flutter App'},
                 )
               : _buildPlaceholderImage(),
         ),
@@ -163,6 +173,20 @@ class ShopCard extends StatelessWidget {
       width: double.infinity,
       color: AppColors.grey200,
       child: Icon(Icons.local_car_wash, size: 48.sp, color: AppColors.grey400),
+    );
+  }
+
+  Widget _buildLoadingImage() {
+    return Container(
+      height: 140.h,
+      width: double.infinity,
+      color: AppColors.grey200,
+      child: Center(
+        child: CircularProgressIndicator(
+          color: AppColors.primary,
+          strokeWidth: 2.0,
+        ),
+      ),
     );
   }
 

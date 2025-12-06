@@ -14,18 +14,21 @@ class CarWashShopModel with _$CarWashShopModel {
     @HiveField(0) required int id,
     @HiveField(1) required String name,
     @HiveField(2) String? description,
-    @HiveField(3) String? image,
+    @HiveField(3) @JsonKey(name: 'cover_image') String? image,
     @HiveField(4) String? address,
     @HiveField(5) String? phone,
     @HiveField(6) double? latitude,
     @HiveField(7) double? longitude,
     @HiveField(8) double? rating,
     @HiveField(9) @JsonKey(name: 'review_count') int? reviewCount,
-    @HiveField(10) double? distance,
+    @HiveField(10) @JsonKey(name: 'distance_km') double? distance,
     @HiveField(11) @JsonKey(name: 'opening_time') String? openingTime,
     @HiveField(12) @JsonKey(name: 'closing_time') String? closingTime,
     @HiveField(13) @JsonKey(name: 'is_open') @Default(false) bool isOpen,
-    @HiveField(14) @JsonKey(name: 'is_wishlisted') @Default(false) bool isWishlisted,
+    @HiveField(14)
+    @JsonKey(name: 'is_wishlisted')
+    @Default(false)
+    bool isWishlisted,
     @HiveField(15) List<String>? services,
     @HiveField(16) @JsonKey(name: 'price_range') String? priceRange,
   }) = _CarWashShopModel;
@@ -41,7 +44,7 @@ class CarWashShopModel with _$CarWashShopModel {
       id: id,
       name: name,
       description: description,
-      image: image,
+      image: _fixImageUrl(image),
       address: address,
       phone: phone,
       latitude: latitude,
@@ -56,6 +59,19 @@ class CarWashShopModel with _$CarWashShopModel {
       services: services,
       priceRange: priceRange,
     );
+  }
+
+  /// Fixes image URL by adding protocol if missing.
+  String? _fixImageUrl(String? imageUrl) {
+    if (imageUrl == null || imageUrl.isEmpty) return imageUrl;
+
+    // If URL already has protocol, return as is
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+      return imageUrl;
+    }
+
+    // Add https protocol for CDN URLs
+    return 'https://$imageUrl';
   }
 
   /// Creates a model from domain entity.

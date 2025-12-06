@@ -1,5 +1,6 @@
-/// API endpoints for the application.
-/// All endpoint paths are defined here for centralized management.
+/// Contains all API endpoint definitions.
+///
+/// Centralizes endpoint paths for easy maintenance and consistency.
 class Endpoints {
   Endpoints._();
 
@@ -9,50 +10,89 @@ class Endpoints {
   /// API version prefix.
   static const String apiPrefix = '/api';
 
-  // ============ Auth Endpoints ============
+  // ============================================================================
+  // Auth Endpoints
+  // ============================================================================
 
   /// Send OTP endpoint.
-  static String sendOtp() => '$apiPrefix/auth/send-otp/';
+  static String sendOtp() => '$apiPrefix/accounts/send-otp/';
 
   /// Verify OTP endpoint.
-  static String verifyOtp() => '$apiPrefix/auth/verify-otp/';
+  static String verifyOtp() => '$apiPrefix/accounts/verify-otp/';
+
+  /// Register endpoint.
+  static String register() => '$apiPrefix/accounts/register/';
+
+  /// Login endpoint.
+  static String login() => '$apiPrefix/accounts/login/';
+
+  /// Logout endpoint.
+  static String logout() => '$apiPrefix/accounts/logout/';
+
+  /// Refresh token endpoint.
+  static String refreshToken() => '$apiPrefix/accounts/refresh/';
 
   /// User profile endpoint.
   static String profile() => '$apiPrefix/accounts/profile/';
 
-  // ============ Home/Shop Endpoints ============
+  // ============================================================================
+  // Shop Endpoints (Additional)
+  // ============================================================================
 
-  /// Service categories endpoint.
+  /// Get shop categories.
   static String shopCategories() => '$apiPrefix/shop/shop-categories/';
 
-  /// Shops list endpoint with optional search.
-  static String shops({String? search, int page = 1, int pageSize = 10}) {
-    final queryParams = <String, String>{
-      'page': page.toString(),
-      'page_size': pageSize.toString(),
-    };
-    if (search != null && search.isNotEmpty) {
-      queryParams['search'] = search;
-    }
-    final queryString = Uri(queryParameters: queryParams).query;
-    return '$apiPrefix/shop/shops/?$queryString';
-  }
-
-  /// Shops near user endpoint.
+  /// Get shops near you.
   static String shopsNearYou() => '$apiPrefix/shop/shops/near-you/';
 
-  /// Toggle wishlist endpoint.
-  static String toggleWishlist(String shopId) =>
-      '$apiPrefix/shop/shops/$shopId/wishlist/';
+  // ============================================================================
+  // Bookings Endpoints
+  // ============================================================================
 
-  // ============ Future Endpoints (Placeholders) ============
+  /// Get all bookings list.
+  ///
+  /// Query params:
+  /// - status: 'booked' for upcoming (pending/confirmed)
+  /// - status: 'history' for past (cancelled/completed)
+  static String bookings() => '$apiPrefix/booking/bookings/';
 
-  /// Accessories services endpoint.
-  static String accessoriesServices() => '$apiPrefix/services/accessories/';
+  /// Get booking details by ID.
+  static String bookingDetails(String bookingId) =>
+      '$apiPrefix/booking/bookings/$bookingId/';
 
-  /// Marketplace services endpoint.
-  static String marketplaceServices() => '$apiPrefix/services/marketplace/';
+  /// Cancel a booking.
+  static String cancelBooking(String bookingId) =>
+      '$apiPrefix/booking/bookings/$bookingId/cancel/';
 
-  /// Promo cards endpoint.
-  static String promoCards() => '$apiPrefix/home/promo-cards/';
+  /// Reschedule a booking.
+  static String rescheduleBooking(String bookingId) =>
+      '$apiPrefix/booking/bookings/$bookingId/reschedule/';
+
+  // ============================================================================
+  // Shop Endpoints
+  // ============================================================================
+
+  /// Get all shops.
+  static String shops() => '$apiPrefix/shops/';
+
+  /// Get shop details.
+  static String shopDetails(String shopId) => '$apiPrefix/shops/$shopId/';
+
+  /// Get shop services.
+  static String shopServices(String shopId) =>
+      '$apiPrefix/shops/$shopId/services/';
+
+  /// Get shop time slots.
+  static String shopTimeSlots(String shopId) =>
+      '$apiPrefix/shops/$shopId/slots/';
+
+  // ============================================================================
+  // User Endpoints
+  // ============================================================================
+
+  /// Get user profile.
+  static String userProfile() => '$apiPrefix/accounts/profile/';
+
+  /// Update user profile.
+  static String updateProfile() => '$apiPrefix/accounts/profile/';
 }

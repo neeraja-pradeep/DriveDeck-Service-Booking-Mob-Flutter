@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../app/router/routes.dart';
 import '../../../../app/theme/colors.dart';
 import '../../../../app/theme/typography.dart';
 import '../../application/providers/home_provider.dart';
@@ -150,7 +151,7 @@ class ShopsNearYouSection extends ConsumerWidget {
         return ShopCard(
           shop: shops[index],
           onTap: () {
-            // TODO: Navigate to shop detail
+            ShopDetailRoute(shopId: shops[index].id.toString()).go(context);
           },
           onWishlistTap: () {
             ref

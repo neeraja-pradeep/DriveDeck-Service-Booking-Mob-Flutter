@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/error/failure.dart';
+import '../../../auth/application/providers/auth_providers.dart';
+import '../../../auth/application/states/auth_state.dart';
 import '../../domain/entities/car_wash_shop.dart';
 import '../../domain/entities/service_category.dart';
 import '../../domain/entities/user_location.dart';
@@ -8,37 +11,73 @@ import '../../infrastructure/repositories/home_repository_impl.dart';
 import '../states/home_state.dart';
 
 /// Provider for the HomeNotifier.
+/// This provider watches the auth state and only initializes when user is authenticated.
 final homeNotifierProvider =
     StateNotifierProvider.autoDispose<HomeNotifier, HomeState>((ref) {
-      return HomeNotifier(ref);
+      // Watch auth state to ensure user is authenticated
+      final authState = ref.watch(authStateProvider);
+
+      return HomeNotifier(ref, authState);
     });
 
 /// State notifier for managing home screen state.
 class HomeNotifier extends StateNotifier<HomeState> {
   final Ref _ref;
+  final AuthState _authState;
 
-  HomeNotifier(this._ref) : super(HomeState.initial()) {
-    _init();
+  HomeNotifier(this._ref, this._authState) : super(HomeState.initial()) {
+    // Only initialize if user is authenticated
+    _authState.whenOrNull(
+      authenticated: (session) {
+        _init();
+      },
+    );
+  }
+
+  /// Checks if user is authenticated before making API calls.
+  bool get _isAuthenticated {
+    return _authState.whenOrNull(authenticated: (session) => true) ?? false;
   }
 
   /// Initializes the home screen by loading all required data.
+  /// Only loads data if user is authenticated.
   Future<void> _init() async {
+    if (!mounted) return;
+
+    if (!_isAuthenticated) {
+      // Set state to indicate authentication is required
+      if (mounted) {
+        state = state.copyWith(
+          lastError: const Failure.unauthorized(
+            message: 'Please log in to access home features',
+          ),
+        );
+      }
+      return;
+    }
+
     await Future.wait([loadUserProfile(), _loadLocationAndData()]);
   }
 
   /// Loads location and then location-dependent data.
   Future<void> _loadLocationAndData() async {
+    if (!mounted) return;
+
     await loadLocation();
+
+    if (!mounted) return;
 
     // Load data that depends on location
     final location = state.locationState.valueOrNull;
     if (location != null && location.isValid) {
       // Update user profile with location first
       await _updateProfileWithLocation(location);
+      if (!mounted) return;
       await Future.wait([loadServiceCategories(), loadShopsNearYou()]);
     } else {
       // Still try to load categories even without location
       await loadServiceCategories();
+      if (!mounted) return;
       // Set shops to empty with a note about location
       state = state.copyWith(shopsNearYouState: const AsyncValue.data([]));
     }
@@ -64,31 +103,55 @@ class HomeNotifier extends StateNotifier<HomeState> {
     result.fold(
       (failure) {
         // Log the error but don't fail the entire flow
-        state = state.copyWith(lastError: failure);
+        if (mounted) {
+          state = state.copyWith(lastError: failure);
+        }
       },
       (updatedProfile) {
         // Update the profile state with the new location data
-        state = state.copyWith(profileState: AsyncValue.data(updatedProfile));
+        if (mounted) {
+          state = state.copyWith(profileState: AsyncValue.data(updatedProfile));
+        }
       },
     );
   }
 
   /// Loads the user profile.
   Future<void> loadUserProfile() async {
-    state = state.copyWith(profileState: const AsyncValue.loading());
+    if (!mounted) return;
+
+    if (!_isAuthenticated) {
+      if (mounted) {
+        state = state.copyWith(
+          profileState: AsyncValue.error(
+            const Failure.unauthorized(message: 'Authentication required'),
+            StackTrace.current,
+          ),
+        );
+      }
+      return;
+    }
+
+    if (mounted) {
+      state = state.copyWith(profileState: const AsyncValue.loading());
+    }
 
     final repository = _ref.read(homeRepositoryProvider);
     final result = await repository.getUserProfile();
 
     result.fold(
       (failure) {
-        state = state.copyWith(
-          profileState: AsyncValue.error(failure, StackTrace.current),
-          lastError: failure,
-        );
+        if (mounted) {
+          state = state.copyWith(
+            profileState: AsyncValue.error(failure, StackTrace.current),
+            lastError: failure,
+          );
+        }
       },
       (profile) {
-        state = state.copyWith(profileState: AsyncValue.data(profile));
+        if (mounted) {
+          state = state.copyWith(profileState: AsyncValue.data(profile));
+        }
       },
     );
   }
@@ -119,55 +182,99 @@ class HomeNotifier extends StateNotifier<HomeState> {
     result.fold(
       (failure) {
         // If we already have cached location, keep it
-        if (state.locationState.hasValue) {
-          state = state.copyWith(lastError: failure);
-        } else {
-          state = state.copyWith(
-            locationState: AsyncValue.error(failure, StackTrace.current),
-            lastError: failure,
-          );
+        if (mounted) {
+          if (state.locationState.hasValue) {
+            state = state.copyWith(lastError: failure);
+          } else {
+            state = state.copyWith(
+              locationState: AsyncValue.error(failure, StackTrace.current),
+              lastError: failure,
+            );
+          }
         }
       },
       (location) {
-        state = state.copyWith(locationState: AsyncValue.data(location));
+        if (mounted) {
+          state = state.copyWith(locationState: AsyncValue.data(location));
+        }
       },
     );
   }
 
   /// Loads service categories.
   Future<void> loadServiceCategories() async {
-    state = state.copyWith(categoriesState: const AsyncValue.loading());
+    if (!mounted) return;
+
+    if (!_isAuthenticated) {
+      if (mounted) {
+        state = state.copyWith(
+          categoriesState: AsyncValue.error(
+            const Failure.unauthorized(message: 'Authentication required'),
+            StackTrace.current,
+          ),
+        );
+      }
+      return;
+    }
+
+    if (mounted) {
+      state = state.copyWith(categoriesState: const AsyncValue.loading());
+    }
 
     final repository = _ref.read(homeRepositoryProvider);
     final result = await repository.getServiceCategories();
 
     result.fold(
       (failure) {
-        state = state.copyWith(
-          categoriesState: AsyncValue.error(failure, StackTrace.current),
-          lastError: failure,
-        );
+        if (mounted) {
+          state = state.copyWith(
+            categoriesState: AsyncValue.error(failure, StackTrace.current),
+            lastError: failure,
+          );
+        }
       },
       (categories) {
-        state = state.copyWith(categoriesState: AsyncValue.data(categories));
+        if (mounted) {
+          state = state.copyWith(categoriesState: AsyncValue.data(categories));
+        }
       },
     );
   }
 
   /// Loads car wash shops near the user.
   Future<void> loadShopsNearYou() async {
-    final location = state.locationState.valueOrNull;
-    if (location == null || !location.isValid) {
-      state = state.copyWith(shopsNearYouState: const AsyncValue.data([]));
+    if (!mounted) return;
+
+    if (!_isAuthenticated) {
+      if (mounted) {
+        state = state.copyWith(
+          shopsNearYouState: AsyncValue.error(
+            const Failure.unauthorized(message: 'Authentication required'),
+            StackTrace.current,
+          ),
+        );
+      }
       return;
     }
 
-    state = state.copyWith(shopsNearYouState: const AsyncValue.loading());
+    final location = state.locationState.valueOrNull;
+    if (location == null || !location.isValid) {
+      if (mounted) {
+        state = state.copyWith(shopsNearYouState: const AsyncValue.data([]));
+      }
+      return;
+    }
+
+    if (mounted) {
+      state = state.copyWith(shopsNearYouState: const AsyncValue.loading());
+    }
 
     final repository = _ref.read(homeRepositoryProvider);
 
     // First ensure the profile has the location data
     await _updateProfileWithLocation(location);
+
+    if (!mounted) return;
 
     final result = await repository.getShopsNearYou(
       latitude: location.latitude,
@@ -176,20 +283,39 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
     result.fold(
       (failure) {
-        state = state.copyWith(
-          shopsNearYouState: AsyncValue.error(failure, StackTrace.current),
-          lastError: failure,
-        );
+        if (mounted) {
+          state = state.copyWith(
+            shopsNearYouState: AsyncValue.error(failure, StackTrace.current),
+            lastError: failure,
+          );
+        }
       },
       (shops) {
-        state = state.copyWith(shopsNearYouState: AsyncValue.data(shops));
+        if (mounted) {
+          state = state.copyWith(shopsNearYouState: AsyncValue.data(shops));
+        }
       },
     );
   }
 
   /// Refreshes all home screen data.
   Future<void> refresh() async {
-    state = state.copyWith(isRefreshing: true);
+    if (!mounted) return;
+
+    if (!_isAuthenticated) {
+      if (mounted) {
+        state = state.copyWith(
+          lastError: const Failure.unauthorized(
+            message: 'Please log in to refresh data',
+          ),
+        );
+      }
+      return;
+    }
+
+    if (mounted) {
+      state = state.copyWith(isRefreshing: true);
+    }
 
     await Future.wait([
       loadUserProfile(),
@@ -197,7 +323,9 @@ class HomeNotifier extends StateNotifier<HomeState> {
       _loadLocationAndData(), // This will handle location update and shops loading
     ]);
 
-    state = state.copyWith(isRefreshing: false);
+    if (mounted) {
+      state = state.copyWith(isRefreshing: false);
+    }
   }
 
   /// Manually retry loading shops near you (useful for error recovery).
@@ -210,58 +338,74 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   /// Searches for shops by query.
   Future<void> searchShops(String query) async {
+    if (!mounted) return;
+
     if (query.isEmpty) {
-      state = state.copyWith(
-        searchQuery: '',
-        searchResultsState: const AsyncValue.data([]),
-        isSearching: false,
-      );
+      if (mounted) {
+        state = state.copyWith(
+          searchQuery: '',
+          searchResultsState: const AsyncValue.data([]),
+          isSearching: false,
+        );
+      }
       return;
     }
 
-    state = state.copyWith(
-      searchQuery: query,
-      isSearching: true,
-      searchResultsState: const AsyncValue.loading(),
-    );
+    if (mounted) {
+      state = state.copyWith(
+        searchQuery: query,
+        isSearching: true,
+        searchResultsState: const AsyncValue.loading(),
+      );
+    }
 
     final repository = _ref.read(homeRepositoryProvider);
     final result = await repository.searchShops(query: query);
 
     result.fold(
       (failure) {
-        state = state.copyWith(
-          searchResultsState: AsyncValue.error(failure, StackTrace.current),
-          isSearching: false,
-          lastError: failure,
-        );
+        if (mounted) {
+          state = state.copyWith(
+            searchResultsState: AsyncValue.error(failure, StackTrace.current),
+            isSearching: false,
+            lastError: failure,
+          );
+        }
       },
       (shops) {
-        state = state.copyWith(
-          searchResultsState: AsyncValue.data(shops),
-          isSearching: false,
-        );
+        if (mounted) {
+          state = state.copyWith(
+            searchResultsState: AsyncValue.data(shops),
+            isSearching: false,
+          );
+        }
       },
     );
   }
 
   /// Clears search results.
   void clearSearch() {
-    state = state.copyWith(
-      searchQuery: '',
-      searchResultsState: const AsyncValue.data([]),
-      isSearching: false,
-    );
+    if (mounted) {
+      state = state.copyWith(
+        searchQuery: '',
+        searchResultsState: const AsyncValue.data([]),
+        isSearching: false,
+      );
+    }
   }
 
   /// Toggles wishlist for a shop.
   Future<void> toggleWishlist(int shopId) async {
+    if (!mounted) return;
+
     final repository = _ref.read(homeRepositoryProvider);
     final result = await repository.toggleWishlist(shopId: shopId);
 
     result.fold(
       (failure) {
-        state = state.copyWith(lastError: failure);
+        if (mounted) {
+          state = state.copyWith(lastError: failure);
+        }
       },
       (isWishlisted) {
         // Update the shop in the list
@@ -272,6 +416,8 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   /// Updates the wishlist status of a shop in all lists.
   void _updateShopWishlistStatus(int shopId, bool isWishlisted) {
+    if (!mounted) return;
+
     // Update in shops near you
     final shops = state.shopsNearYouState.valueOrNull;
     if (shops != null) {
@@ -347,6 +493,8 @@ class HomeNotifier extends StateNotifier<HomeState> {
     String? email,
     String? phone,
   }) async {
+    if (!mounted) return;
+
     final repository = _ref.read(homeRepositoryProvider);
     final result = await repository.updateUserProfile(
       latitude: latitude,
@@ -360,13 +508,17 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
     result.fold(
       (failure) {
-        state = state.copyWith(lastError: failure);
+        if (mounted) {
+          state = state.copyWith(lastError: failure);
+        }
       },
       (updatedProfile) {
-        state = state.copyWith(profileState: AsyncValue.data(updatedProfile));
-        // Reload shops near you with the new location
-        if (latitude != null && longitude != null) {
-          loadShopsNearYou();
+        if (mounted) {
+          state = state.copyWith(profileState: AsyncValue.data(updatedProfile));
+          // Reload shops near you with the new location
+          if (latitude != null && longitude != null) {
+            loadShopsNearYou();
+          }
         }
       },
     );
@@ -374,7 +526,9 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   /// Clears the last error.
   void clearError() {
-    state = state.copyWith(lastError: null);
+    if (mounted) {
+      state = state.copyWith(lastError: null);
+    }
   }
 }
 
@@ -438,4 +592,16 @@ final locationStringProvider = Provider.autoDispose<String>((ref) {
   return ref.watch(
     homeNotifierProvider.select((state) => state.locationString),
   );
+});
+
+/// Provider for current session information.
+final currentSessionProvider = Provider.autoDispose((ref) {
+  final authState = ref.watch(authStateProvider);
+  return authState.whenOrNull(authenticated: (session) => session);
+});
+
+/// Provider for current user ID.
+final currentUserIdProvider = Provider.autoDispose<String?>((ref) {
+  final session = ref.watch(currentSessionProvider);
+  return session?.userId;
 });

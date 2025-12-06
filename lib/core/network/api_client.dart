@@ -1,164 +1,50 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'endpoints.dart';
-import 'network_exceptions.dart';
 
-/// Provider for the API client.
-final apiClientProvider = Provider<ApiClient>((ref) {
-  return ApiClient();
-});
-
-/// Conditional API response wrapper.
-/// Used for if-modified-since header pattern.
-class ConditionalApiResponse<T> {
-  final bool isModified;
-  final T? data;
-  final DateTime? lastModified;
-
-  const ConditionalApiResponse._({
-    required this.isModified,
-    this.data,
-    this.lastModified,
-  });
-
-  /// Response was modified (200 OK).
-  factory ConditionalApiResponse.modified({
-    required T data,
-    required DateTime lastModified,
-  }) {
-    return ConditionalApiResponse._(
-      isModified: true,
-      data: data,
-      lastModified: lastModified,
-    );
-  }
-
-  /// Response was not modified (304 Not Modified).
-  factory ConditionalApiResponse.notModified() {
-    return const ConditionalApiResponse._(isModified: false);
-  }
-}
-
-/// API client for making HTTP requests.
+/// HTTP client wrapper for API communication.
+///
+/// Configures Dio with base URL, headers, and interceptors.
 class ApiClient {
-  late final Dio _dio;
-
-  ApiClient() {
-    _dio = Dio(
-      BaseOptions(
-        baseUrl: Endpoints.baseUrl,
-        connectTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
-        sendTimeout: const Duration(seconds: 30),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-      ),
+  /// Creates a new [ApiClient] instance.
+  ApiClient({
+    Dio? dio,
+    String? baseUrl,
+    Future<Map<String, String>?> Function()? getSessionData,
+  }) : _dio = dio ?? Dio() {
+    _dio.options = BaseOptions(
+      baseUrl: baseUrl ?? Endpoints.baseUrl,
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
+      sendTimeout: const Duration(seconds: 30),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
     );
 
     _dio.interceptors.addAll([
-      _AuthInterceptor(),
+      _AuthInterceptor(getSessionData: getSessionData),
       LogInterceptor(requestBody: true, responseBody: true, error: true),
     ]);
   }
 
-  /// Sets the user ID header for API requests.
-  void setUserId(String userId) {
-    _dio.options.headers['dev'] = userId;
-  }
+  final Dio _dio;
 
-  /// Sets the session tokens for authenticated requests.
-  void setSession({
-    required String sessionId,
-    required String xcsrfToken,
-    required String userId,
-  }) {
-    _dio.options.headers['sessionid'] = sessionId;
-    _dio.options.headers['X-CSRFToken'] = xcsrfToken;
-    _dio.options.headers['dev'] = userId;
-  }
-
-  /// Clears the session tokens.
-  void clearSession() {
-    _dio.options.headers.remove('sessionid');
-    _dio.options.headers.remove('X-CSRFToken');
-    _dio.options.headers['dev'] = '2'; // Default to superadmin
-  }
-
-  /// Check if session is set.
-  bool get hasSession {
-    return _dio.options.headers.containsKey('sessionid') &&
-        _dio.options.headers.containsKey('X-CSRFToken');
-  }
+  /// The underlying Dio instance.
+  Dio get dio => _dio;
 
   /// Performs a GET request.
   Future<Response<T>> get<T>(
     String path, {
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
     Options? options,
-  }) async {
-    try {
-      return await _dio.get<T>(
-        path,
-        queryParameters: queryParameters,
-        options: options,
-      );
-    } on DioException catch (e) {
-      throw NetworkException.fromDioException(e);
-    }
-  }
-
-  /// Performs a conditional GET request with if-modified-since header.
-  /// Returns ConditionalApiResponse indicating if data was modified.
-  Future<ConditionalApiResponse<T>> getConditional<T>(
-    String path, {
-    DateTime? ifModifiedSince,
-    Map<String, dynamic>? queryParameters,
-    T Function(dynamic)? fromJson,
-  }) async {
-    try {
-      final headers = <String, dynamic>{};
-      if (ifModifiedSince != null) {
-        headers['If-Modified-Since'] = _formatHttpDate(ifModifiedSince);
-      }
-
-      final response = await _dio.get<dynamic>(
-        path,
-        queryParameters: queryParameters,
-        options: Options(
-          headers: headers,
-          validateStatus: (status) =>
-              status != null && (status < 300 || status == 304),
-        ),
-      );
-
-      if (response.statusCode == 304) {
-        return ConditionalApiResponse.notModified();
-      }
-
-      final lastModifiedHeader =
-          response.headers.value('Last-Modified') ??
-          response.headers.value('last-modified');
-      final lastModified = lastModifiedHeader != null
-          ? _parseHttpDate(lastModifiedHeader)
-          : DateTime.now();
-
-      final data = fromJson != null
-          ? fromJson(response.data)
-          : response.data as T;
-
-      return ConditionalApiResponse.modified(
-        data: data,
-        lastModified: lastModified,
-      );
-    } on DioException catch (e) {
-      if (e.response?.statusCode == 304) {
-        return ConditionalApiResponse.notModified();
-      }
-      throw NetworkException.fromDioException(e);
-    }
+  }) {
+    return _dio.get<T>(
+      path,
+      queryParameters: queryParameters,
+      options: _mergeOptions(options, headers),
+    );
   }
 
   /// Performs a POST request.
@@ -166,18 +52,15 @@ class ApiClient {
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
     Options? options,
-  }) async {
-    try {
-      return await _dio.post<T>(
-        path,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-      );
-    } on DioException catch (e) {
-      throw NetworkException.fromDioException(e);
-    }
+  }) {
+    return _dio.post<T>(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: _mergeOptions(options, headers),
+    );
   }
 
   /// Performs a PUT request.
@@ -185,18 +68,15 @@ class ApiClient {
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
     Options? options,
-  }) async {
-    try {
-      return await _dio.put<T>(
-        path,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-      );
-    } on DioException catch (e) {
-      throw NetworkException.fromDioException(e);
-    }
+  }) {
+    return _dio.put<T>(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: _mergeOptions(options, headers),
+    );
   }
 
   /// Performs a PATCH request.
@@ -204,18 +84,15 @@ class ApiClient {
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
     Options? options,
-  }) async {
-    try {
-      return await _dio.patch<T>(
-        path,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-      );
-    } on DioException catch (e) {
-      throw NetworkException.fromDioException(e);
-    }
+  }) {
+    return _dio.patch<T>(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: _mergeOptions(options, headers),
+    );
   }
 
   /// Performs a DELETE request.
@@ -223,104 +100,78 @@ class ApiClient {
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
     Options? options,
-  }) async {
-    try {
-      return await _dio.delete<T>(
-        path,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-      );
-    } on DioException catch (e) {
-      throw NetworkException.fromDioException(e);
-    }
+  }) {
+    return _dio.delete<T>(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: _mergeOptions(options, headers),
+    );
   }
 
-  /// Formats DateTime to HTTP date format (RFC 7231).
-  String _formatHttpDate(DateTime dateTime) {
-    final weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    final months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
+  Options? _mergeOptions(Options? options, Map<String, dynamic>? headers) {
+    if (headers == null && options == null) return null;
 
-    final utc = dateTime.toUtc();
-    final weekday = weekdays[utc.weekday - 1];
-    final day = utc.day.toString().padLeft(2, '0');
-    final month = months[utc.month - 1];
-    final year = utc.year;
-    final hour = utc.hour.toString().padLeft(2, '0');
-    final minute = utc.minute.toString().padLeft(2, '0');
-    final second = utc.second.toString().padLeft(2, '0');
-
-    return '$weekday, $day $month $year $hour:$minute:$second GMT';
-  }
-
-  /// Parses HTTP date format to DateTime.
-  DateTime _parseHttpDate(String httpDate) {
-    try {
-      final months = {
-        'Jan': 1,
-        'Feb': 2,
-        'Mar': 3,
-        'Apr': 4,
-        'May': 5,
-        'Jun': 6,
-        'Jul': 7,
-        'Aug': 8,
-        'Sep': 9,
-        'Oct': 10,
-        'Nov': 11,
-        'Dec': 12,
-      };
-
-      final parts = httpDate.split(' ');
-      final day = int.parse(parts[1]);
-      final month = months[parts[2]] ?? 1;
-      final year = int.parse(parts[3]);
-      final timeParts = parts[4].split(':');
-      final hour = int.parse(timeParts[0]);
-      final minute = int.parse(timeParts[1]);
-      final second = int.parse(timeParts[2]);
-
-      return DateTime.utc(year, month, day, hour, minute, second);
-    } catch (_) {
-      return DateTime.now();
-    }
+    return (options ?? Options()).copyWith(
+      headers: {...?options?.headers, ...?headers},
+    );
   }
 }
 
-/// Auth interceptor for adding authentication headers.
+/// Interceptor for adding authentication headers.
 class _AuthInterceptor extends Interceptor {
-  @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    // Add default user ID header if not set
-    options.headers['dev'] ??= '2'; // Default to superadmin
+  _AuthInterceptor({this.getSessionData});
 
-    // Debug: Print headers being sent
-    // ignore: avoid_print
-    print('🔵 API Request Headers: ${options.headers}');
+  /// Function to get current session data.
+  final Future<Map<String, String>?> Function()? getSessionData;
+
+  @override
+  void onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
+    // Get session data if available
+    final sessionData = await getSessionData?.call();
+    if (sessionData != null) {
+      // Add session headers
+      options.headers.addAll(sessionData);
+    } else {
+      // Fallback to development headers
+      options.headers['dev'] = '18'; // Development user ID
+    }
 
     handler.next(options);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    // Handle 401 errors - could trigger logout or token refresh
+    // Handle 401 errors - could trigger token refresh
     if (err.response?.statusCode == 401) {
       // Token refresh logic would go here
+      // For now, just pass the error through
     }
+
     handler.next(err);
   }
+}
+
+/// Wrapper for conditional response (304 Not Modified support).
+class ConditionalResponse<T> {
+  /// Creates a new [ConditionalResponse].
+  const ConditionalResponse({
+    required this.data,
+    required this.isModified,
+    this.lastModified,
+  });
+
+  /// The response data (null if 304).
+  final T? data;
+
+  /// True if data was modified (200), false if not (304).
+  final bool isModified;
+
+  /// The Last-Modified header value from response.
+  final String? lastModified;
 }

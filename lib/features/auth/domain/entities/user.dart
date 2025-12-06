@@ -1,33 +1,32 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-/// User entity representing the authenticated user.
-class User extends Equatable {
-  final String id;
-  final String phoneNumber;
-  final String name;
-  final DateTime createdAt;
+part 'user.freezed.dart';
 
-  const User({
-    required this.id,
-    required this.phoneNumber,
-    required this.name,
-    required this.createdAt,
-  });
-
-  @override
-  List<Object?> get props => [id, phoneNumber, name, createdAt];
-
-  User copyWith({
-    String? id,
-    String? phoneNumber,
+/// User entity representing an authenticated user in the system.
+@freezed
+class User with _$User {
+  const factory User({
+    required String id,
+    required String phoneNumber,
     String? name,
-    DateTime? createdAt,
-  }) {
-    return User(
-      id: id ?? this.id,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-      name: name ?? this.name,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
+    String? email,
+    String? username,
+    String? firstName,
+    String? lastName,
+    String? profilePicture,
+    required DateTime createdAt,
+  }) = _User;
+
+  /// Creates an empty User instance for initial/unauthenticated state.
+  factory User.empty() => User(
+        id: '',
+        phoneNumber: '',
+        name: null,
+        email: null,
+        username: null,
+        firstName: null,
+        lastName: null,
+        profilePicture: null,
+        createdAt: DateTime.now(),
+      );
 }

@@ -1,46 +1,39 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-/// Session entity representing the user's authentication session.
-class Session extends Equatable {
-  final String sessionId;
-  final String xcsrfToken;
-  final String userId;
-  final DateTime createdAt;
-  final DateTime expiresAt;
+part 'session.freezed.dart';
 
-  const Session({
-    required this.sessionId,
-    required this.xcsrfToken,
-    required this.userId,
-    required this.createdAt,
-    required this.expiresAt,
-  });
+/// Session entity representing an authenticated user session.
+/// Contains session ID and XCSRF token for API authentication.
+@freezed
+class Session with _$Session {
+  const Session._();
 
-  /// Check if the session is still valid (not expired).
-  bool get isValid => DateTime.now().isBefore(expiresAt);
-
-  @override
-  List<Object?> get props => [
-    sessionId,
-    xcsrfToken,
-    userId,
-    createdAt,
-    expiresAt,
-  ];
-
-  Session copyWith({
-    String? sessionId,
-    String? xcsrfToken,
-    String? userId,
-    DateTime? createdAt,
+  const factory Session({
+    required String sessionId,
+    required String xcsrfToken,
+    required String userId,
+    required DateTime createdAt,
     DateTime? expiresAt,
-  }) {
-    return Session(
-      sessionId: sessionId ?? this.sessionId,
-      xcsrfToken: xcsrfToken ?? this.xcsrfToken,
-      userId: userId ?? this.userId,
-      createdAt: createdAt ?? this.createdAt,
-      expiresAt: expiresAt ?? this.expiresAt,
-    );
+  }) = _Session;
+
+  /// Checks if the session has expired.
+  /// Returns true if expiresAt is set and is in the past,
+  /// or if expiresAt is null and session is older than 24 hours.
+  bool get isExpired {
+    if (expiresAt != null) {
+      return DateTime.now().isAfter(expiresAt!);
+    }
+    // Default expiry: 24 hours from creation
+    final defaultExpiry = createdAt.add(const Duration(hours: 24));
+    return DateTime.now().isAfter(defaultExpiry);
   }
+
+  /// Creates an empty Session instance.
+  factory Session.empty() => Session(
+        sessionId: '',
+        xcsrfToken: '',
+        userId: '',
+        createdAt: DateTime.now(),
+        expiresAt: null,
+      );
 }

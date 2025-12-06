@@ -5,7 +5,7 @@ The Figma design for this assignment can be found here:
 Mobile App:- https://www.figma.com/design/qUbMBvSCJeD4cfPukaD0UU/Driveto--Car-wash----Nexotech?node-id=114-829&p=f&t=vfMhWHD3wt9P8Rmn-0
 The screens provided in the Figma file show:
 API Endpoints
-All endpoints return JSON responses. Use REST GET calls to fetch and render the UI data. The base URL: http://156.67.104.149:8110/ and use the extension given below, test these endpoints in postman to get an idea on the response of each endpoints.
+All endpoints are non-authenticated and return JSON responses. Use REST GET calls to fetch and render the UI data. The base URL: http://156.67.104.149:8110/ and use the extension given below, test these endpoints in postman to get an idea on the response of each endpoints.
 
 User IDs
 Superadmin - 2
@@ -17,28 +17,44 @@ If-Modified-Since - Sun, 26 Oct 2025 09:51:00 GMT
 
 Note:- The timestamp mentioned here must be the timestamp fetched from the header of the responses.  
 
-App Pages
-Screen : Home
-a) Profile 
-Swagger link: http://156.67.104.149:8110/api/docs/swagger/#/User%20Profile/user_profile_get
-Get endpoint: http://156.67.104.149:8110/api/accounts/profile/
-Required Field : name, latitude and longitude
+Signin / Login with OTP
+Screen : Signin
+a) Enter phone number
+Swagger Endpoint:
+http://156.67.104.149:8110/api/docs/swagger/#/Authentication/otp_login
 
-b) Search
+POST endpoint: http://156.67.104.149:8110/api/accounts/send-otp/
+Payload:
+{
+phone:"1234567890"
+}
+Required field: phone
 
-Swagger link: http://156.67.104.149:8110/api/docs/swagger/#/shop/shop_shops_list
-get endpoint: http://156.67.104.149:8110/api/shop/shops/?page=1&page_size=1&search=s
-Note:- Use search query params
+b) Enter otp code
 
-c) Services
+Swagger endpoint: http://156.67.104.149:8110/api/docs/swagger/#/Authentication/verify_otp_login
+Post endpoint: http://156.67.104.149:8110/api/accounts/verify-otp/
+Payload:
+{
+  "phone": "9876543210",
+  "otp_code": "123456",
+  "new_password": "newsecurepassword"
+}
 
-swagger link: http://156.67.104.149:8110/api/docs/swagger/#/shop/shop_shop_categories_list
-get endpoint: http://156.67.104.149:8110/api/shop/shop-categories/
-Required Fields : name
+Required fields : phone, otp_code , new_password[if its password reset]
 
-d) Shops
-
-swagger link: http://156.67.104.149:8110/api/docs/swagger/#/Shops/shops_near_you
-get endpoint: http://156.67.104.149:8110/api/shop/shops/near-you/
+Signup
+Screen : Register 
+Register 
+Swagger Endpoint: http://156.67.104.149:8110/api/docs/swagger/#/Authentication/auth_register
+POST endpoint: http://156.67.104.149:8110/api/accounts/register/
+payload:
+{
+  "phone": "1234567890",
+  "username": "newuser",
+  "password": "securepassword123",
+  "password_confirm": "securepassword123"
+}
+Required Field : phone, username, password, password_confirm 
 
 

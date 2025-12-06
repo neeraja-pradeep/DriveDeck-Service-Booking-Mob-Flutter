@@ -1,17 +1,56 @@
-/// Hive box names used throughout the application.
-/// All box names should be defined here for centralized management.
+/// Hive box names used in the application.
 class HiveBoxes {
   HiveBoxes._();
 
-  /// Auth data box for storing user credentials and session.
+  // ============================================================================
+  // FEATURE-AUTH Boxes
+  // ============================================================================
+
+  /// Auth-related data box
   static const String authBox = 'auth_box';
 
-  /// Home data box for caching home screen data.
-  static const String homeDataBox = 'home_data_box';
+  /// User profile data box
+  static const String userBox = 'user_box';
 
-  /// User preferences box.
-  static const String preferencesBox = 'preferences_box';
+  /// App settings box
+  static const String settingsBox = 'settings_box';
 
-  /// Location data box.
-  static const String locationBox = 'location_box';
+  /// Cache box for temporary data
+  static const String cacheBox = 'cache_box';
+
+  // ============================================================================
+  // FEATURE-BOOKINGS Boxes
+  // ============================================================================
+
+  /// Bookings data box
+  static const String bookingsBox = 'bookings_box';
+
+  /// Shops data box
+  static const String shopsBox = 'shops_box';
+
+  // ============================================================================
+  // FEATURE-HOMEPAGE Boxes
+  // ============================================================================
+
+  /// Home screen cached data box
+  static const String homeData = 'home_data_box';
+
+  /// User preferences box
+  static const String preferences = 'preferences_box';
+
+  /// Location data box
+  static const String location = 'location_box';
+
+  /// Get all box names as a list
+  static List<String> get allBoxes => [
+    authBox,
+    userBox,
+    settingsBox,
+    cacheBox,
+    bookingsBox,
+    shopsBox,
+    homeData,
+    preferences,
+    location,
+  ];
 }
