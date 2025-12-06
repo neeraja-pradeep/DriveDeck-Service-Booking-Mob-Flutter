@@ -15,10 +15,13 @@ class ShopDetails with _$ShopDetails {
     required ShopLocation location,
     required String description,
     required String openHours,
+    required String operatingDays,
     required String minBookingDuration,
     required List<String> images,
     required List<VehicleType> vehicleTypes,
     required List<Service> services,
+    @Default([]) List<Package> packages,
+    @Default([]) List<Accessory> accessories,
   }) = _ShopDetails;
 
   factory ShopDetails.fromJson(Map<String, dynamic> json) =>
@@ -62,4 +65,34 @@ class Service with _$Service {
 
   factory Service.fromJson(Map<String, dynamic> json) =>
       _$ServiceFromJson(json);
+}
+
+/// Package offered by the shop (bundle of services).
+@freezed
+class Package with _$Package {
+  const factory Package({
+    required String id,
+    required String name,
+    required double price,
+    required List<String> includedServices,
+    @Default(false) bool isSelected,
+  }) = _Package;
+
+  factory Package.fromJson(Map<String, dynamic> json) =>
+      _$PackageFromJson(json);
+}
+
+/// Accessory available at the shop.
+@freezed
+class Accessory with _$Accessory {
+  const factory Accessory({
+    required String id,
+    required String name,
+    required double price,
+    String? description,
+    @Default(false) bool isSelected,
+  }) = _Accessory;
+
+  factory Accessory.fromJson(Map<String, dynamic> json) =>
+      _$AccessoryFromJson(json);
 }

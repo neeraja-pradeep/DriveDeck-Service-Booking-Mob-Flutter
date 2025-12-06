@@ -13,9 +13,11 @@ _$ShopDetailsImpl _$$ShopDetailsImplFromJson(Map<String, dynamic> json) =>
       category: json['category'] as String,
       rating: (json['rating'] as num).toDouble(),
       reviewCount: (json['reviewCount'] as num).toInt(),
-      location: ShopLocation.fromJson(json['location'] as Map<String, dynamic>),
+      location:
+          ShopLocation.fromJson(json['location'] as Map<String, dynamic>),
       description: json['description'] as String,
       openHours: json['openHours'] as String,
+      operatingDays: json['operatingDays'] as String,
       minBookingDuration: json['minBookingDuration'] as String,
       images:
           (json['images'] as List<dynamic>).map((e) => e as String).toList(),
@@ -25,6 +27,14 @@ _$ShopDetailsImpl _$$ShopDetailsImplFromJson(Map<String, dynamic> json) =>
       services: (json['services'] as List<dynamic>)
           .map((e) => Service.fromJson(e as Map<String, dynamic>))
           .toList(),
+      packages: (json['packages'] as List<dynamic>?)
+              ?.map((e) => Package.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      accessories: (json['accessories'] as List<dynamic>?)
+              ?.map((e) => Accessory.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$ShopDetailsImplToJson(_$ShopDetailsImpl instance) =>
@@ -37,10 +47,13 @@ Map<String, dynamic> _$$ShopDetailsImplToJson(_$ShopDetailsImpl instance) =>
       'location': instance.location,
       'description': instance.description,
       'openHours': instance.openHours,
+      'operatingDays': instance.operatingDays,
       'minBookingDuration': instance.minBookingDuration,
       'images': instance.images,
       'vehicleTypes': instance.vehicleTypes,
       'services': instance.services,
+      'packages': instance.packages,
+      'accessories': instance.accessories,
     };
 
 _$ShopLocationImpl _$$ShopLocationImplFromJson(Map<String, dynamic> json) =>
@@ -82,5 +95,43 @@ Map<String, dynamic> _$$ServiceImplToJson(_$ServiceImpl instance) =>
       'id': instance.id,
       'name': instance.name,
       'price': instance.price,
+      'isSelected': instance.isSelected,
+    };
+
+_$PackageImpl _$$PackageImplFromJson(Map<String, dynamic> json) =>
+    _$PackageImpl(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      price: (json['price'] as num).toDouble(),
+      includedServices: (json['includedServices'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      isSelected: json['isSelected'] as bool? ?? false,
+    );
+
+Map<String, dynamic> _$$PackageImplToJson(_$PackageImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'price': instance.price,
+      'includedServices': instance.includedServices,
+      'isSelected': instance.isSelected,
+    };
+
+_$AccessoryImpl _$$AccessoryImplFromJson(Map<String, dynamic> json) =>
+    _$AccessoryImpl(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      price: (json['price'] as num).toDouble(),
+      description: json['description'] as String?,
+      isSelected: json['isSelected'] as bool? ?? false,
+    );
+
+Map<String, dynamic> _$$AccessoryImplToJson(_$AccessoryImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'price': instance.price,
+      'description': instance.description,
       'isSelected': instance.isSelected,
     };
