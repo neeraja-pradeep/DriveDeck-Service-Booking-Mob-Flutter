@@ -343,13 +343,6 @@
       ]
     },
     {
-      "name": "carousel_slider",
-      "version": "4.2.1",
-      "dependencies": [
-        "flutter"
-      ]
-    },
-    {
       "name": "smooth_page_indicator",
       "version": "1.2.1",
       "dependencies": [
@@ -1567,6 +1560,13 @@
       "name": "synchronized",
       "version": "3.4.0",
       "dependencies": []
+    },
+    {
+      "name": "carousel_slider",
+      "version": "5.1.1",
+      "dependencies": [
+        "flutter"
+      ]
     }
   ],
   "configVersion": 1

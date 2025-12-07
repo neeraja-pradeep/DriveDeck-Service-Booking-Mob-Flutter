@@ -181,7 +181,7 @@ class ShopCard extends StatelessWidget {
       height: 140.h,
       width: double.infinity,
       color: AppColors.grey200,
-      child: Center(
+      child: const Center(
         child: CircularProgressIndicator(
           color: AppColors.primary,
           strokeWidth: 2.0,

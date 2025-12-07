@@ -467,7 +467,7 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen>
 
   Widget _buildServiceTabs() {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(bottom: BorderSide(color: AppColors.grey200, width: 1)),
       ),
       child: TabBar(
