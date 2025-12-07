@@ -39,13 +39,14 @@ class _ShopDetailScreenState extends ConsumerState<ShopDetailScreen> {
             children: [
               Icon(Icons.error_outline, size: 48.sp, color: AppColors.error),
               SizedBox(height: 16.h),
-              Text(
+              const Text(
                 'Failed to load shop details',
                 style: AppTypography.bodyLarge,
               ),
               SizedBox(height: 8.h),
               ElevatedButton(
-                onPressed: () => ref.refresh(shopDetailsProvider(widget.shopId)),
+                onPressed: () =>
+                    ref.refresh(shopDetailsProvider(widget.shopId)),
                 child: const Text('Retry'),
               ),
             ],
@@ -116,11 +117,7 @@ class _ShopDetailScreenState extends ConsumerState<ShopDetailScreen> {
                 color: AppColors.primary,
                 borderRadius: BorderRadius.circular(8.r),
               ),
-              child: Icon(
-                Icons.chevron_left,
-                color: Colors.white,
-                size: 20.sp,
-              ),
+              child: Icon(Icons.chevron_left, color: Colors.white, size: 20.sp),
             ),
           ),
 
@@ -371,11 +368,11 @@ class _ShopDetailScreenState extends ConsumerState<ShopDetailScreen> {
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<VehicleType>(
                     value: selectedVehicle,
-                    hint: Text(
+                    hint: const Text(
                       'Select Vehicle',
                       style: AppTypography.bodyMedium,
                     ),
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.keyboard_arrow_down,
                       color: AppColors.textSecondary,
                     ),
@@ -430,7 +427,7 @@ class _ShopDetailScreenState extends ConsumerState<ShopDetailScreen> {
           ),
 
           // Divider
-          Divider(height: 1, color: AppColors.grey200),
+          const Divider(height: 1, color: AppColors.grey200),
 
           // Tab content
           _buildTabContent(shop, currentTab),
@@ -641,11 +638,7 @@ class _ShopDetailScreenState extends ConsumerState<ShopDetailScreen> {
                 borderRadius: BorderRadius.circular(4.r),
               ),
               child: isSelected
-                  ? Icon(
-                      Icons.check,
-                      size: 16.sp,
-                      color: Colors.white,
-                    )
+                  ? Icon(Icons.check, size: 16.sp, color: Colors.white)
                   : null,
             ),
           ],
@@ -704,7 +697,9 @@ class _ShopDetailScreenState extends ConsumerState<ShopDetailScreen> {
     if (totalCount == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please select at least one service, package, or accessory'),
+          content: Text(
+            'Please select at least one service, package, or accessory',
+          ),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -755,7 +750,7 @@ class _ShopDetailScreenState extends ConsumerState<ShopDetailScreen> {
               ),
             ),
 
-            Divider(height: 1, color: AppColors.grey200),
+            const Divider(height: 1, color: AppColors.grey200),
 
             // Summary content
             Expanded(
@@ -793,7 +788,9 @@ class _ShopDetailScreenState extends ConsumerState<ShopDetailScreen> {
                           // Navigate to booking confirmation screen
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Booking functionality coming soon!'),
+                              content: Text(
+                                'Booking functionality coming soon!',
+                              ),
                               behavior: SnackBarBehavior.floating,
                             ),
                           );
