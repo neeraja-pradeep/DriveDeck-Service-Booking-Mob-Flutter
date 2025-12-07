@@ -9,6 +9,8 @@ import '../../features/auth/presentation/screen/otp_verification_screen.dart';
 import '../../features/navigation/presentation/screens/main_navigation_screen.dart';
 import '../../features/bookings/presentation/screens/booking_detail_screen.dart';
 import '../../features/home/presentation/screens/shop_detail_screen.dart';
+import '../../features/booking/presentation/screens/time_selection_screen.dart';
+import '../../features/booking/presentation/screens/checkout_screen.dart';
 import 'routes.dart';
 
 /// Global navigator keys for nested navigation
@@ -103,6 +105,18 @@ final routerProvider = Provider<GoRouter>((ref) {
           final shopId = state.pathParameters['shopId']!;
           return ShopDetailScreen(shopId: shopId);
         },
+      ),
+
+      // Time selection route
+      GoRoute(
+        path: Routes.timeSelection,
+        builder: (context, state) => const TimeSelectionScreen(),
+      ),
+
+      // Checkout route
+      GoRoute(
+        path: Routes.checkout,
+        builder: (context, state) => const CheckoutScreen(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

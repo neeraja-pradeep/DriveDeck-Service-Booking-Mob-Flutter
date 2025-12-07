@@ -236,6 +236,10 @@ class Routes {
   static const String shops = '/shops';
   static const String shopDetail = '/shop';
 
+  // Booking flow routes
+  static const String timeSelection = '/time-selection';
+  static const String checkout = '/checkout';
+
   // Helper methods for parameterized routes
   static String bookingDetailPath(String bookingId) => '/booking/$bookingId';
   static String shopDetailPath(String shopId) => '/shop/$shopId';

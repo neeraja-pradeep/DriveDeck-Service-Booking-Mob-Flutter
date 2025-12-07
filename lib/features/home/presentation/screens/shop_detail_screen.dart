@@ -9,6 +9,8 @@ import '../../../../app/theme/colors.dart';
 import '../../../../app/theme/typography.dart';
 import '../../application/providers/shop_details_provider.dart';
 import '../../domain/entities/shop_details.dart';
+import '../../../booking/application/providers/booking_provider.dart';
+import '../../../booking/domain/entities/booking_data.dart';
 
 /// Screen for displaying detailed information about a car wash shop.
 class ShopDetailScreen extends ConsumerStatefulWidget {
@@ -674,8 +676,8 @@ class _ShopDetailScreenState extends ConsumerState<ShopDetailScreen> {
           height: 48.h,
           child: ElevatedButton(
             onPressed: () {
-              // Navigate to booking confirmation or next step
-              _showBookingSummary();
+              // Navigate to time selection screen
+              _navigateToTimeSelection();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
@@ -696,10 +698,13 @@ class _ShopDetailScreenState extends ConsumerState<ShopDetailScreen> {
     );
   }
 
-  void _showBookingSummary() {
-    final totalPrice = ref.read(totalSelectedPriceProvider);
+  void _navigateToTimeSelection() {
     final totalCount = ref.read(totalSelectedCountProvider);
     final selectedVehicle = ref.read(selectedVehicleProvider);
+    final selectedServices = ref.read(selectedServicesProvider);
+    final selectedPackages = ref.read(selectedPackagesProvider);
+    final selectedAccessories = ref.read(selectedAccessoriesProvider);
+    final shopDetails = ref.read(shopDetailsProvider(widget.shopId));
 
     if (totalCount == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -711,115 +716,34 @@ class _ShopDetailScreenState extends ConsumerState<ShopDetailScreen> {
       return;
     }
 
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        height: MediaQuery.of(context).size.height * 0.5,
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-        ),
-        child: Column(
-          children: [
-            // Handle bar
-            Container(
-              margin: EdgeInsets.only(top: 12.h),
-              width: 40.w,
-              height: 4.h,
-              decoration: BoxDecoration(
-                color: AppColors.grey300,
-                borderRadius: BorderRadius.circular(2.r),
-              ),
-            ),
+    // Convert selected items to SelectedItem entities
+    final serviceItems = selectedServices.values
+        .map((s) => SelectedItem.fromService(s))
+        .toList();
+    final packageItems = selectedPackages.values
+        .map((p) => SelectedItem.fromPackage(p))
+        .toList();
+    final accessoryItems = selectedAccessories.values
+        .map((a) => SelectedItem.fromAccessory(a))
+        .toList();
 
-            // Header
-            Padding(
-              padding: EdgeInsets.all(16.w),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Booking Summary',
-                      style: AppTypography.titleMedium.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close),
-                  ),
-                ],
-              ),
-            ),
+    // Initialize booking data
+    shopDetails.whenData((shop) {
+      ref.read(bookingDataProvider.notifier).initializeBooking(
+            shopId: widget.shopId,
+            shopName: shop.name,
+            shopImageUrl: shop.images.isNotEmpty ? shop.images.first : '',
+            shopAddress: shop.location.area,
+            shopRating: shop.rating,
+            selectedServices: serviceItems,
+            selectedPackages: packageItems,
+            selectedAccessories: accessoryItems,
+            vehicleType: selectedVehicle?.name,
+            vehicleId: selectedVehicle?.id,
+          );
 
-            Divider(height: 1, color: AppColors.grey200),
-
-            // Summary content
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (selectedVehicle != null) ...[
-                      Text(
-                        'Vehicle: ${selectedVehicle.name}',
-                        style: AppTypography.bodyMedium,
-                      ),
-                      SizedBox(height: 16.h),
-                    ],
-                    Text(
-                      'Selected Items: $totalCount',
-                      style: AppTypography.bodyMedium,
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      'Total: \u20B9${totalPrice.toInt()}',
-                      style: AppTypography.titleLarge.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 48.h,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          // Navigate to booking confirmation screen
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Booking functionality coming soon!'),
-                              behavior: SnackBarBehavior.floating,
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24.r),
-                          ),
-                        ),
-                        child: Text(
-                          'Confirm Booking',
-                          style: AppTypography.labelLarge.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+      // Navigate to time selection screen
+      context.push('/time-selection');
+    });
   }
 }
