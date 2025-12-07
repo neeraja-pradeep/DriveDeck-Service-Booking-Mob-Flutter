@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'colors.dart';
 
 /// App typography based on Material Design 3.

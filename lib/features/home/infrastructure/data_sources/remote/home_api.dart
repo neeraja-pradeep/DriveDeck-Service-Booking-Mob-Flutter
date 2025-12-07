@@ -6,9 +6,14 @@ import '../../models/car_wash_shop_model.dart';
 import '../../models/service_category_model.dart';
 import '../../models/user_profile_model.dart';
 
+/// Provider for the API client (local to home feature).
+final homeApiClientProvider = Provider<ApiClient>((ref) {
+  return ApiClient();
+});
+
 /// Provider for the Home API data source.
 final homeApiProvider = Provider<HomeApi>((ref) {
-  return HomeApi(ref.read(apiClientProvider));
+  return HomeApi(ref.read(homeApiClientProvider));
 });
 
 /// Remote data source for home screen API calls.
@@ -54,90 +59,78 @@ class HomeApi {
     return UserProfileModel.fromJson(response.data!);
   }
 
-  /// Fetches service categories with conditional caching support.
-  Future<ConditionalApiResponse<List<ServiceCategoryModel>>>
-  getServiceCategories({DateTime? ifModifiedSince}) async {
-    return _apiClient.getConditional<List<ServiceCategoryModel>>(
+  /// Fetches service categories.
+  Future<List<ServiceCategoryModel>> getServiceCategories() async {
+    final response = await _apiClient.get<Map<String, dynamic>>(
       Endpoints.shopCategories(),
-      ifModifiedSince: ifModifiedSince,
-      fromJson: (data) {
-        if (data is List) {
-          return data
-              .map(
-                (item) =>
-                    ServiceCategoryModel.fromJson(item as Map<String, dynamic>),
-              )
-              .toList();
-        }
-        // Handle paginated response
-        final response = data as Map<String, dynamic>;
-        if (response.containsKey('results')) {
-          return (response['results'] as List)
-              .map(
-                (item) =>
-                    ServiceCategoryModel.fromJson(item as Map<String, dynamic>),
-              )
-              .toList();
-        }
-        return <ServiceCategoryModel>[];
-      },
     );
+
+    final data = response.data!;
+    if (data['results'] is List) {
+      return (data['results'] as List)
+          .map(
+            (item) =>
+                ServiceCategoryModel.fromJson(item as Map<String, dynamic>),
+          )
+          .toList();
+    }
+    return <ServiceCategoryModel>[];
   }
 
   /// Fetches shops near the user's location.
-  Future<ConditionalApiResponse<List<CarWashShopModel>>> getShopsNearYou({
+  Future<List<CarWashShopModel>> getShopsNearYou({
     required double latitude,
     required double longitude,
-    DateTime? ifModifiedSince,
   }) async {
-    return _apiClient.getConditional<List<CarWashShopModel>>(
+    final response = await _apiClient.get<Map<String, dynamic>>(
       Endpoints.shopsNearYou(),
-      ifModifiedSince: ifModifiedSince,
       queryParameters: {
         'latitude': latitude.toString(),
         'longitude': longitude.toString(),
       },
-      fromJson: (data) {
-        if (data is List) {
-          return data
-              .map(
-                (item) =>
-                    CarWashShopModel.fromJson(item as Map<String, dynamic>),
-              )
-              .toList();
-        }
-        // Handle paginated response
-        final response = data as Map<String, dynamic>;
-        if (response.containsKey('results')) {
-          return (response['results'] as List)
-              .map(
-                (item) =>
-                    CarWashShopModel.fromJson(item as Map<String, dynamic>),
-              )
-              .toList();
-        }
-        return <CarWashShopModel>[];
-      },
     );
+
+    final data = response.data!;
+    if (data['results'] is List) {
+      return (data['results'] as List)
+          .map(
+            (item) => CarWashShopModel.fromJson(item as Map<String, dynamic>),
+          )
+          .toList();
+    }
+    return <CarWashShopModel>[];
   }
 
   /// Searches for shops by query.
-  Future<ShopsResponse> searchShops({
+  Future<List<CarWashShopModel>> searchShops({
     required String query,
     int page = 1,
     int pageSize = 10,
   }) async {
     final response = await _apiClient.get<Map<String, dynamic>>(
-      Endpoints.shops(search: query, page: page, pageSize: pageSize),
+      Endpoints.shops(),
+      queryParameters: {
+        'search': query,
+        'page': page.toString(),
+        'page_size': pageSize.toString(),
+      },
     );
 
-    return ShopsResponse.fromJson(response.data!);
+    final data = response.data!;
+    if (data['results'] is List) {
+      return (data['results'] as List)
+          .map(
+            (item) => CarWashShopModel.fromJson(item as Map<String, dynamic>),
+          )
+          .toList();
+    }
+    return <CarWashShopModel>[];
   }
 
   /// Toggles wishlist status for a shop.
-  Future<bool> toggleWishlist({required int shopId}) async {
+  Future<bool> toggleWishlist({required String shopId}) async {
     final response = await _apiClient.post<Map<String, dynamic>>(
-      Endpoints.toggleWishlist(shopId.toString()),
+      '/api/shops/$shopId/wishlist/',
     );
 
     // Assuming the API returns the new wishlist status

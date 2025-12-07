@@ -1,61 +1,46 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../core/error/failure.dart';
 import '../../domain/entities/session.dart';
-import '../../domain/entities/user.dart';
 
-/// Authentication state for the application.
-sealed class AuthState extends Equatable {
-  const AuthState();
+part 'auth_state.freezed.dart';
 
-  @override
-  List<Object?> get props => [];
-}
+/// Main authentication state for the app.
+@freezed
+sealed class AuthState with _$AuthState {
+  const AuthState._();
 
-/// Initial state when auth status is unknown.
-class AuthInitial extends AuthState {
-  const AuthInitial();
-}
+  /// Initial state before auth check.
+  const factory AuthState.initial() = AuthInitial;
 
-/// Loading state during authentication operations.
-class AuthLoading extends AuthState {
-  const AuthLoading();
-}
+  /// Loading state during auth operations.
+  const factory AuthState.loading() = AuthLoading;
 
-/// Authenticated state with user session.
-class AuthAuthenticated extends AuthState {
-  final Session session;
-  final User? user;
+  /// User is authenticated with a valid session.
+  const factory AuthState.authenticated({
+    required Session session,
+  }) = AuthAuthenticated;
 
-  const AuthAuthenticated(this.session, {this.user});
+  /// User is not authenticated.
+  const factory AuthState.unauthenticated() = AuthUnauthenticated;
 
-  @override
-  List<Object?> get props => [session, user];
-}
+  /// Session has expired, need re-authentication.
+  const factory AuthState.sessionExpired() = AuthSessionExpired;
 
-/// Unauthenticated state.
-class AuthUnauthenticated extends AuthState {
-  const AuthUnauthenticated();
-}
+  /// Auth error occurred.
+  const factory AuthState.error({
+    required Failure failure,
+  }) = AuthError;
 
-/// Error state during authentication.
-class AuthError extends AuthState {
-  final String message;
-
-  const AuthError(this.message);
-
-  @override
-  List<Object?> get props => [message];
-}
-
-/// Extension for convenient state checking.
-extension AuthStateX on AuthState {
+  /// Check if user is authenticated.
   bool get isAuthenticated => this is AuthAuthenticated;
-  bool get isUnauthenticated => this is AuthUnauthenticated;
+
+  /// Check if auth is loading.
   bool get isLoading => this is AuthLoading;
-  bool get hasError => this is AuthError;
 
-  Session? get session =>
-      this is AuthAuthenticated ? (this as AuthAuthenticated).session : null;
-
-  User? get user =>
-      this is AuthAuthenticated ? (this as AuthAuthenticated).user : null;
+  /// Get current session if authenticated.
+  Session? get currentSession => maybeWhen(
+        authenticated: (session) => session,
+        orElse: () => null,
+      );
 }

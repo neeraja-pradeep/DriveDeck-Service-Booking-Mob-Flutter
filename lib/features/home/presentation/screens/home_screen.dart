@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../app/theme/colors.dart';
+import '../../../../core/error/failure.dart';
+import '../../../auth/application/providers/auth_providers.dart';
 import '../../application/providers/home_provider.dart';
 import '../components/home_header.dart';
 import '../components/service_categories_section.dart';
@@ -15,6 +18,119 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Watch auth state to handle authentication
+    final authState = ref.watch(authStateProvider);
+
+    return authState.when(
+      initial: () => _buildLoadingScreen(),
+      loading: () => _buildLoadingScreen(),
+      authenticated: (session) => _buildHomeContent(context, ref, session),
+      unauthenticated: () => _buildUnauthenticatedScreen(context),
+      sessionExpired: () => _buildUnauthenticatedScreen(context),
+      error: (failure) => _buildErrorScreen(context, failure),
+    );
+  }
+
+  /// Builds the loading screen while checking authentication.
+  Widget _buildLoadingScreen() {
+    return const Scaffold(
+      backgroundColor: AppColors.background,
+      body: Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  /// Builds the screen shown when user is not authenticated.
+  Widget _buildUnauthenticatedScreen(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.all(24.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.lock_outline,
+                size: 64.sp,
+                color: AppColors.textSecondary,
+              ),
+              SizedBox(height: 24.h),
+              Text(
+                'Authentication Required',
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              SizedBox(height: 12.h),
+              Text(
+                'Please log in to access your home dashboard',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: AppColors.textSecondary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 32.h),
+              ElevatedButton(
+                onPressed: () {
+                  context.go('/login');
+                },
+                child: const Text('Go to Login'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Builds the screen shown when an authentication error occurs.
+  Widget _buildErrorScreen(BuildContext context, Failure failure) {
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.all(24.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.error_outline, size: 64.sp, color: AppColors.error),
+              SizedBox(height: 24.h),
+              Text(
+                'Authentication Error',
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              SizedBox(height: 12.h),
+              Text(
+                failure.toUserMessage(),
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: AppColors.textSecondary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 32.h),
+              ElevatedButton(
+                onPressed: () {
+                  context.go('/login');
+                },
+                child: const Text('Try Again'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Builds the main home content when user is authenticated.
+  Widget _buildHomeContent(BuildContext context, WidgetRef ref, session) {
     final homeState = ref.watch(homeNotifierProvider);
 
     return Scaffold(
@@ -35,8 +151,6 @@ class HomeScreen extends ConsumerWidget {
                   child: const HomeHeader(),
                 ),
               ),
-
-              // Search bar
 
               // Promo cards carousel
               SliverToBoxAdapter(
@@ -77,46 +191,17 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  /// 🔴 DEV: Profile update button to add location to user profile
-  Widget _buildProfileUpdateButton(BuildContext context, WidgetRef ref) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      child: ElevatedButton(
-        onPressed: () async {
-          // Update profile with the location coordinates from the logs
-          await ref
-              .read(homeNotifierProvider.notifier)
-              .updateUserProfileWithLocation(
-                latitude: 9.5140783,
-                longitude: 76.33026,
-              );
-
-          // Show success message
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                '✅ Profile updated with location! Shops should load now.',
-              ),
-              backgroundColor: Colors.green,
-            ),
-          );
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue,
-          foregroundColor: Colors.white,
-          padding: EdgeInsets.symmetric(vertical: 12.h),
-        ),
-        child: Text(
-          '🔧 DEV: Update Profile with Location',
-          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-
   Widget _buildErrorBanner(BuildContext context, WidgetRef ref) {
     final error = ref.read(homeNotifierProvider).lastError;
     if (error == null) return const SizedBox.shrink();
+
+    // Handle authentication errors specially
+    final isAuthError =
+        error.whenOrNull(
+          unauthorized: (message, code) => true,
+          sessionExpired: (message) => true,
+        ) ??
+        false;
 
     return Container(
       padding: EdgeInsets.all(12.w),
@@ -125,24 +210,49 @@ class HomeScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(8.r),
         border: Border.all(color: AppColors.error.withValues(alpha: 0.3)),
       ),
-      child: Row(
+      child: Column(
         children: [
-          Icon(Icons.error_outline, color: AppColors.error, size: 20.sp),
-          SizedBox(width: 8.w),
-          Expanded(
-            child: Text(
-              error.toUserMessage(),
-              style: TextStyle(fontSize: 12.sp, color: AppColors.error),
+          Row(
+            children: [
+              Icon(
+                isAuthError ? Icons.lock_outline : Icons.error_outline,
+                color: AppColors.error,
+                size: 20.sp,
+              ),
+              SizedBox(width: 8.w),
+              Expanded(
+                child: Text(
+                  error.toUserMessage(),
+                  style: TextStyle(fontSize: 12.sp, color: AppColors.error),
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.close, size: 18.sp, color: AppColors.error),
+                onPressed: () {
+                  ref.read(homeNotifierProvider.notifier).clearError();
+                },
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+              ),
+            ],
+          ),
+          if (isAuthError) ...[
+            SizedBox(height: 8.h),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  context.go('/login');
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.error,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                ),
+                child: Text('Go to Login', style: TextStyle(fontSize: 12.sp)),
+              ),
             ),
-          ),
-          IconButton(
-            icon: Icon(Icons.close, size: 18.sp, color: AppColors.error),
-            onPressed: () {
-              ref.read(homeNotifierProvider.notifier).clearError();
-            },
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
-          ),
+          ],
         ],
       ),
     );

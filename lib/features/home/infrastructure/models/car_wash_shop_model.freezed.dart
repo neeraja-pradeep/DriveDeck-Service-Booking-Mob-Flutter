@@ -27,6 +27,7 @@ mixin _$CarWashShopModel {
   @HiveField(2)
   String? get description => throw _privateConstructorUsedError;
   @HiveField(3)
+  @JsonKey(name: 'cover_image')
   String? get image => throw _privateConstructorUsedError;
   @HiveField(4)
   String? get address => throw _privateConstructorUsedError;
@@ -42,6 +43,7 @@ mixin _$CarWashShopModel {
   @JsonKey(name: 'review_count')
   int? get reviewCount => throw _privateConstructorUsedError;
   @HiveField(10)
+  @JsonKey(name: 'distance_km')
   double? get distance => throw _privateConstructorUsedError;
   @HiveField(11)
   @JsonKey(name: 'opening_time')
@@ -77,14 +79,14 @@ abstract class $CarWashShopModelCopyWith<$Res> {
       {@HiveField(0) int id,
       @HiveField(1) String name,
       @HiveField(2) String? description,
-      @HiveField(3) String? image,
+      @HiveField(3) @JsonKey(name: 'cover_image') String? image,
       @HiveField(4) String? address,
       @HiveField(5) String? phone,
       @HiveField(6) double? latitude,
       @HiveField(7) double? longitude,
       @HiveField(8) double? rating,
       @HiveField(9) @JsonKey(name: 'review_count') int? reviewCount,
-      @HiveField(10) double? distance,
+      @HiveField(10) @JsonKey(name: 'distance_km') double? distance,
       @HiveField(11) @JsonKey(name: 'opening_time') String? openingTime,
       @HiveField(12) @JsonKey(name: 'closing_time') String? closingTime,
       @HiveField(13) @JsonKey(name: 'is_open') bool isOpen,
@@ -209,14 +211,14 @@ abstract class _$$CarWashShopModelImplCopyWith<$Res>
       {@HiveField(0) int id,
       @HiveField(1) String name,
       @HiveField(2) String? description,
-      @HiveField(3) String? image,
+      @HiveField(3) @JsonKey(name: 'cover_image') String? image,
       @HiveField(4) String? address,
       @HiveField(5) String? phone,
       @HiveField(6) double? latitude,
       @HiveField(7) double? longitude,
       @HiveField(8) double? rating,
       @HiveField(9) @JsonKey(name: 'review_count') int? reviewCount,
-      @HiveField(10) double? distance,
+      @HiveField(10) @JsonKey(name: 'distance_km') double? distance,
       @HiveField(11) @JsonKey(name: 'opening_time') String? openingTime,
       @HiveField(12) @JsonKey(name: 'closing_time') String? closingTime,
       @HiveField(13) @JsonKey(name: 'is_open') bool isOpen,
@@ -334,14 +336,14 @@ class _$CarWashShopModelImpl extends _CarWashShopModel {
       {@HiveField(0) required this.id,
       @HiveField(1) required this.name,
       @HiveField(2) this.description,
-      @HiveField(3) this.image,
+      @HiveField(3) @JsonKey(name: 'cover_image') this.image,
       @HiveField(4) this.address,
       @HiveField(5) this.phone,
       @HiveField(6) this.latitude,
       @HiveField(7) this.longitude,
       @HiveField(8) this.rating,
       @HiveField(9) @JsonKey(name: 'review_count') this.reviewCount,
-      @HiveField(10) this.distance,
+      @HiveField(10) @JsonKey(name: 'distance_km') this.distance,
       @HiveField(11) @JsonKey(name: 'opening_time') this.openingTime,
       @HiveField(12) @JsonKey(name: 'closing_time') this.closingTime,
       @HiveField(13) @JsonKey(name: 'is_open') this.isOpen = false,
@@ -365,6 +367,7 @@ class _$CarWashShopModelImpl extends _CarWashShopModel {
   final String? description;
   @override
   @HiveField(3)
+  @JsonKey(name: 'cover_image')
   final String? image;
   @override
   @HiveField(4)
@@ -387,6 +390,7 @@ class _$CarWashShopModelImpl extends _CarWashShopModel {
   final int? reviewCount;
   @override
   @HiveField(10)
+  @JsonKey(name: 'distance_km')
   final double? distance;
   @override
   @HiveField(11)
@@ -500,14 +504,14 @@ abstract class _CarWashShopModel extends CarWashShopModel {
       {@HiveField(0) required final int id,
       @HiveField(1) required final String name,
       @HiveField(2) final String? description,
-      @HiveField(3) final String? image,
+      @HiveField(3) @JsonKey(name: 'cover_image') final String? image,
       @HiveField(4) final String? address,
       @HiveField(5) final String? phone,
       @HiveField(6) final double? latitude,
       @HiveField(7) final double? longitude,
       @HiveField(8) final double? rating,
       @HiveField(9) @JsonKey(name: 'review_count') final int? reviewCount,
-      @HiveField(10) final double? distance,
+      @HiveField(10) @JsonKey(name: 'distance_km') final double? distance,
       @HiveField(11) @JsonKey(name: 'opening_time') final String? openingTime,
       @HiveField(12) @JsonKey(name: 'closing_time') final String? closingTime,
       @HiveField(13) @JsonKey(name: 'is_open') final bool isOpen,
@@ -532,6 +536,7 @@ abstract class _CarWashShopModel extends CarWashShopModel {
   String? get description;
   @override
   @HiveField(3)
+  @JsonKey(name: 'cover_image')
   String? get image;
   @override
   @HiveField(4)
@@ -554,6 +559,7 @@ abstract class _CarWashShopModel extends CarWashShopModel {
   int? get reviewCount;
   @override
   @HiveField(10)
+  @JsonKey(name: 'distance_km')
   double? get distance;
   @override
   @HiveField(11)

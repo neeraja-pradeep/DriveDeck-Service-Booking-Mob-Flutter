@@ -55,6 +55,8 @@ abstract class $HomeStateCopyWith<$Res> {
       bool isSearching,
       bool isRefreshing,
       Failure? lastError});
+
+  $FailureCopyWith<$Res>? get lastError;
 }
 
 /// @nodoc
@@ -124,6 +126,18 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
               as Failure?,
     ) as $Val);
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $FailureCopyWith<$Res>? get lastError {
+    if (_value.lastError == null) {
+      return null;
+    }
+
+    return $FailureCopyWith<$Res>(_value.lastError!, (value) {
+      return _then(_value.copyWith(lastError: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -145,6 +159,9 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       bool isSearching,
       bool isRefreshing,
       Failure? lastError});
+
+  @override
+  $FailureCopyWith<$Res>? get lastError;
 }
 
 /// @nodoc

@@ -9,26 +9,16 @@ part of 'session_model.dart';
 SessionModel _$SessionModelFromJson(Map<String, dynamic> json) => SessionModel(
       sessionId: json['session_id'] as String,
       xcsrfToken: json['xcsrf_token'] as String,
-      user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
-      expiresAt: json['expires_at'] as String,
+      userId: json['user_id'] as String,
+      createdAt: json['created_at'] as String?,
+      expiresAt: json['expires_at'] as String?,
     );
 
 Map<String, dynamic> _$SessionModelToJson(SessionModel instance) =>
     <String, dynamic>{
       'session_id': instance.sessionId,
       'xcsrf_token': instance.xcsrfToken,
-      'user': instance.user,
+      'user_id': instance.userId,
+      'created_at': instance.createdAt,
       'expires_at': instance.expiresAt,
-    };
-
-UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      phone: json['phone'] as String,
-    );
-
-Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'phone': instance.phone,
     };

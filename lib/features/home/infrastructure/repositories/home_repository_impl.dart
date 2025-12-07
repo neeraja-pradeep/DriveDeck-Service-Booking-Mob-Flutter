@@ -1,10 +1,12 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import '../../../../core/error/failure.dart';
 import '../../../../core/network/network_exceptions.dart';
 import '../../../../core/utils/logger.dart';
+
 import '../../domain/entities/car_wash_shop.dart';
 import '../../domain/entities/service_category.dart';
 import '../../domain/entities/user_location.dart';
@@ -38,12 +40,12 @@ class HomeRepositoryImpl implements HomeRepository {
     try {
       final model = await _homeApi.getUserProfile();
       return Right(model.toEntity());
-    } on NetworkException catch (e) {
+    } on DioException catch (e) {
       AppLogger.e('Failed to get user profile', e);
-      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
+      return Left(NetworkExceptions.handleException(e));
     } catch (e, stackTrace) {
       AppLogger.e('Unexpected error getting user profile', e, stackTrace);
-      return Left(UnknownFailure(message: e.toString()));
+      return Left(Failure.unknown(message: e.toString()));
     }
   }
 
@@ -68,12 +70,12 @@ class HomeRepositoryImpl implements HomeRepository {
         longitude: longitude,
       );
       return Right(model.toEntity());
-    } on NetworkException catch (e) {
+    } on DioException catch (e) {
       AppLogger.e('Failed to update user profile', e);
-      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
+      return Left(NetworkExceptions.handleException(e));
     } catch (e, stackTrace) {
       AppLogger.e('Unexpected error updating user profile', e, stackTrace);
-      return Left(UnknownFailure(message: e.toString()));
+      return Left(Failure.unknown(message: e.toString()));
     }
   }
 
@@ -82,30 +84,26 @@ class HomeRepositoryImpl implements HomeRepository {
     DateTime? ifModifiedSince,
   }) async {
     try {
-      // Try to get from cache first if we have a timestamp
+      // Try to get from cache first
+      final cached = _localDs.getServiceCategories();
       final cachedTimestamp = _localDs.getServiceCategoriesTimestamp();
 
-      final response = await _homeApi.getServiceCategories(
-        ifModifiedSince: ifModifiedSince ?? cachedTimestamp,
-      );
-
-      if (!response.isModified) {
-        // Return cached data
-        final cached = _localDs.getServiceCategories();
-        if (cached != null) {
+      // If we have cached data and it's recent, return it
+      if (cached != null && cachedTimestamp != null) {
+        final cacheAge = DateTime.now().difference(cachedTimestamp);
+        if (cacheAge.inMinutes < 30) {
+          // Cache for 30 minutes
           return Right(cached.map((m) => m.toEntity()).toList());
         }
       }
 
-      // Save to cache and return new data
-      if (response.data != null) {
-        await _localDs.saveServiceCategories(response.data!);
-        return Right(response.data!.map((m) => m.toEntity()).toList());
-      }
+      // Fetch fresh data from API
+      final response = await _homeApi.getServiceCategories();
 
-      // If no new data and no cache, return empty list
-      return const Right([]);
-    } on NetworkException catch (e) {
+      // Save to cache and return new data
+      await _localDs.saveServiceCategories(response);
+      return Right(response.map((m) => m.toEntity()).toList());
+    } on DioException catch (e) {
       AppLogger.e('Failed to get service categories', e);
 
       // Try to return cached data on network error
@@ -114,7 +112,7 @@ class HomeRepositoryImpl implements HomeRepository {
         return Right(cached.map((m) => m.toEntity()).toList());
       }
 
-      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
+      return Left(NetworkExceptions.handleException(e));
     } catch (e, stackTrace) {
       AppLogger.e('Unexpected error getting service categories', e, stackTrace);
 
@@ -124,7 +122,7 @@ class HomeRepositoryImpl implements HomeRepository {
         return Right(cached.map((m) => m.toEntity()).toList());
       }
 
-      return Left(UnknownFailure(message: e.toString()));
+      return Left(Failure.unknown(message: e.toString()));
     }
   }
 
@@ -135,28 +133,29 @@ class HomeRepositoryImpl implements HomeRepository {
     DateTime? ifModifiedSince,
   }) async {
     try {
+      // Try to get from cache first
+      final cached = _localDs.getCarWashShops();
       final cachedTimestamp = _localDs.getCarWashShopsTimestamp();
 
-      final response = await _homeApi.getShopsNearYou(
-        latitude: latitude,
-        longitude: longitude,
-        ifModifiedSince: ifModifiedSince ?? cachedTimestamp,
-      );
-
-      if (!response.isModified) {
-        final cached = _localDs.getCarWashShops();
-        if (cached != null) {
+      // If we have cached data and it's recent, return it
+      if (cached != null && cachedTimestamp != null) {
+        final cacheAge = DateTime.now().difference(cachedTimestamp);
+        if (cacheAge.inMinutes < 15) {
+          // Cache for 15 minutes
           return Right(cached.map((m) => m.toEntity()).toList());
         }
       }
 
-      if (response.data != null) {
-        await _localDs.saveCarWashShops(response.data!);
-        return Right(response.data!.map((m) => m.toEntity()).toList());
-      }
+      // Fetch fresh data from API
+      final response = await _homeApi.getShopsNearYou(
+        latitude: latitude,
+        longitude: longitude,
+      );
 
-      return const Right([]);
-    } on NetworkException catch (e) {
+      // Save to cache and return new data
+      await _localDs.saveCarWashShops(response);
+      return Right(response.map((m) => m.toEntity()).toList());
+    } on DioException catch (e) {
       AppLogger.e('Failed to get shops near you', e);
 
       final cached = _localDs.getCarWashShops();
@@ -164,7 +163,7 @@ class HomeRepositoryImpl implements HomeRepository {
         return Right(cached.map((m) => m.toEntity()).toList());
       }
 
-      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
+      return Left(NetworkExceptions.handleException(e));
     } catch (e, stackTrace) {
       AppLogger.e('Unexpected error getting shops near you', e, stackTrace);
 
@@ -173,7 +172,7 @@ class HomeRepositoryImpl implements HomeRepository {
         return Right(cached.map((m) => m.toEntity()).toList());
       }
 
-      return Left(UnknownFailure(message: e.toString()));
+      return Left(Failure.unknown(message: e.toString()));
     }
   }
 
@@ -190,27 +189,27 @@ class HomeRepositoryImpl implements HomeRepository {
         pageSize: pageSize,
       );
 
-      return Right(response.results.map((m) => m.toEntity()).toList());
-    } on NetworkException catch (e) {
+      return Right(response.map((m) => m.toEntity()).toList());
+    } on DioException catch (e) {
       AppLogger.e('Failed to search shops', e);
-      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
+      return Left(NetworkExceptions.handleException(e));
     } catch (e, stackTrace) {
       AppLogger.e('Unexpected error searching shops', e, stackTrace);
-      return Left(UnknownFailure(message: e.toString()));
+      return Left(Failure.unknown(message: e.toString()));
     }
   }
 
   @override
   Future<Either<Failure, bool>> toggleWishlist({required int shopId}) async {
     try {
-      final result = await _homeApi.toggleWishlist(shopId: shopId);
+      final result = await _homeApi.toggleWishlist(shopId: shopId.toString());
       return Right(result);
-    } on NetworkException catch (e) {
+    } on DioException catch (e) {
       AppLogger.e('Failed to toggle wishlist', e);
-      return Left(ServerFailure(message: e.message, statusCode: e.statusCode));
+      return Left(NetworkExceptions.handleException(e));
     } catch (e, stackTrace) {
       AppLogger.e('Unexpected error toggling wishlist', e, stackTrace);
-      return Left(UnknownFailure(message: e.toString()));
+      return Left(Failure.unknown(message: e.toString()));
     }
   }
 
@@ -221,7 +220,7 @@ class HomeRepositoryImpl implements HomeRepository {
       final serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         return const Left(
-          LocationServiceDisabledFailure(
+          Failure.locationServiceDisabled(
             message: 'Location services are disabled',
           ),
         );
@@ -233,7 +232,7 @@ class HomeRepositoryImpl implements HomeRepository {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
           return const Left(
-            LocationPermissionDeniedFailure(
+            Failure.locationPermissionDenied(
               status: LocationPermissionStatus.denied,
               message: 'Location permission denied',
             ),
@@ -243,7 +242,7 @@ class HomeRepositoryImpl implements HomeRepository {
 
       if (permission == LocationPermission.deniedForever) {
         return const Left(
-          LocationPermissionDeniedFailure(
+          Failure.locationPermissionDenied(
             status: LocationPermissionStatus.deniedForever,
             message: 'Location permission permanently denied',
           ),
@@ -284,7 +283,7 @@ class HomeRepositoryImpl implements HomeRepository {
           postalCode = place.postalCode;
         }
       } catch (e) {
-        AppLogger.w('Failed to get address from coordinates', e);
+        AppLogger.w('Failed to get address from coordinates: $e');
       }
 
       final location = UserLocation(
@@ -304,7 +303,7 @@ class HomeRepositoryImpl implements HomeRepository {
       return Right(location);
     } catch (e, stackTrace) {
       AppLogger.e('Failed to get current location', e, stackTrace);
-      return Left(LocationFetchFailure(message: e.toString()));
+      return Left(Failure.locationFetch(message: e.toString()));
     }
   }
 
@@ -315,7 +314,7 @@ class HomeRepositoryImpl implements HomeRepository {
       return Right(cached?.toEntity());
     } catch (e, stackTrace) {
       AppLogger.e('Failed to get cached location', e, stackTrace);
-      return Left(CacheFailure(message: e.toString()));
+      return Left(Failure.cache(message: e.toString()));
     }
   }
 
@@ -328,7 +327,7 @@ class HomeRepositoryImpl implements HomeRepository {
       return const Right(null);
     } catch (e, stackTrace) {
       AppLogger.e('Failed to save location to cache', e, stackTrace);
-      return Left(CacheFailure(message: e.toString()));
+      return Left(Failure.cache(message: e.toString()));
     }
   }
 
@@ -341,7 +340,7 @@ class HomeRepositoryImpl implements HomeRepository {
       return Right(cached.map((m) => m.toEntity()).toList());
     } catch (e, stackTrace) {
       AppLogger.e('Failed to get cached service categories', e, stackTrace);
-      return Left(CacheFailure(message: e.toString()));
+      return Left(Failure.cache(message: e.toString()));
     }
   }
 
@@ -353,7 +352,7 @@ class HomeRepositoryImpl implements HomeRepository {
       return Right(cached.map((m) => m.toEntity()).toList());
     } catch (e, stackTrace) {
       AppLogger.e('Failed to get cached car wash shops', e, stackTrace);
-      return Left(CacheFailure(message: e.toString()));
+      return Left(Failure.cache(message: e.toString()));
     }
   }
 
@@ -364,7 +363,7 @@ class HomeRepositoryImpl implements HomeRepository {
       return const Right(null);
     } catch (e, stackTrace) {
       AppLogger.e('Failed to clear cache', e, stackTrace);
-      return Left(CacheFailure(message: e.toString()));
+      return Left(Failure.cache(message: e.toString()));
     }
   }
 }
