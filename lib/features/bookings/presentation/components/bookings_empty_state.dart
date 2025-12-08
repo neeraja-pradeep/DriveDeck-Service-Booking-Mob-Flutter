@@ -8,11 +8,7 @@ import '../../domain/entities/bookings_tab.dart';
 /// Shows different content based on the selected tab.
 class BookingsEmptyState extends StatelessWidget {
   /// Creates a new [BookingsEmptyState].
-  const BookingsEmptyState({
-    required this.tab,
-    this.onAction,
-    super.key,
-  });
+  const BookingsEmptyState({required this.tab, this.onAction, super.key});
 
   /// The current tab.
   final BookingsTab tab;
@@ -32,8 +28,8 @@ class BookingsEmptyState extends StatelessWidget {
             Container(
               width: 120.w,
               height: 120.h,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade100,
+              decoration: const BoxDecoration(
+                color: Colors.white,
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -63,10 +59,7 @@ class BookingsEmptyState extends StatelessWidget {
               tab == BookingsTab.booked
                   ? 'Book a car wash service to see your appointments here'
                   : 'Your completed bookings will appear here',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.grey.shade600,
-              ),
+              style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade600),
               textAlign: TextAlign.center,
             ),
             if (tab == BookingsTab.booked) ...[

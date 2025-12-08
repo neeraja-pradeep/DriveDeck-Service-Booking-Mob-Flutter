@@ -1,5 +1,4 @@
 import 'package:hive_flutter/hive_flutter.dart';
-
 import '../../core/storage/hive/boxes.dart';
 
 /// Initializes Hive for local storage.
@@ -20,10 +19,17 @@ class HiveInit {
   /// Opens all required Hive boxes.
   static Future<void> _openBoxes() async {
     await Future.wait([
+      // 'authBox' was correct in boxes.dart
       Hive.openBox<dynamic>(HiveBoxes.authBox),
-      Hive.openBox<dynamic>(HiveBoxes.homeDataBox),
-      Hive.openBox<dynamic>(HiveBoxes.preferencesBox),
-      Hive.openBox<dynamic>(HiveBoxes.locationBox),
+
+      // FIXED: 'homeDataBox' -> 'homeData'
+      Hive.openBox<dynamic>(HiveBoxes.homeData),
+
+      // FIXED: 'preferencesBox' -> 'preferences'
+      Hive.openBox<dynamic>(HiveBoxes.preferences),
+
+      // FIXED: 'locationBox' -> 'location'
+      Hive.openBox<dynamic>(HiveBoxes.location),
     ]);
   }
 
@@ -36,8 +42,10 @@ class HiveInit {
   static Future<void> clearAll() async {
     await Future.wait([
       Hive.box<dynamic>(HiveBoxes.authBox).clear(),
-      Hive.box<dynamic>(HiveBoxes.homeDataBox).clear(),
-      Hive.box<dynamic>(HiveBoxes.locationBox).clear(),
+      // FIXED: 'homeDataBox' -> 'homeData'
+      Hive.box<dynamic>(HiveBoxes.homeData).clear(),
+      // FIXED: 'locationBox' -> 'location'
+      Hive.box<dynamic>(HiveBoxes.location).clear(),
     ]);
   }
 

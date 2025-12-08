@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../app/theme/colors.dart';
 import '../../../../app/theme/typography.dart';
 import '../../../home/presentation/screens/home_screen.dart';
-import '../../../profile/presentation/screens/profile_screen.dart';
+import '../../../profile/presentation/screen/profile_screen.dart';
 
 /// Main dashboard screen with bottom navigation.
 class DashboardScreen extends ConsumerStatefulWidget {

@@ -13,8 +13,7 @@ _$ShopDetailsImpl _$$ShopDetailsImplFromJson(Map<String, dynamic> json) =>
       category: json['category'] as String,
       rating: (json['rating'] as num).toDouble(),
       reviewCount: (json['reviewCount'] as num).toInt(),
-      location:
-          ShopLocation.fromJson(json['location'] as Map<String, dynamic>),
+      location: ShopLocation.fromJson(json['location'] as Map<String, dynamic>),
       description: json['description'] as String,
       openHours: json['openHours'] as String,
       operatingDays: json['operatingDays'] as String,

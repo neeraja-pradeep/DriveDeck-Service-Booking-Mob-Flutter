@@ -186,20 +186,19 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, Unit>> logout() async {
     try {
-      // Call API logout
-      await authApi.logout();
+      debugPrint('🚪 Repository: Starting logout...');
 
-      // Clear local session
+      // Note: Server has no logout endpoint, so we just clear local session.
+      // Django session-based auth: session becomes invalid when cookies are cleared.
       await localDataSource.clearSession();
 
+      debugPrint('✅ Repository: Local session cleared successfully');
       return const Right(unit);
-    } on DioException catch (e) {
-      // Even if API fails, clear local session
-      await localDataSource.clearSession();
-      return Left(NetworkExceptions.handleException(e));
     } catch (e) {
+      debugPrint('❌ Repository: Error during logout: $e');
+      // Ensure session is cleared even on error
       await localDataSource.clearSession();
-      return Left(NetworkExceptions.handleException(e));
+      return Left(Failure.cache(message: e.toString()));
     }
   }
 

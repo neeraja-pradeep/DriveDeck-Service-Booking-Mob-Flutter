@@ -123,13 +123,13 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen>
               margin: EdgeInsets.symmetric(horizontal: 16.w),
               decoration: BoxDecoration(
                 color: Colors.grey.shade100,
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(30.r),
               ),
               child: TabBar(
                 controller: _tabController,
                 indicator: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.r),
+                  borderRadius: BorderRadius.circular(30.r),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.1),

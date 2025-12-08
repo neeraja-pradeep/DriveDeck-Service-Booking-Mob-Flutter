@@ -220,6 +220,7 @@ class Routes {
   // Auth routes
   static const String login = '/login';
   static const String otpVerification = '/otp-verification';
+  static const String vehicleSelection = '/vehicle-selection';
 
   // Main routes
   static const String home = '/home';
@@ -227,6 +228,8 @@ class Routes {
 
   // Profile routes
   static const String profile = '/profile';
+  static const String garage = '/garage';
+  static const String editProfile = '/edit-profile';
 
   // Booking routes
   static const String bookings = '/bookings';
@@ -238,7 +241,10 @@ class Routes {
 
   // Booking flow routes
   static const String timeSelection = '/time-selection';
+  static const String dateTimeSelection = '/booking/date-time';
   static const String checkout = '/checkout';
+  static const String bookingCheckout = '/booking/checkout';
+  static const String bookingSuccess = '/booking/success';
 
   // Helper methods for parameterized routes
   static String bookingDetailPath(String bookingId) => '/booking/$bookingId';
