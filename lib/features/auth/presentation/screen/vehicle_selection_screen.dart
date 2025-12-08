@@ -21,10 +21,7 @@ enum VehicleType {
 
 /// Screen for selecting vehicle type during registration.
 class VehicleSelectionScreen extends ConsumerStatefulWidget {
-  const VehicleSelectionScreen({
-    required this.registrationData,
-    super.key,
-  });
+  const VehicleSelectionScreen({required this.registrationData, super.key});
 
   /// Registration data collected from the previous screen.
   final RegisterCredentials registrationData;
@@ -113,21 +110,46 @@ class _VehicleSelectionScreenState
 
   /// Builds the car image placeholder.
   Widget _buildCarImage() {
+    // Get the image path based on selected vehicle type
+    final imagePath = _selectedVehicleType != null
+        ? 'assets/images/vehicles/${_selectedVehicleType!.name}.png'
+        : 'assets/images/vehicles/sedan.png';
+
     return Container(
-      width: 200.w,
-      height: 140.h,
+      width: double.infinity,
+      height: 160.h,
       decoration: BoxDecoration(
         color: const Color(0xFFE3F2FD), // Light blue background
         borderRadius: BorderRadius.circular(16.r),
       ),
-      child: Center(
-        // TODO: Replace with actual car image
-        // Image.asset('assets/images/car_placeholder.png')
-        child: Icon(
-          Icons.directions_car,
-          size: 80.w,
-          color: AppColors.grey500,
-        ),
+      child: Stack(
+        children: [
+          // Gradient background
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16.r),
+              gradient: const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.white, Color(0xFFE3F2FD)],
+              ),
+            ),
+          ),
+          // Car image
+          Center(
+            child: Image.asset(
+              imagePath,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) {
+                return Icon(
+                  Icons.directions_car,
+                  size: 80.w,
+                  color: AppColors.grey500,
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -150,9 +172,9 @@ class _VehicleSelectionScreenState
             borderRadius: BorderRadius.circular(12.r),
             child: Container(
               width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
               decoration: BoxDecoration(
-                color: AppColors.white,
+                color: isSelected ? const Color(0xFFE3F2FD) : AppColors.white,
                 borderRadius: BorderRadius.circular(12.r),
                 border: Border.all(
                   color: isSelected ? AppColors.primary : AppColors.grey300,
@@ -162,32 +184,59 @@ class _VehicleSelectionScreenState
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    type.label,
-                    style: AppTypography.bodyLarge.copyWith(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textPrimary,
-                    ),
+                  // Vehicle image and label
+                  Row(
+                    children: [
+                      // Vehicle thumbnail image
+                      Container(
+                        width: 50.w,
+                        height: 50.h,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.r),
+                          color: Colors.grey.shade100,
+                        ),
+                        child: Image.asset(
+                          'assets/images/vehicles/${type.name}.png',
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Icon(
+                              Icons.directions_car,
+                              size: 24.w,
+                              color: AppColors.grey500,
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 16.w),
+                      // Vehicle label
+                      Text(
+                        type.label,
+                        style: AppTypography.bodyLarge.copyWith(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                    ],
                   ),
+                  // Radio button
                   Container(
                     width: 24.w,
                     height: 24.w,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color:
-                            isSelected ? AppColors.primary : AppColors.grey400,
+                        color: isSelected
+                            ? AppColors.primary
+                            : AppColors.grey400,
                         width: 2,
                       ),
-                      color: isSelected ? AppColors.primary : Colors.transparent,
+                      color: isSelected
+                          ? AppColors.primary
+                          : Colors.transparent,
                     ),
                     child: isSelected
-                        ? Icon(
-                            Icons.check,
-                            size: 16.w,
-                            color: AppColors.white,
-                          )
+                        ? Icon(Icons.check, size: 16.w, color: AppColors.white)
                         : null,
                   ),
                 ],

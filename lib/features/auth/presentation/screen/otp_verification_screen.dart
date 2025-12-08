@@ -140,7 +140,14 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
           //   '🎉 OTP Screen: OTP verification successful! Session: $session',
           // );
           // debugPrint('🏠 OTP Screen: Navigating to home...');
-          const HomeRoute().go(context);
+
+          // Add a small delay to ensure session is persisted to secure storage
+          // before navigating away
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (context.mounted) {
+              const HomeRoute().go(context);
+            }
+          });
         },
         error: (failure) {
           // debugPrint('❌ OTP Screen: OTP verification failed: $failure');
@@ -182,6 +189,12 @@ class _OtpVerificationScreenState extends ConsumerState<OtpVerificationScreen> {
             bookingAlreadyCancelled: (msg) => msg,
             cancellationNotAllowed: (msg, _) => msg,
             bookingFetch: (msg) => msg,
+            shopNotFound: (msg) => msg,
+            noSlotsAvailable: (msg) => msg,
+            bookingCreationFailed: (msg) => msg,
+            slotNoLongerAvailable: (msg) => msg,
+            invalidPromoCode: (msg) => msg,
+            noConnection: (msg) => msg,
           );
           // debugPrint('📱 OTP Screen: Showing error snackbar: "$errorMessage"');
           ScaffoldMessenger.of(context).showSnackBar(

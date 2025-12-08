@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:newapp/app/router/routes.dart';
 import 'package:newapp/app/theme/colors.dart';
 import 'package:newapp/app/theme/typography.dart';
 import 'package:newapp/features/profile/application/providers/profile_providers.dart';
@@ -148,11 +149,8 @@ class LogoutDialog extends ConsumerWidget {
 
     if (success && context.mounted) {
       Navigator.of(context).pop(); // Close dialog
-      // TODO: Navigate to login screen
-      // For now, show a success message
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Logged out successfully')));
+      // Navigate to login screen
+      const LoginRoute().go(context);
     }
   }
 }

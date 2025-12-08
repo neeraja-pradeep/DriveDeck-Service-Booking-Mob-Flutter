@@ -19,13 +19,13 @@ _$OpeningHoursImpl _$$OpeningHoursImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$OpeningHoursImplToJson(_$OpeningHoursImpl instance) =>
     <String, dynamic>{
-      'monday': instance.monday.toJson(),
-      'tuesday': instance.tuesday.toJson(),
-      'wednesday': instance.wednesday.toJson(),
-      'thursday': instance.thursday.toJson(),
-      'friday': instance.friday.toJson(),
-      'saturday': instance.saturday.toJson(),
-      'sunday': instance.sunday.toJson(),
+      'monday': instance.monday,
+      'tuesday': instance.tuesday,
+      'wednesday': instance.wednesday,
+      'thursday': instance.thursday,
+      'friday': instance.friday,
+      'saturday': instance.saturday,
+      'sunday': instance.sunday,
     };
 
 _$DayHoursImpl _$$DayHoursImplFromJson(Map<String, dynamic> json) =>

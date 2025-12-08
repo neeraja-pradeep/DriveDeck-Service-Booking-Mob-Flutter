@@ -48,6 +48,12 @@ mixin _$Failure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -78,6 +84,12 @@ mixin _$Failure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -108,6 +120,12 @@ mixin _$Failure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -142,6 +160,14 @@ mixin _$Failure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -174,6 +200,13 @@ mixin _$Failure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -206,6 +239,12 @@ mixin _$Failure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -344,6 +383,12 @@ class _$NetworkFailureImpl extends NetworkFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return network(message);
   }
@@ -377,6 +422,12 @@ class _$NetworkFailureImpl extends NetworkFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return network?.call(message);
   }
@@ -410,6 +461,12 @@ class _$NetworkFailureImpl extends NetworkFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (network != null) {
@@ -450,6 +507,14 @@ class _$NetworkFailureImpl extends NetworkFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return network(this);
   }
@@ -485,6 +550,13 @@ class _$NetworkFailureImpl extends NetworkFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return network?.call(this);
   }
@@ -520,6 +592,12 @@ class _$NetworkFailureImpl extends NetworkFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (network != null) {
@@ -646,6 +724,12 @@ class _$ServerFailureImpl extends ServerFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return server(message, statusCode);
   }
@@ -679,6 +763,12 @@ class _$ServerFailureImpl extends ServerFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return server?.call(message, statusCode);
   }
@@ -712,6 +802,12 @@ class _$ServerFailureImpl extends ServerFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (server != null) {
@@ -752,6 +848,14 @@ class _$ServerFailureImpl extends ServerFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return server(this);
   }
@@ -787,6 +891,13 @@ class _$ServerFailureImpl extends ServerFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return server?.call(this);
   }
@@ -822,6 +933,12 @@ class _$ServerFailureImpl extends ServerFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (server != null) {
@@ -942,6 +1059,12 @@ class _$CacheFailureImpl extends CacheFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return cache(message);
   }
@@ -975,6 +1098,12 @@ class _$CacheFailureImpl extends CacheFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return cache?.call(message);
   }
@@ -1008,6 +1137,12 @@ class _$CacheFailureImpl extends CacheFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (cache != null) {
@@ -1048,6 +1183,14 @@ class _$CacheFailureImpl extends CacheFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return cache(this);
   }
@@ -1083,6 +1226,13 @@ class _$CacheFailureImpl extends CacheFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return cache?.call(this);
   }
@@ -1118,6 +1268,12 @@ class _$CacheFailureImpl extends CacheFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (cache != null) {
@@ -1237,6 +1393,12 @@ class _$UnknownFailureImpl extends UnknownFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return unknown(message);
   }
@@ -1270,6 +1432,12 @@ class _$UnknownFailureImpl extends UnknownFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return unknown?.call(message);
   }
@@ -1303,6 +1471,12 @@ class _$UnknownFailureImpl extends UnknownFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (unknown != null) {
@@ -1343,6 +1517,14 @@ class _$UnknownFailureImpl extends UnknownFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return unknown(this);
   }
@@ -1378,6 +1560,13 @@ class _$UnknownFailureImpl extends UnknownFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return unknown?.call(this);
   }
@@ -1413,6 +1602,12 @@ class _$UnknownFailureImpl extends UnknownFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (unknown != null) {
@@ -1542,6 +1737,12 @@ class _$InvalidOtpFailureImpl extends InvalidOtpFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return invalidOtp(message, attemptsRemaining);
   }
@@ -1575,6 +1776,12 @@ class _$InvalidOtpFailureImpl extends InvalidOtpFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return invalidOtp?.call(message, attemptsRemaining);
   }
@@ -1608,6 +1815,12 @@ class _$InvalidOtpFailureImpl extends InvalidOtpFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (invalidOtp != null) {
@@ -1648,6 +1861,14 @@ class _$InvalidOtpFailureImpl extends InvalidOtpFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return invalidOtp(this);
   }
@@ -1683,6 +1904,13 @@ class _$InvalidOtpFailureImpl extends InvalidOtpFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return invalidOtp?.call(this);
   }
@@ -1718,6 +1946,12 @@ class _$InvalidOtpFailureImpl extends InvalidOtpFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (invalidOtp != null) {
@@ -1841,6 +2075,12 @@ class _$OtpExpiredFailureImpl extends OtpExpiredFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return otpExpired(message);
   }
@@ -1874,6 +2114,12 @@ class _$OtpExpiredFailureImpl extends OtpExpiredFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return otpExpired?.call(message);
   }
@@ -1907,6 +2153,12 @@ class _$OtpExpiredFailureImpl extends OtpExpiredFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (otpExpired != null) {
@@ -1947,6 +2199,14 @@ class _$OtpExpiredFailureImpl extends OtpExpiredFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return otpExpired(this);
   }
@@ -1982,6 +2242,13 @@ class _$OtpExpiredFailureImpl extends OtpExpiredFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return otpExpired?.call(this);
   }
@@ -2017,6 +2284,12 @@ class _$OtpExpiredFailureImpl extends OtpExpiredFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (otpExpired != null) {
@@ -2142,6 +2415,12 @@ class _$PhoneNumberAlreadyExistsFailureImpl
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return phoneNumberAlreadyExists(message);
   }
@@ -2175,6 +2454,12 @@ class _$PhoneNumberAlreadyExistsFailureImpl
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return phoneNumberAlreadyExists?.call(message);
   }
@@ -2208,6 +2493,12 @@ class _$PhoneNumberAlreadyExistsFailureImpl
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (phoneNumberAlreadyExists != null) {
@@ -2248,6 +2539,14 @@ class _$PhoneNumberAlreadyExistsFailureImpl
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return phoneNumberAlreadyExists(this);
   }
@@ -2283,6 +2582,13 @@ class _$PhoneNumberAlreadyExistsFailureImpl
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return phoneNumberAlreadyExists?.call(this);
   }
@@ -2318,6 +2624,12 @@ class _$PhoneNumberAlreadyExistsFailureImpl
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (phoneNumberAlreadyExists != null) {
@@ -2441,6 +2753,12 @@ class _$InvalidCredentialsFailureImpl extends InvalidCredentialsFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return invalidCredentials(message);
   }
@@ -2474,6 +2792,12 @@ class _$InvalidCredentialsFailureImpl extends InvalidCredentialsFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return invalidCredentials?.call(message);
   }
@@ -2507,6 +2831,12 @@ class _$InvalidCredentialsFailureImpl extends InvalidCredentialsFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (invalidCredentials != null) {
@@ -2547,6 +2877,14 @@ class _$InvalidCredentialsFailureImpl extends InvalidCredentialsFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return invalidCredentials(this);
   }
@@ -2582,6 +2920,13 @@ class _$InvalidCredentialsFailureImpl extends InvalidCredentialsFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return invalidCredentials?.call(this);
   }
@@ -2617,6 +2962,12 @@ class _$InvalidCredentialsFailureImpl extends InvalidCredentialsFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (invalidCredentials != null) {
@@ -2739,6 +3090,12 @@ class _$SessionExpiredFailureImpl extends SessionExpiredFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return sessionExpired(message);
   }
@@ -2772,6 +3129,12 @@ class _$SessionExpiredFailureImpl extends SessionExpiredFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return sessionExpired?.call(message);
   }
@@ -2805,6 +3168,12 @@ class _$SessionExpiredFailureImpl extends SessionExpiredFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (sessionExpired != null) {
@@ -2845,6 +3214,14 @@ class _$SessionExpiredFailureImpl extends SessionExpiredFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return sessionExpired(this);
   }
@@ -2880,6 +3257,13 @@ class _$SessionExpiredFailureImpl extends SessionExpiredFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return sessionExpired?.call(this);
   }
@@ -2915,6 +3299,12 @@ class _$SessionExpiredFailureImpl extends SessionExpiredFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (sessionExpired != null) {
@@ -3037,6 +3427,12 @@ class _$AccountNotFoundFailureImpl extends AccountNotFoundFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return accountNotFound(message);
   }
@@ -3070,6 +3466,12 @@ class _$AccountNotFoundFailureImpl extends AccountNotFoundFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return accountNotFound?.call(message);
   }
@@ -3103,6 +3505,12 @@ class _$AccountNotFoundFailureImpl extends AccountNotFoundFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (accountNotFound != null) {
@@ -3143,6 +3551,14 @@ class _$AccountNotFoundFailureImpl extends AccountNotFoundFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return accountNotFound(this);
   }
@@ -3178,6 +3594,13 @@ class _$AccountNotFoundFailureImpl extends AccountNotFoundFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return accountNotFound?.call(this);
   }
@@ -3213,6 +3636,12 @@ class _$AccountNotFoundFailureImpl extends AccountNotFoundFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (accountNotFound != null) {
@@ -3351,6 +3780,12 @@ class _$ValidationFailureImpl extends ValidationFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return validation(message, fieldErrors);
   }
@@ -3384,6 +3819,12 @@ class _$ValidationFailureImpl extends ValidationFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return validation?.call(message, fieldErrors);
   }
@@ -3417,6 +3858,12 @@ class _$ValidationFailureImpl extends ValidationFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (validation != null) {
@@ -3457,6 +3904,14 @@ class _$ValidationFailureImpl extends ValidationFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return validation(this);
   }
@@ -3492,6 +3947,13 @@ class _$ValidationFailureImpl extends ValidationFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return validation?.call(this);
   }
@@ -3527,6 +3989,12 @@ class _$ValidationFailureImpl extends ValidationFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (validation != null) {
@@ -3649,6 +4117,12 @@ class _$ParsingFailureImpl extends _ParsingFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return parsing(message);
   }
@@ -3682,6 +4156,12 @@ class _$ParsingFailureImpl extends _ParsingFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return parsing?.call(message);
   }
@@ -3715,6 +4195,12 @@ class _$ParsingFailureImpl extends _ParsingFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (parsing != null) {
@@ -3755,6 +4241,14 @@ class _$ParsingFailureImpl extends _ParsingFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return parsing(this);
   }
@@ -3790,6 +4284,13 @@ class _$ParsingFailureImpl extends _ParsingFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return parsing?.call(this);
   }
@@ -3825,6 +4326,12 @@ class _$ParsingFailureImpl extends _ParsingFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (parsing != null) {
@@ -3953,6 +4460,12 @@ class _$UnauthorizedFailureImpl extends _UnauthorizedFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return unauthorized(message, code);
   }
@@ -3986,6 +4499,12 @@ class _$UnauthorizedFailureImpl extends _UnauthorizedFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return unauthorized?.call(message, code);
   }
@@ -4019,6 +4538,12 @@ class _$UnauthorizedFailureImpl extends _UnauthorizedFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (unauthorized != null) {
@@ -4059,6 +4584,14 @@ class _$UnauthorizedFailureImpl extends _UnauthorizedFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return unauthorized(this);
   }
@@ -4094,6 +4627,13 @@ class _$UnauthorizedFailureImpl extends _UnauthorizedFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return unauthorized?.call(this);
   }
@@ -4129,6 +4669,12 @@ class _$UnauthorizedFailureImpl extends _UnauthorizedFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (unauthorized != null) {
@@ -4250,6 +4796,12 @@ class _$NotFoundFailureImpl extends _NotFoundFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return notFound(message);
   }
@@ -4283,6 +4835,12 @@ class _$NotFoundFailureImpl extends _NotFoundFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return notFound?.call(message);
   }
@@ -4316,6 +4874,12 @@ class _$NotFoundFailureImpl extends _NotFoundFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (notFound != null) {
@@ -4356,6 +4920,14 @@ class _$NotFoundFailureImpl extends _NotFoundFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return notFound(this);
   }
@@ -4391,6 +4963,13 @@ class _$NotFoundFailureImpl extends _NotFoundFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return notFound?.call(this);
   }
@@ -4426,6 +5005,12 @@ class _$NotFoundFailureImpl extends _NotFoundFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (notFound != null) {
@@ -4546,6 +5131,12 @@ class _$PermissionFailureImpl extends _PermissionFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return permission(message);
   }
@@ -4579,6 +5170,12 @@ class _$PermissionFailureImpl extends _PermissionFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return permission?.call(message);
   }
@@ -4612,6 +5209,12 @@ class _$PermissionFailureImpl extends _PermissionFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (permission != null) {
@@ -4652,6 +5255,14 @@ class _$PermissionFailureImpl extends _PermissionFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return permission(this);
   }
@@ -4687,6 +5298,13 @@ class _$PermissionFailureImpl extends _PermissionFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return permission?.call(this);
   }
@@ -4722,6 +5340,12 @@ class _$PermissionFailureImpl extends _PermissionFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (permission != null) {
@@ -4851,6 +5475,12 @@ class _$GenericFailureImpl extends _GenericFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return generic(message, code);
   }
@@ -4884,6 +5514,12 @@ class _$GenericFailureImpl extends _GenericFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return generic?.call(message, code);
   }
@@ -4917,6 +5553,12 @@ class _$GenericFailureImpl extends _GenericFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (generic != null) {
@@ -4957,6 +5599,14 @@ class _$GenericFailureImpl extends _GenericFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return generic(this);
   }
@@ -4992,6 +5642,13 @@ class _$GenericFailureImpl extends _GenericFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return generic?.call(this);
   }
@@ -5027,6 +5684,12 @@ class _$GenericFailureImpl extends _GenericFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (generic != null) {
@@ -5171,6 +5834,12 @@ class _$LocationPermissionDeniedFailureImpl
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return locationPermissionDenied(status, message, code);
   }
@@ -5204,6 +5873,12 @@ class _$LocationPermissionDeniedFailureImpl
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return locationPermissionDenied?.call(status, message, code);
   }
@@ -5237,6 +5912,12 @@ class _$LocationPermissionDeniedFailureImpl
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (locationPermissionDenied != null) {
@@ -5277,6 +5958,14 @@ class _$LocationPermissionDeniedFailureImpl
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return locationPermissionDenied(this);
   }
@@ -5312,6 +6001,13 @@ class _$LocationPermissionDeniedFailureImpl
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return locationPermissionDenied?.call(this);
   }
@@ -5347,6 +6043,12 @@ class _$LocationPermissionDeniedFailureImpl
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (locationPermissionDenied != null) {
@@ -5485,6 +6187,12 @@ class _$LocationServiceDisabledFailureImpl
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return locationServiceDisabled(message, code);
   }
@@ -5518,6 +6226,12 @@ class _$LocationServiceDisabledFailureImpl
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return locationServiceDisabled?.call(message, code);
   }
@@ -5551,6 +6265,12 @@ class _$LocationServiceDisabledFailureImpl
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (locationServiceDisabled != null) {
@@ -5591,6 +6311,14 @@ class _$LocationServiceDisabledFailureImpl
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return locationServiceDisabled(this);
   }
@@ -5626,6 +6354,13 @@ class _$LocationServiceDisabledFailureImpl
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return locationServiceDisabled?.call(this);
   }
@@ -5661,6 +6396,12 @@ class _$LocationServiceDisabledFailureImpl
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (locationServiceDisabled != null) {
@@ -5792,6 +6533,12 @@ class _$LocationFetchFailureImpl extends _LocationFetchFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return locationFetch(message, code);
   }
@@ -5825,6 +6572,12 @@ class _$LocationFetchFailureImpl extends _LocationFetchFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return locationFetch?.call(message, code);
   }
@@ -5858,6 +6611,12 @@ class _$LocationFetchFailureImpl extends _LocationFetchFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (locationFetch != null) {
@@ -5898,6 +6657,14 @@ class _$LocationFetchFailureImpl extends _LocationFetchFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return locationFetch(this);
   }
@@ -5933,6 +6700,13 @@ class _$LocationFetchFailureImpl extends _LocationFetchFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return locationFetch?.call(this);
   }
@@ -5968,6 +6742,12 @@ class _$LocationFetchFailureImpl extends _LocationFetchFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (locationFetch != null) {
@@ -6092,6 +6872,12 @@ class _$BookingNotFoundFailureImpl extends BookingNotFoundFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return bookingNotFound(message);
   }
@@ -6125,6 +6911,12 @@ class _$BookingNotFoundFailureImpl extends BookingNotFoundFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return bookingNotFound?.call(message);
   }
@@ -6158,6 +6950,12 @@ class _$BookingNotFoundFailureImpl extends BookingNotFoundFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (bookingNotFound != null) {
@@ -6198,6 +6996,14 @@ class _$BookingNotFoundFailureImpl extends BookingNotFoundFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return bookingNotFound(this);
   }
@@ -6233,6 +7039,13 @@ class _$BookingNotFoundFailureImpl extends BookingNotFoundFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return bookingNotFound?.call(this);
   }
@@ -6268,6 +7081,12 @@ class _$BookingNotFoundFailureImpl extends BookingNotFoundFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (bookingNotFound != null) {
@@ -6393,6 +7212,12 @@ class _$BookingAlreadyCancelledFailureImpl
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return bookingAlreadyCancelled(message);
   }
@@ -6426,6 +7251,12 @@ class _$BookingAlreadyCancelledFailureImpl
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return bookingAlreadyCancelled?.call(message);
   }
@@ -6459,6 +7290,12 @@ class _$BookingAlreadyCancelledFailureImpl
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (bookingAlreadyCancelled != null) {
@@ -6499,6 +7336,14 @@ class _$BookingAlreadyCancelledFailureImpl
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return bookingAlreadyCancelled(this);
   }
@@ -6534,6 +7379,13 @@ class _$BookingAlreadyCancelledFailureImpl
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return bookingAlreadyCancelled?.call(this);
   }
@@ -6569,6 +7421,12 @@ class _$BookingAlreadyCancelledFailureImpl
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (bookingAlreadyCancelled != null) {
@@ -6704,6 +7562,12 @@ class _$CancellationNotAllowedFailureImpl
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return cancellationNotAllowed(message, reason);
   }
@@ -6737,6 +7601,12 @@ class _$CancellationNotAllowedFailureImpl
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return cancellationNotAllowed?.call(message, reason);
   }
@@ -6770,6 +7640,12 @@ class _$CancellationNotAllowedFailureImpl
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (cancellationNotAllowed != null) {
@@ -6810,6 +7686,14 @@ class _$CancellationNotAllowedFailureImpl
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return cancellationNotAllowed(this);
   }
@@ -6845,6 +7729,13 @@ class _$CancellationNotAllowedFailureImpl
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return cancellationNotAllowed?.call(this);
   }
@@ -6880,6 +7771,12 @@ class _$CancellationNotAllowedFailureImpl
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (cancellationNotAllowed != null) {
@@ -7003,6 +7900,12 @@ class _$BookingFetchFailureImpl extends BookingFetchFailure {
     required TResult Function(String message, String? reason)
         cancellationNotAllowed,
     required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
   }) {
     return bookingFetch(message);
   }
@@ -7036,6 +7939,12 @@ class _$BookingFetchFailureImpl extends BookingFetchFailure {
     TResult? Function(String message)? bookingAlreadyCancelled,
     TResult? Function(String message, String? reason)? cancellationNotAllowed,
     TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
   }) {
     return bookingFetch?.call(message);
   }
@@ -7069,6 +7978,12 @@ class _$BookingFetchFailureImpl extends BookingFetchFailure {
     TResult Function(String message)? bookingAlreadyCancelled,
     TResult Function(String message, String? reason)? cancellationNotAllowed,
     TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
     required TResult orElse(),
   }) {
     if (bookingFetch != null) {
@@ -7109,6 +8024,14 @@ class _$BookingFetchFailureImpl extends BookingFetchFailure {
     required TResult Function(CancellationNotAllowedFailure value)
         cancellationNotAllowed,
     required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
   }) {
     return bookingFetch(this);
   }
@@ -7144,6 +8067,13 @@ class _$BookingFetchFailureImpl extends BookingFetchFailure {
     TResult? Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
   }) {
     return bookingFetch?.call(this);
   }
@@ -7179,6 +8109,12 @@ class _$BookingFetchFailureImpl extends BookingFetchFailure {
     TResult Function(CancellationNotAllowedFailure value)?
         cancellationNotAllowed,
     TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
     required TResult orElse(),
   }) {
     if (bookingFetch != null) {
@@ -7198,5 +8134,2026 @@ abstract class BookingFetchFailure extends Failure {
   @override
   @JsonKey(ignore: true)
   _$$BookingFetchFailureImplCopyWith<_$BookingFetchFailureImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ShopNotFoundFailureImplCopyWith<$Res>
+    implements $FailureCopyWith<$Res> {
+  factory _$$ShopNotFoundFailureImplCopyWith(_$ShopNotFoundFailureImpl value,
+          $Res Function(_$ShopNotFoundFailureImpl) then) =
+      __$$ShopNotFoundFailureImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message});
+}
+
+/// @nodoc
+class __$$ShopNotFoundFailureImplCopyWithImpl<$Res>
+    extends _$FailureCopyWithImpl<$Res, _$ShopNotFoundFailureImpl>
+    implements _$$ShopNotFoundFailureImplCopyWith<$Res> {
+  __$$ShopNotFoundFailureImplCopyWithImpl(_$ShopNotFoundFailureImpl _value,
+      $Res Function(_$ShopNotFoundFailureImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? message = null,
+  }) {
+    return _then(_$ShopNotFoundFailureImpl(
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ShopNotFoundFailureImpl extends ShopNotFoundFailure {
+  const _$ShopNotFoundFailureImpl({this.message = 'Shop not found'})
+      : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+
+  @override
+  String toString() {
+    return 'Failure.shopNotFound(message: $message)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ShopNotFoundFailureImpl &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ShopNotFoundFailureImplCopyWith<_$ShopNotFoundFailureImpl> get copyWith =>
+      __$$ShopNotFoundFailureImplCopyWithImpl<_$ShopNotFoundFailureImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message) network,
+    required TResult Function(String message, int? statusCode) server,
+    required TResult Function(String message) cache,
+    required TResult Function(String message) unknown,
+    required TResult Function(String message, int? attemptsRemaining)
+        invalidOtp,
+    required TResult Function(String message) otpExpired,
+    required TResult Function(String message) phoneNumberAlreadyExists,
+    required TResult Function(String message) invalidCredentials,
+    required TResult Function(String message) sessionExpired,
+    required TResult Function(String message) accountNotFound,
+    required TResult Function(String message, Map<String, String>? fieldErrors)
+        validation,
+    required TResult Function(String message) parsing,
+    required TResult Function(String message, String? code) unauthorized,
+    required TResult Function(String message) notFound,
+    required TResult Function(String message) permission,
+    required TResult Function(String message, String? code) generic,
+    required TResult Function(
+            LocationPermissionStatus status, String message, String? code)
+        locationPermissionDenied,
+    required TResult Function(String message, String? code)
+        locationServiceDisabled,
+    required TResult Function(String message, String? code) locationFetch,
+    required TResult Function(String message) bookingNotFound,
+    required TResult Function(String message) bookingAlreadyCancelled,
+    required TResult Function(String message, String? reason)
+        cancellationNotAllowed,
+    required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
+  }) {
+    return shopNotFound(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message)? network,
+    TResult? Function(String message, int? statusCode)? server,
+    TResult? Function(String message)? cache,
+    TResult? Function(String message)? unknown,
+    TResult? Function(String message, int? attemptsRemaining)? invalidOtp,
+    TResult? Function(String message)? otpExpired,
+    TResult? Function(String message)? phoneNumberAlreadyExists,
+    TResult? Function(String message)? invalidCredentials,
+    TResult? Function(String message)? sessionExpired,
+    TResult? Function(String message)? accountNotFound,
+    TResult? Function(String message, Map<String, String>? fieldErrors)?
+        validation,
+    TResult? Function(String message)? parsing,
+    TResult? Function(String message, String? code)? unauthorized,
+    TResult? Function(String message)? notFound,
+    TResult? Function(String message)? permission,
+    TResult? Function(String message, String? code)? generic,
+    TResult? Function(
+            LocationPermissionStatus status, String message, String? code)?
+        locationPermissionDenied,
+    TResult? Function(String message, String? code)? locationServiceDisabled,
+    TResult? Function(String message, String? code)? locationFetch,
+    TResult? Function(String message)? bookingNotFound,
+    TResult? Function(String message)? bookingAlreadyCancelled,
+    TResult? Function(String message, String? reason)? cancellationNotAllowed,
+    TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
+  }) {
+    return shopNotFound?.call(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message)? network,
+    TResult Function(String message, int? statusCode)? server,
+    TResult Function(String message)? cache,
+    TResult Function(String message)? unknown,
+    TResult Function(String message, int? attemptsRemaining)? invalidOtp,
+    TResult Function(String message)? otpExpired,
+    TResult Function(String message)? phoneNumberAlreadyExists,
+    TResult Function(String message)? invalidCredentials,
+    TResult Function(String message)? sessionExpired,
+    TResult Function(String message)? accountNotFound,
+    TResult Function(String message, Map<String, String>? fieldErrors)?
+        validation,
+    TResult Function(String message)? parsing,
+    TResult Function(String message, String? code)? unauthorized,
+    TResult Function(String message)? notFound,
+    TResult Function(String message)? permission,
+    TResult Function(String message, String? code)? generic,
+    TResult Function(
+            LocationPermissionStatus status, String message, String? code)?
+        locationPermissionDenied,
+    TResult Function(String message, String? code)? locationServiceDisabled,
+    TResult Function(String message, String? code)? locationFetch,
+    TResult Function(String message)? bookingNotFound,
+    TResult Function(String message)? bookingAlreadyCancelled,
+    TResult Function(String message, String? reason)? cancellationNotAllowed,
+    TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
+    required TResult orElse(),
+  }) {
+    if (shopNotFound != null) {
+      return shopNotFound(message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(NetworkFailure value) network,
+    required TResult Function(ServerFailure value) server,
+    required TResult Function(CacheFailure value) cache,
+    required TResult Function(UnknownFailure value) unknown,
+    required TResult Function(InvalidOtpFailure value) invalidOtp,
+    required TResult Function(OtpExpiredFailure value) otpExpired,
+    required TResult Function(PhoneNumberAlreadyExistsFailure value)
+        phoneNumberAlreadyExists,
+    required TResult Function(InvalidCredentialsFailure value)
+        invalidCredentials,
+    required TResult Function(SessionExpiredFailure value) sessionExpired,
+    required TResult Function(AccountNotFoundFailure value) accountNotFound,
+    required TResult Function(ValidationFailure value) validation,
+    required TResult Function(_ParsingFailure value) parsing,
+    required TResult Function(_UnauthorizedFailure value) unauthorized,
+    required TResult Function(_NotFoundFailure value) notFound,
+    required TResult Function(_PermissionFailure value) permission,
+    required TResult Function(_GenericFailure value) generic,
+    required TResult Function(_LocationPermissionDeniedFailure value)
+        locationPermissionDenied,
+    required TResult Function(_LocationServiceDisabledFailure value)
+        locationServiceDisabled,
+    required TResult Function(_LocationFetchFailure value) locationFetch,
+    required TResult Function(BookingNotFoundFailure value) bookingNotFound,
+    required TResult Function(BookingAlreadyCancelledFailure value)
+        bookingAlreadyCancelled,
+    required TResult Function(CancellationNotAllowedFailure value)
+        cancellationNotAllowed,
+    required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
+  }) {
+    return shopNotFound(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(NetworkFailure value)? network,
+    TResult? Function(ServerFailure value)? server,
+    TResult? Function(CacheFailure value)? cache,
+    TResult? Function(UnknownFailure value)? unknown,
+    TResult? Function(InvalidOtpFailure value)? invalidOtp,
+    TResult? Function(OtpExpiredFailure value)? otpExpired,
+    TResult? Function(PhoneNumberAlreadyExistsFailure value)?
+        phoneNumberAlreadyExists,
+    TResult? Function(InvalidCredentialsFailure value)? invalidCredentials,
+    TResult? Function(SessionExpiredFailure value)? sessionExpired,
+    TResult? Function(AccountNotFoundFailure value)? accountNotFound,
+    TResult? Function(ValidationFailure value)? validation,
+    TResult? Function(_ParsingFailure value)? parsing,
+    TResult? Function(_UnauthorizedFailure value)? unauthorized,
+    TResult? Function(_NotFoundFailure value)? notFound,
+    TResult? Function(_PermissionFailure value)? permission,
+    TResult? Function(_GenericFailure value)? generic,
+    TResult? Function(_LocationPermissionDeniedFailure value)?
+        locationPermissionDenied,
+    TResult? Function(_LocationServiceDisabledFailure value)?
+        locationServiceDisabled,
+    TResult? Function(_LocationFetchFailure value)? locationFetch,
+    TResult? Function(BookingNotFoundFailure value)? bookingNotFound,
+    TResult? Function(BookingAlreadyCancelledFailure value)?
+        bookingAlreadyCancelled,
+    TResult? Function(CancellationNotAllowedFailure value)?
+        cancellationNotAllowed,
+    TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
+  }) {
+    return shopNotFound?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(NetworkFailure value)? network,
+    TResult Function(ServerFailure value)? server,
+    TResult Function(CacheFailure value)? cache,
+    TResult Function(UnknownFailure value)? unknown,
+    TResult Function(InvalidOtpFailure value)? invalidOtp,
+    TResult Function(OtpExpiredFailure value)? otpExpired,
+    TResult Function(PhoneNumberAlreadyExistsFailure value)?
+        phoneNumberAlreadyExists,
+    TResult Function(InvalidCredentialsFailure value)? invalidCredentials,
+    TResult Function(SessionExpiredFailure value)? sessionExpired,
+    TResult Function(AccountNotFoundFailure value)? accountNotFound,
+    TResult Function(ValidationFailure value)? validation,
+    TResult Function(_ParsingFailure value)? parsing,
+    TResult Function(_UnauthorizedFailure value)? unauthorized,
+    TResult Function(_NotFoundFailure value)? notFound,
+    TResult Function(_PermissionFailure value)? permission,
+    TResult Function(_GenericFailure value)? generic,
+    TResult Function(_LocationPermissionDeniedFailure value)?
+        locationPermissionDenied,
+    TResult Function(_LocationServiceDisabledFailure value)?
+        locationServiceDisabled,
+    TResult Function(_LocationFetchFailure value)? locationFetch,
+    TResult Function(BookingNotFoundFailure value)? bookingNotFound,
+    TResult Function(BookingAlreadyCancelledFailure value)?
+        bookingAlreadyCancelled,
+    TResult Function(CancellationNotAllowedFailure value)?
+        cancellationNotAllowed,
+    TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
+    required TResult orElse(),
+  }) {
+    if (shopNotFound != null) {
+      return shopNotFound(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ShopNotFoundFailure extends Failure {
+  const factory ShopNotFoundFailure({final String message}) =
+      _$ShopNotFoundFailureImpl;
+  const ShopNotFoundFailure._() : super._();
+
+  @override
+  String get message;
+  @override
+  @JsonKey(ignore: true)
+  _$$ShopNotFoundFailureImplCopyWith<_$ShopNotFoundFailureImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$NoSlotsAvailableFailureImplCopyWith<$Res>
+    implements $FailureCopyWith<$Res> {
+  factory _$$NoSlotsAvailableFailureImplCopyWith(
+          _$NoSlotsAvailableFailureImpl value,
+          $Res Function(_$NoSlotsAvailableFailureImpl) then) =
+      __$$NoSlotsAvailableFailureImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message});
+}
+
+/// @nodoc
+class __$$NoSlotsAvailableFailureImplCopyWithImpl<$Res>
+    extends _$FailureCopyWithImpl<$Res, _$NoSlotsAvailableFailureImpl>
+    implements _$$NoSlotsAvailableFailureImplCopyWith<$Res> {
+  __$$NoSlotsAvailableFailureImplCopyWithImpl(
+      _$NoSlotsAvailableFailureImpl _value,
+      $Res Function(_$NoSlotsAvailableFailureImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? message = null,
+  }) {
+    return _then(_$NoSlotsAvailableFailureImpl(
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$NoSlotsAvailableFailureImpl extends NoSlotsAvailableFailure {
+  const _$NoSlotsAvailableFailureImpl(
+      {this.message = 'No slots available for the selected date'})
+      : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+
+  @override
+  String toString() {
+    return 'Failure.noSlotsAvailable(message: $message)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$NoSlotsAvailableFailureImpl &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$NoSlotsAvailableFailureImplCopyWith<_$NoSlotsAvailableFailureImpl>
+      get copyWith => __$$NoSlotsAvailableFailureImplCopyWithImpl<
+          _$NoSlotsAvailableFailureImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message) network,
+    required TResult Function(String message, int? statusCode) server,
+    required TResult Function(String message) cache,
+    required TResult Function(String message) unknown,
+    required TResult Function(String message, int? attemptsRemaining)
+        invalidOtp,
+    required TResult Function(String message) otpExpired,
+    required TResult Function(String message) phoneNumberAlreadyExists,
+    required TResult Function(String message) invalidCredentials,
+    required TResult Function(String message) sessionExpired,
+    required TResult Function(String message) accountNotFound,
+    required TResult Function(String message, Map<String, String>? fieldErrors)
+        validation,
+    required TResult Function(String message) parsing,
+    required TResult Function(String message, String? code) unauthorized,
+    required TResult Function(String message) notFound,
+    required TResult Function(String message) permission,
+    required TResult Function(String message, String? code) generic,
+    required TResult Function(
+            LocationPermissionStatus status, String message, String? code)
+        locationPermissionDenied,
+    required TResult Function(String message, String? code)
+        locationServiceDisabled,
+    required TResult Function(String message, String? code) locationFetch,
+    required TResult Function(String message) bookingNotFound,
+    required TResult Function(String message) bookingAlreadyCancelled,
+    required TResult Function(String message, String? reason)
+        cancellationNotAllowed,
+    required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
+  }) {
+    return noSlotsAvailable(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message)? network,
+    TResult? Function(String message, int? statusCode)? server,
+    TResult? Function(String message)? cache,
+    TResult? Function(String message)? unknown,
+    TResult? Function(String message, int? attemptsRemaining)? invalidOtp,
+    TResult? Function(String message)? otpExpired,
+    TResult? Function(String message)? phoneNumberAlreadyExists,
+    TResult? Function(String message)? invalidCredentials,
+    TResult? Function(String message)? sessionExpired,
+    TResult? Function(String message)? accountNotFound,
+    TResult? Function(String message, Map<String, String>? fieldErrors)?
+        validation,
+    TResult? Function(String message)? parsing,
+    TResult? Function(String message, String? code)? unauthorized,
+    TResult? Function(String message)? notFound,
+    TResult? Function(String message)? permission,
+    TResult? Function(String message, String? code)? generic,
+    TResult? Function(
+            LocationPermissionStatus status, String message, String? code)?
+        locationPermissionDenied,
+    TResult? Function(String message, String? code)? locationServiceDisabled,
+    TResult? Function(String message, String? code)? locationFetch,
+    TResult? Function(String message)? bookingNotFound,
+    TResult? Function(String message)? bookingAlreadyCancelled,
+    TResult? Function(String message, String? reason)? cancellationNotAllowed,
+    TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
+  }) {
+    return noSlotsAvailable?.call(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message)? network,
+    TResult Function(String message, int? statusCode)? server,
+    TResult Function(String message)? cache,
+    TResult Function(String message)? unknown,
+    TResult Function(String message, int? attemptsRemaining)? invalidOtp,
+    TResult Function(String message)? otpExpired,
+    TResult Function(String message)? phoneNumberAlreadyExists,
+    TResult Function(String message)? invalidCredentials,
+    TResult Function(String message)? sessionExpired,
+    TResult Function(String message)? accountNotFound,
+    TResult Function(String message, Map<String, String>? fieldErrors)?
+        validation,
+    TResult Function(String message)? parsing,
+    TResult Function(String message, String? code)? unauthorized,
+    TResult Function(String message)? notFound,
+    TResult Function(String message)? permission,
+    TResult Function(String message, String? code)? generic,
+    TResult Function(
+            LocationPermissionStatus status, String message, String? code)?
+        locationPermissionDenied,
+    TResult Function(String message, String? code)? locationServiceDisabled,
+    TResult Function(String message, String? code)? locationFetch,
+    TResult Function(String message)? bookingNotFound,
+    TResult Function(String message)? bookingAlreadyCancelled,
+    TResult Function(String message, String? reason)? cancellationNotAllowed,
+    TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
+    required TResult orElse(),
+  }) {
+    if (noSlotsAvailable != null) {
+      return noSlotsAvailable(message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(NetworkFailure value) network,
+    required TResult Function(ServerFailure value) server,
+    required TResult Function(CacheFailure value) cache,
+    required TResult Function(UnknownFailure value) unknown,
+    required TResult Function(InvalidOtpFailure value) invalidOtp,
+    required TResult Function(OtpExpiredFailure value) otpExpired,
+    required TResult Function(PhoneNumberAlreadyExistsFailure value)
+        phoneNumberAlreadyExists,
+    required TResult Function(InvalidCredentialsFailure value)
+        invalidCredentials,
+    required TResult Function(SessionExpiredFailure value) sessionExpired,
+    required TResult Function(AccountNotFoundFailure value) accountNotFound,
+    required TResult Function(ValidationFailure value) validation,
+    required TResult Function(_ParsingFailure value) parsing,
+    required TResult Function(_UnauthorizedFailure value) unauthorized,
+    required TResult Function(_NotFoundFailure value) notFound,
+    required TResult Function(_PermissionFailure value) permission,
+    required TResult Function(_GenericFailure value) generic,
+    required TResult Function(_LocationPermissionDeniedFailure value)
+        locationPermissionDenied,
+    required TResult Function(_LocationServiceDisabledFailure value)
+        locationServiceDisabled,
+    required TResult Function(_LocationFetchFailure value) locationFetch,
+    required TResult Function(BookingNotFoundFailure value) bookingNotFound,
+    required TResult Function(BookingAlreadyCancelledFailure value)
+        bookingAlreadyCancelled,
+    required TResult Function(CancellationNotAllowedFailure value)
+        cancellationNotAllowed,
+    required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
+  }) {
+    return noSlotsAvailable(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(NetworkFailure value)? network,
+    TResult? Function(ServerFailure value)? server,
+    TResult? Function(CacheFailure value)? cache,
+    TResult? Function(UnknownFailure value)? unknown,
+    TResult? Function(InvalidOtpFailure value)? invalidOtp,
+    TResult? Function(OtpExpiredFailure value)? otpExpired,
+    TResult? Function(PhoneNumberAlreadyExistsFailure value)?
+        phoneNumberAlreadyExists,
+    TResult? Function(InvalidCredentialsFailure value)? invalidCredentials,
+    TResult? Function(SessionExpiredFailure value)? sessionExpired,
+    TResult? Function(AccountNotFoundFailure value)? accountNotFound,
+    TResult? Function(ValidationFailure value)? validation,
+    TResult? Function(_ParsingFailure value)? parsing,
+    TResult? Function(_UnauthorizedFailure value)? unauthorized,
+    TResult? Function(_NotFoundFailure value)? notFound,
+    TResult? Function(_PermissionFailure value)? permission,
+    TResult? Function(_GenericFailure value)? generic,
+    TResult? Function(_LocationPermissionDeniedFailure value)?
+        locationPermissionDenied,
+    TResult? Function(_LocationServiceDisabledFailure value)?
+        locationServiceDisabled,
+    TResult? Function(_LocationFetchFailure value)? locationFetch,
+    TResult? Function(BookingNotFoundFailure value)? bookingNotFound,
+    TResult? Function(BookingAlreadyCancelledFailure value)?
+        bookingAlreadyCancelled,
+    TResult? Function(CancellationNotAllowedFailure value)?
+        cancellationNotAllowed,
+    TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
+  }) {
+    return noSlotsAvailable?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(NetworkFailure value)? network,
+    TResult Function(ServerFailure value)? server,
+    TResult Function(CacheFailure value)? cache,
+    TResult Function(UnknownFailure value)? unknown,
+    TResult Function(InvalidOtpFailure value)? invalidOtp,
+    TResult Function(OtpExpiredFailure value)? otpExpired,
+    TResult Function(PhoneNumberAlreadyExistsFailure value)?
+        phoneNumberAlreadyExists,
+    TResult Function(InvalidCredentialsFailure value)? invalidCredentials,
+    TResult Function(SessionExpiredFailure value)? sessionExpired,
+    TResult Function(AccountNotFoundFailure value)? accountNotFound,
+    TResult Function(ValidationFailure value)? validation,
+    TResult Function(_ParsingFailure value)? parsing,
+    TResult Function(_UnauthorizedFailure value)? unauthorized,
+    TResult Function(_NotFoundFailure value)? notFound,
+    TResult Function(_PermissionFailure value)? permission,
+    TResult Function(_GenericFailure value)? generic,
+    TResult Function(_LocationPermissionDeniedFailure value)?
+        locationPermissionDenied,
+    TResult Function(_LocationServiceDisabledFailure value)?
+        locationServiceDisabled,
+    TResult Function(_LocationFetchFailure value)? locationFetch,
+    TResult Function(BookingNotFoundFailure value)? bookingNotFound,
+    TResult Function(BookingAlreadyCancelledFailure value)?
+        bookingAlreadyCancelled,
+    TResult Function(CancellationNotAllowedFailure value)?
+        cancellationNotAllowed,
+    TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
+    required TResult orElse(),
+  }) {
+    if (noSlotsAvailable != null) {
+      return noSlotsAvailable(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class NoSlotsAvailableFailure extends Failure {
+  const factory NoSlotsAvailableFailure({final String message}) =
+      _$NoSlotsAvailableFailureImpl;
+  const NoSlotsAvailableFailure._() : super._();
+
+  @override
+  String get message;
+  @override
+  @JsonKey(ignore: true)
+  _$$NoSlotsAvailableFailureImplCopyWith<_$NoSlotsAvailableFailureImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$BookingCreationFailureImplCopyWith<$Res>
+    implements $FailureCopyWith<$Res> {
+  factory _$$BookingCreationFailureImplCopyWith(
+          _$BookingCreationFailureImpl value,
+          $Res Function(_$BookingCreationFailureImpl) then) =
+      __$$BookingCreationFailureImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message});
+}
+
+/// @nodoc
+class __$$BookingCreationFailureImplCopyWithImpl<$Res>
+    extends _$FailureCopyWithImpl<$Res, _$BookingCreationFailureImpl>
+    implements _$$BookingCreationFailureImplCopyWith<$Res> {
+  __$$BookingCreationFailureImplCopyWithImpl(
+      _$BookingCreationFailureImpl _value,
+      $Res Function(_$BookingCreationFailureImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? message = null,
+  }) {
+    return _then(_$BookingCreationFailureImpl(
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$BookingCreationFailureImpl extends BookingCreationFailure {
+  const _$BookingCreationFailureImpl({required this.message}) : super._();
+
+  @override
+  final String message;
+
+  @override
+  String toString() {
+    return 'Failure.bookingCreationFailed(message: $message)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$BookingCreationFailureImpl &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$BookingCreationFailureImplCopyWith<_$BookingCreationFailureImpl>
+      get copyWith => __$$BookingCreationFailureImplCopyWithImpl<
+          _$BookingCreationFailureImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message) network,
+    required TResult Function(String message, int? statusCode) server,
+    required TResult Function(String message) cache,
+    required TResult Function(String message) unknown,
+    required TResult Function(String message, int? attemptsRemaining)
+        invalidOtp,
+    required TResult Function(String message) otpExpired,
+    required TResult Function(String message) phoneNumberAlreadyExists,
+    required TResult Function(String message) invalidCredentials,
+    required TResult Function(String message) sessionExpired,
+    required TResult Function(String message) accountNotFound,
+    required TResult Function(String message, Map<String, String>? fieldErrors)
+        validation,
+    required TResult Function(String message) parsing,
+    required TResult Function(String message, String? code) unauthorized,
+    required TResult Function(String message) notFound,
+    required TResult Function(String message) permission,
+    required TResult Function(String message, String? code) generic,
+    required TResult Function(
+            LocationPermissionStatus status, String message, String? code)
+        locationPermissionDenied,
+    required TResult Function(String message, String? code)
+        locationServiceDisabled,
+    required TResult Function(String message, String? code) locationFetch,
+    required TResult Function(String message) bookingNotFound,
+    required TResult Function(String message) bookingAlreadyCancelled,
+    required TResult Function(String message, String? reason)
+        cancellationNotAllowed,
+    required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
+  }) {
+    return bookingCreationFailed(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message)? network,
+    TResult? Function(String message, int? statusCode)? server,
+    TResult? Function(String message)? cache,
+    TResult? Function(String message)? unknown,
+    TResult? Function(String message, int? attemptsRemaining)? invalidOtp,
+    TResult? Function(String message)? otpExpired,
+    TResult? Function(String message)? phoneNumberAlreadyExists,
+    TResult? Function(String message)? invalidCredentials,
+    TResult? Function(String message)? sessionExpired,
+    TResult? Function(String message)? accountNotFound,
+    TResult? Function(String message, Map<String, String>? fieldErrors)?
+        validation,
+    TResult? Function(String message)? parsing,
+    TResult? Function(String message, String? code)? unauthorized,
+    TResult? Function(String message)? notFound,
+    TResult? Function(String message)? permission,
+    TResult? Function(String message, String? code)? generic,
+    TResult? Function(
+            LocationPermissionStatus status, String message, String? code)?
+        locationPermissionDenied,
+    TResult? Function(String message, String? code)? locationServiceDisabled,
+    TResult? Function(String message, String? code)? locationFetch,
+    TResult? Function(String message)? bookingNotFound,
+    TResult? Function(String message)? bookingAlreadyCancelled,
+    TResult? Function(String message, String? reason)? cancellationNotAllowed,
+    TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
+  }) {
+    return bookingCreationFailed?.call(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message)? network,
+    TResult Function(String message, int? statusCode)? server,
+    TResult Function(String message)? cache,
+    TResult Function(String message)? unknown,
+    TResult Function(String message, int? attemptsRemaining)? invalidOtp,
+    TResult Function(String message)? otpExpired,
+    TResult Function(String message)? phoneNumberAlreadyExists,
+    TResult Function(String message)? invalidCredentials,
+    TResult Function(String message)? sessionExpired,
+    TResult Function(String message)? accountNotFound,
+    TResult Function(String message, Map<String, String>? fieldErrors)?
+        validation,
+    TResult Function(String message)? parsing,
+    TResult Function(String message, String? code)? unauthorized,
+    TResult Function(String message)? notFound,
+    TResult Function(String message)? permission,
+    TResult Function(String message, String? code)? generic,
+    TResult Function(
+            LocationPermissionStatus status, String message, String? code)?
+        locationPermissionDenied,
+    TResult Function(String message, String? code)? locationServiceDisabled,
+    TResult Function(String message, String? code)? locationFetch,
+    TResult Function(String message)? bookingNotFound,
+    TResult Function(String message)? bookingAlreadyCancelled,
+    TResult Function(String message, String? reason)? cancellationNotAllowed,
+    TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
+    required TResult orElse(),
+  }) {
+    if (bookingCreationFailed != null) {
+      return bookingCreationFailed(message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(NetworkFailure value) network,
+    required TResult Function(ServerFailure value) server,
+    required TResult Function(CacheFailure value) cache,
+    required TResult Function(UnknownFailure value) unknown,
+    required TResult Function(InvalidOtpFailure value) invalidOtp,
+    required TResult Function(OtpExpiredFailure value) otpExpired,
+    required TResult Function(PhoneNumberAlreadyExistsFailure value)
+        phoneNumberAlreadyExists,
+    required TResult Function(InvalidCredentialsFailure value)
+        invalidCredentials,
+    required TResult Function(SessionExpiredFailure value) sessionExpired,
+    required TResult Function(AccountNotFoundFailure value) accountNotFound,
+    required TResult Function(ValidationFailure value) validation,
+    required TResult Function(_ParsingFailure value) parsing,
+    required TResult Function(_UnauthorizedFailure value) unauthorized,
+    required TResult Function(_NotFoundFailure value) notFound,
+    required TResult Function(_PermissionFailure value) permission,
+    required TResult Function(_GenericFailure value) generic,
+    required TResult Function(_LocationPermissionDeniedFailure value)
+        locationPermissionDenied,
+    required TResult Function(_LocationServiceDisabledFailure value)
+        locationServiceDisabled,
+    required TResult Function(_LocationFetchFailure value) locationFetch,
+    required TResult Function(BookingNotFoundFailure value) bookingNotFound,
+    required TResult Function(BookingAlreadyCancelledFailure value)
+        bookingAlreadyCancelled,
+    required TResult Function(CancellationNotAllowedFailure value)
+        cancellationNotAllowed,
+    required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
+  }) {
+    return bookingCreationFailed(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(NetworkFailure value)? network,
+    TResult? Function(ServerFailure value)? server,
+    TResult? Function(CacheFailure value)? cache,
+    TResult? Function(UnknownFailure value)? unknown,
+    TResult? Function(InvalidOtpFailure value)? invalidOtp,
+    TResult? Function(OtpExpiredFailure value)? otpExpired,
+    TResult? Function(PhoneNumberAlreadyExistsFailure value)?
+        phoneNumberAlreadyExists,
+    TResult? Function(InvalidCredentialsFailure value)? invalidCredentials,
+    TResult? Function(SessionExpiredFailure value)? sessionExpired,
+    TResult? Function(AccountNotFoundFailure value)? accountNotFound,
+    TResult? Function(ValidationFailure value)? validation,
+    TResult? Function(_ParsingFailure value)? parsing,
+    TResult? Function(_UnauthorizedFailure value)? unauthorized,
+    TResult? Function(_NotFoundFailure value)? notFound,
+    TResult? Function(_PermissionFailure value)? permission,
+    TResult? Function(_GenericFailure value)? generic,
+    TResult? Function(_LocationPermissionDeniedFailure value)?
+        locationPermissionDenied,
+    TResult? Function(_LocationServiceDisabledFailure value)?
+        locationServiceDisabled,
+    TResult? Function(_LocationFetchFailure value)? locationFetch,
+    TResult? Function(BookingNotFoundFailure value)? bookingNotFound,
+    TResult? Function(BookingAlreadyCancelledFailure value)?
+        bookingAlreadyCancelled,
+    TResult? Function(CancellationNotAllowedFailure value)?
+        cancellationNotAllowed,
+    TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
+  }) {
+    return bookingCreationFailed?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(NetworkFailure value)? network,
+    TResult Function(ServerFailure value)? server,
+    TResult Function(CacheFailure value)? cache,
+    TResult Function(UnknownFailure value)? unknown,
+    TResult Function(InvalidOtpFailure value)? invalidOtp,
+    TResult Function(OtpExpiredFailure value)? otpExpired,
+    TResult Function(PhoneNumberAlreadyExistsFailure value)?
+        phoneNumberAlreadyExists,
+    TResult Function(InvalidCredentialsFailure value)? invalidCredentials,
+    TResult Function(SessionExpiredFailure value)? sessionExpired,
+    TResult Function(AccountNotFoundFailure value)? accountNotFound,
+    TResult Function(ValidationFailure value)? validation,
+    TResult Function(_ParsingFailure value)? parsing,
+    TResult Function(_UnauthorizedFailure value)? unauthorized,
+    TResult Function(_NotFoundFailure value)? notFound,
+    TResult Function(_PermissionFailure value)? permission,
+    TResult Function(_GenericFailure value)? generic,
+    TResult Function(_LocationPermissionDeniedFailure value)?
+        locationPermissionDenied,
+    TResult Function(_LocationServiceDisabledFailure value)?
+        locationServiceDisabled,
+    TResult Function(_LocationFetchFailure value)? locationFetch,
+    TResult Function(BookingNotFoundFailure value)? bookingNotFound,
+    TResult Function(BookingAlreadyCancelledFailure value)?
+        bookingAlreadyCancelled,
+    TResult Function(CancellationNotAllowedFailure value)?
+        cancellationNotAllowed,
+    TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
+    required TResult orElse(),
+  }) {
+    if (bookingCreationFailed != null) {
+      return bookingCreationFailed(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class BookingCreationFailure extends Failure {
+  const factory BookingCreationFailure({required final String message}) =
+      _$BookingCreationFailureImpl;
+  const BookingCreationFailure._() : super._();
+
+  @override
+  String get message;
+  @override
+  @JsonKey(ignore: true)
+  _$$BookingCreationFailureImplCopyWith<_$BookingCreationFailureImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$SlotNoLongerAvailableFailureImplCopyWith<$Res>
+    implements $FailureCopyWith<$Res> {
+  factory _$$SlotNoLongerAvailableFailureImplCopyWith(
+          _$SlotNoLongerAvailableFailureImpl value,
+          $Res Function(_$SlotNoLongerAvailableFailureImpl) then) =
+      __$$SlotNoLongerAvailableFailureImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message});
+}
+
+/// @nodoc
+class __$$SlotNoLongerAvailableFailureImplCopyWithImpl<$Res>
+    extends _$FailureCopyWithImpl<$Res, _$SlotNoLongerAvailableFailureImpl>
+    implements _$$SlotNoLongerAvailableFailureImplCopyWith<$Res> {
+  __$$SlotNoLongerAvailableFailureImplCopyWithImpl(
+      _$SlotNoLongerAvailableFailureImpl _value,
+      $Res Function(_$SlotNoLongerAvailableFailureImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? message = null,
+  }) {
+    return _then(_$SlotNoLongerAvailableFailureImpl(
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SlotNoLongerAvailableFailureImpl extends SlotNoLongerAvailableFailure {
+  const _$SlotNoLongerAvailableFailureImpl(
+      {this.message = 'The selected time slot is no longer available'})
+      : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+
+  @override
+  String toString() {
+    return 'Failure.slotNoLongerAvailable(message: $message)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SlotNoLongerAvailableFailureImpl &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SlotNoLongerAvailableFailureImplCopyWith<
+          _$SlotNoLongerAvailableFailureImpl>
+      get copyWith => __$$SlotNoLongerAvailableFailureImplCopyWithImpl<
+          _$SlotNoLongerAvailableFailureImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message) network,
+    required TResult Function(String message, int? statusCode) server,
+    required TResult Function(String message) cache,
+    required TResult Function(String message) unknown,
+    required TResult Function(String message, int? attemptsRemaining)
+        invalidOtp,
+    required TResult Function(String message) otpExpired,
+    required TResult Function(String message) phoneNumberAlreadyExists,
+    required TResult Function(String message) invalidCredentials,
+    required TResult Function(String message) sessionExpired,
+    required TResult Function(String message) accountNotFound,
+    required TResult Function(String message, Map<String, String>? fieldErrors)
+        validation,
+    required TResult Function(String message) parsing,
+    required TResult Function(String message, String? code) unauthorized,
+    required TResult Function(String message) notFound,
+    required TResult Function(String message) permission,
+    required TResult Function(String message, String? code) generic,
+    required TResult Function(
+            LocationPermissionStatus status, String message, String? code)
+        locationPermissionDenied,
+    required TResult Function(String message, String? code)
+        locationServiceDisabled,
+    required TResult Function(String message, String? code) locationFetch,
+    required TResult Function(String message) bookingNotFound,
+    required TResult Function(String message) bookingAlreadyCancelled,
+    required TResult Function(String message, String? reason)
+        cancellationNotAllowed,
+    required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
+  }) {
+    return slotNoLongerAvailable(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message)? network,
+    TResult? Function(String message, int? statusCode)? server,
+    TResult? Function(String message)? cache,
+    TResult? Function(String message)? unknown,
+    TResult? Function(String message, int? attemptsRemaining)? invalidOtp,
+    TResult? Function(String message)? otpExpired,
+    TResult? Function(String message)? phoneNumberAlreadyExists,
+    TResult? Function(String message)? invalidCredentials,
+    TResult? Function(String message)? sessionExpired,
+    TResult? Function(String message)? accountNotFound,
+    TResult? Function(String message, Map<String, String>? fieldErrors)?
+        validation,
+    TResult? Function(String message)? parsing,
+    TResult? Function(String message, String? code)? unauthorized,
+    TResult? Function(String message)? notFound,
+    TResult? Function(String message)? permission,
+    TResult? Function(String message, String? code)? generic,
+    TResult? Function(
+            LocationPermissionStatus status, String message, String? code)?
+        locationPermissionDenied,
+    TResult? Function(String message, String? code)? locationServiceDisabled,
+    TResult? Function(String message, String? code)? locationFetch,
+    TResult? Function(String message)? bookingNotFound,
+    TResult? Function(String message)? bookingAlreadyCancelled,
+    TResult? Function(String message, String? reason)? cancellationNotAllowed,
+    TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
+  }) {
+    return slotNoLongerAvailable?.call(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message)? network,
+    TResult Function(String message, int? statusCode)? server,
+    TResult Function(String message)? cache,
+    TResult Function(String message)? unknown,
+    TResult Function(String message, int? attemptsRemaining)? invalidOtp,
+    TResult Function(String message)? otpExpired,
+    TResult Function(String message)? phoneNumberAlreadyExists,
+    TResult Function(String message)? invalidCredentials,
+    TResult Function(String message)? sessionExpired,
+    TResult Function(String message)? accountNotFound,
+    TResult Function(String message, Map<String, String>? fieldErrors)?
+        validation,
+    TResult Function(String message)? parsing,
+    TResult Function(String message, String? code)? unauthorized,
+    TResult Function(String message)? notFound,
+    TResult Function(String message)? permission,
+    TResult Function(String message, String? code)? generic,
+    TResult Function(
+            LocationPermissionStatus status, String message, String? code)?
+        locationPermissionDenied,
+    TResult Function(String message, String? code)? locationServiceDisabled,
+    TResult Function(String message, String? code)? locationFetch,
+    TResult Function(String message)? bookingNotFound,
+    TResult Function(String message)? bookingAlreadyCancelled,
+    TResult Function(String message, String? reason)? cancellationNotAllowed,
+    TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
+    required TResult orElse(),
+  }) {
+    if (slotNoLongerAvailable != null) {
+      return slotNoLongerAvailable(message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(NetworkFailure value) network,
+    required TResult Function(ServerFailure value) server,
+    required TResult Function(CacheFailure value) cache,
+    required TResult Function(UnknownFailure value) unknown,
+    required TResult Function(InvalidOtpFailure value) invalidOtp,
+    required TResult Function(OtpExpiredFailure value) otpExpired,
+    required TResult Function(PhoneNumberAlreadyExistsFailure value)
+        phoneNumberAlreadyExists,
+    required TResult Function(InvalidCredentialsFailure value)
+        invalidCredentials,
+    required TResult Function(SessionExpiredFailure value) sessionExpired,
+    required TResult Function(AccountNotFoundFailure value) accountNotFound,
+    required TResult Function(ValidationFailure value) validation,
+    required TResult Function(_ParsingFailure value) parsing,
+    required TResult Function(_UnauthorizedFailure value) unauthorized,
+    required TResult Function(_NotFoundFailure value) notFound,
+    required TResult Function(_PermissionFailure value) permission,
+    required TResult Function(_GenericFailure value) generic,
+    required TResult Function(_LocationPermissionDeniedFailure value)
+        locationPermissionDenied,
+    required TResult Function(_LocationServiceDisabledFailure value)
+        locationServiceDisabled,
+    required TResult Function(_LocationFetchFailure value) locationFetch,
+    required TResult Function(BookingNotFoundFailure value) bookingNotFound,
+    required TResult Function(BookingAlreadyCancelledFailure value)
+        bookingAlreadyCancelled,
+    required TResult Function(CancellationNotAllowedFailure value)
+        cancellationNotAllowed,
+    required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
+  }) {
+    return slotNoLongerAvailable(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(NetworkFailure value)? network,
+    TResult? Function(ServerFailure value)? server,
+    TResult? Function(CacheFailure value)? cache,
+    TResult? Function(UnknownFailure value)? unknown,
+    TResult? Function(InvalidOtpFailure value)? invalidOtp,
+    TResult? Function(OtpExpiredFailure value)? otpExpired,
+    TResult? Function(PhoneNumberAlreadyExistsFailure value)?
+        phoneNumberAlreadyExists,
+    TResult? Function(InvalidCredentialsFailure value)? invalidCredentials,
+    TResult? Function(SessionExpiredFailure value)? sessionExpired,
+    TResult? Function(AccountNotFoundFailure value)? accountNotFound,
+    TResult? Function(ValidationFailure value)? validation,
+    TResult? Function(_ParsingFailure value)? parsing,
+    TResult? Function(_UnauthorizedFailure value)? unauthorized,
+    TResult? Function(_NotFoundFailure value)? notFound,
+    TResult? Function(_PermissionFailure value)? permission,
+    TResult? Function(_GenericFailure value)? generic,
+    TResult? Function(_LocationPermissionDeniedFailure value)?
+        locationPermissionDenied,
+    TResult? Function(_LocationServiceDisabledFailure value)?
+        locationServiceDisabled,
+    TResult? Function(_LocationFetchFailure value)? locationFetch,
+    TResult? Function(BookingNotFoundFailure value)? bookingNotFound,
+    TResult? Function(BookingAlreadyCancelledFailure value)?
+        bookingAlreadyCancelled,
+    TResult? Function(CancellationNotAllowedFailure value)?
+        cancellationNotAllowed,
+    TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
+  }) {
+    return slotNoLongerAvailable?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(NetworkFailure value)? network,
+    TResult Function(ServerFailure value)? server,
+    TResult Function(CacheFailure value)? cache,
+    TResult Function(UnknownFailure value)? unknown,
+    TResult Function(InvalidOtpFailure value)? invalidOtp,
+    TResult Function(OtpExpiredFailure value)? otpExpired,
+    TResult Function(PhoneNumberAlreadyExistsFailure value)?
+        phoneNumberAlreadyExists,
+    TResult Function(InvalidCredentialsFailure value)? invalidCredentials,
+    TResult Function(SessionExpiredFailure value)? sessionExpired,
+    TResult Function(AccountNotFoundFailure value)? accountNotFound,
+    TResult Function(ValidationFailure value)? validation,
+    TResult Function(_ParsingFailure value)? parsing,
+    TResult Function(_UnauthorizedFailure value)? unauthorized,
+    TResult Function(_NotFoundFailure value)? notFound,
+    TResult Function(_PermissionFailure value)? permission,
+    TResult Function(_GenericFailure value)? generic,
+    TResult Function(_LocationPermissionDeniedFailure value)?
+        locationPermissionDenied,
+    TResult Function(_LocationServiceDisabledFailure value)?
+        locationServiceDisabled,
+    TResult Function(_LocationFetchFailure value)? locationFetch,
+    TResult Function(BookingNotFoundFailure value)? bookingNotFound,
+    TResult Function(BookingAlreadyCancelledFailure value)?
+        bookingAlreadyCancelled,
+    TResult Function(CancellationNotAllowedFailure value)?
+        cancellationNotAllowed,
+    TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
+    required TResult orElse(),
+  }) {
+    if (slotNoLongerAvailable != null) {
+      return slotNoLongerAvailable(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SlotNoLongerAvailableFailure extends Failure {
+  const factory SlotNoLongerAvailableFailure({final String message}) =
+      _$SlotNoLongerAvailableFailureImpl;
+  const SlotNoLongerAvailableFailure._() : super._();
+
+  @override
+  String get message;
+  @override
+  @JsonKey(ignore: true)
+  _$$SlotNoLongerAvailableFailureImplCopyWith<
+          _$SlotNoLongerAvailableFailureImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$InvalidPromoCodeFailureImplCopyWith<$Res>
+    implements $FailureCopyWith<$Res> {
+  factory _$$InvalidPromoCodeFailureImplCopyWith(
+          _$InvalidPromoCodeFailureImpl value,
+          $Res Function(_$InvalidPromoCodeFailureImpl) then) =
+      __$$InvalidPromoCodeFailureImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message});
+}
+
+/// @nodoc
+class __$$InvalidPromoCodeFailureImplCopyWithImpl<$Res>
+    extends _$FailureCopyWithImpl<$Res, _$InvalidPromoCodeFailureImpl>
+    implements _$$InvalidPromoCodeFailureImplCopyWith<$Res> {
+  __$$InvalidPromoCodeFailureImplCopyWithImpl(
+      _$InvalidPromoCodeFailureImpl _value,
+      $Res Function(_$InvalidPromoCodeFailureImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? message = null,
+  }) {
+    return _then(_$InvalidPromoCodeFailureImpl(
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$InvalidPromoCodeFailureImpl extends InvalidPromoCodeFailure {
+  const _$InvalidPromoCodeFailureImpl(
+      {this.message = 'Invalid or expired promo code'})
+      : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+
+  @override
+  String toString() {
+    return 'Failure.invalidPromoCode(message: $message)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$InvalidPromoCodeFailureImpl &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$InvalidPromoCodeFailureImplCopyWith<_$InvalidPromoCodeFailureImpl>
+      get copyWith => __$$InvalidPromoCodeFailureImplCopyWithImpl<
+          _$InvalidPromoCodeFailureImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message) network,
+    required TResult Function(String message, int? statusCode) server,
+    required TResult Function(String message) cache,
+    required TResult Function(String message) unknown,
+    required TResult Function(String message, int? attemptsRemaining)
+        invalidOtp,
+    required TResult Function(String message) otpExpired,
+    required TResult Function(String message) phoneNumberAlreadyExists,
+    required TResult Function(String message) invalidCredentials,
+    required TResult Function(String message) sessionExpired,
+    required TResult Function(String message) accountNotFound,
+    required TResult Function(String message, Map<String, String>? fieldErrors)
+        validation,
+    required TResult Function(String message) parsing,
+    required TResult Function(String message, String? code) unauthorized,
+    required TResult Function(String message) notFound,
+    required TResult Function(String message) permission,
+    required TResult Function(String message, String? code) generic,
+    required TResult Function(
+            LocationPermissionStatus status, String message, String? code)
+        locationPermissionDenied,
+    required TResult Function(String message, String? code)
+        locationServiceDisabled,
+    required TResult Function(String message, String? code) locationFetch,
+    required TResult Function(String message) bookingNotFound,
+    required TResult Function(String message) bookingAlreadyCancelled,
+    required TResult Function(String message, String? reason)
+        cancellationNotAllowed,
+    required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
+  }) {
+    return invalidPromoCode(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message)? network,
+    TResult? Function(String message, int? statusCode)? server,
+    TResult? Function(String message)? cache,
+    TResult? Function(String message)? unknown,
+    TResult? Function(String message, int? attemptsRemaining)? invalidOtp,
+    TResult? Function(String message)? otpExpired,
+    TResult? Function(String message)? phoneNumberAlreadyExists,
+    TResult? Function(String message)? invalidCredentials,
+    TResult? Function(String message)? sessionExpired,
+    TResult? Function(String message)? accountNotFound,
+    TResult? Function(String message, Map<String, String>? fieldErrors)?
+        validation,
+    TResult? Function(String message)? parsing,
+    TResult? Function(String message, String? code)? unauthorized,
+    TResult? Function(String message)? notFound,
+    TResult? Function(String message)? permission,
+    TResult? Function(String message, String? code)? generic,
+    TResult? Function(
+            LocationPermissionStatus status, String message, String? code)?
+        locationPermissionDenied,
+    TResult? Function(String message, String? code)? locationServiceDisabled,
+    TResult? Function(String message, String? code)? locationFetch,
+    TResult? Function(String message)? bookingNotFound,
+    TResult? Function(String message)? bookingAlreadyCancelled,
+    TResult? Function(String message, String? reason)? cancellationNotAllowed,
+    TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
+  }) {
+    return invalidPromoCode?.call(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message)? network,
+    TResult Function(String message, int? statusCode)? server,
+    TResult Function(String message)? cache,
+    TResult Function(String message)? unknown,
+    TResult Function(String message, int? attemptsRemaining)? invalidOtp,
+    TResult Function(String message)? otpExpired,
+    TResult Function(String message)? phoneNumberAlreadyExists,
+    TResult Function(String message)? invalidCredentials,
+    TResult Function(String message)? sessionExpired,
+    TResult Function(String message)? accountNotFound,
+    TResult Function(String message, Map<String, String>? fieldErrors)?
+        validation,
+    TResult Function(String message)? parsing,
+    TResult Function(String message, String? code)? unauthorized,
+    TResult Function(String message)? notFound,
+    TResult Function(String message)? permission,
+    TResult Function(String message, String? code)? generic,
+    TResult Function(
+            LocationPermissionStatus status, String message, String? code)?
+        locationPermissionDenied,
+    TResult Function(String message, String? code)? locationServiceDisabled,
+    TResult Function(String message, String? code)? locationFetch,
+    TResult Function(String message)? bookingNotFound,
+    TResult Function(String message)? bookingAlreadyCancelled,
+    TResult Function(String message, String? reason)? cancellationNotAllowed,
+    TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
+    required TResult orElse(),
+  }) {
+    if (invalidPromoCode != null) {
+      return invalidPromoCode(message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(NetworkFailure value) network,
+    required TResult Function(ServerFailure value) server,
+    required TResult Function(CacheFailure value) cache,
+    required TResult Function(UnknownFailure value) unknown,
+    required TResult Function(InvalidOtpFailure value) invalidOtp,
+    required TResult Function(OtpExpiredFailure value) otpExpired,
+    required TResult Function(PhoneNumberAlreadyExistsFailure value)
+        phoneNumberAlreadyExists,
+    required TResult Function(InvalidCredentialsFailure value)
+        invalidCredentials,
+    required TResult Function(SessionExpiredFailure value) sessionExpired,
+    required TResult Function(AccountNotFoundFailure value) accountNotFound,
+    required TResult Function(ValidationFailure value) validation,
+    required TResult Function(_ParsingFailure value) parsing,
+    required TResult Function(_UnauthorizedFailure value) unauthorized,
+    required TResult Function(_NotFoundFailure value) notFound,
+    required TResult Function(_PermissionFailure value) permission,
+    required TResult Function(_GenericFailure value) generic,
+    required TResult Function(_LocationPermissionDeniedFailure value)
+        locationPermissionDenied,
+    required TResult Function(_LocationServiceDisabledFailure value)
+        locationServiceDisabled,
+    required TResult Function(_LocationFetchFailure value) locationFetch,
+    required TResult Function(BookingNotFoundFailure value) bookingNotFound,
+    required TResult Function(BookingAlreadyCancelledFailure value)
+        bookingAlreadyCancelled,
+    required TResult Function(CancellationNotAllowedFailure value)
+        cancellationNotAllowed,
+    required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
+  }) {
+    return invalidPromoCode(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(NetworkFailure value)? network,
+    TResult? Function(ServerFailure value)? server,
+    TResult? Function(CacheFailure value)? cache,
+    TResult? Function(UnknownFailure value)? unknown,
+    TResult? Function(InvalidOtpFailure value)? invalidOtp,
+    TResult? Function(OtpExpiredFailure value)? otpExpired,
+    TResult? Function(PhoneNumberAlreadyExistsFailure value)?
+        phoneNumberAlreadyExists,
+    TResult? Function(InvalidCredentialsFailure value)? invalidCredentials,
+    TResult? Function(SessionExpiredFailure value)? sessionExpired,
+    TResult? Function(AccountNotFoundFailure value)? accountNotFound,
+    TResult? Function(ValidationFailure value)? validation,
+    TResult? Function(_ParsingFailure value)? parsing,
+    TResult? Function(_UnauthorizedFailure value)? unauthorized,
+    TResult? Function(_NotFoundFailure value)? notFound,
+    TResult? Function(_PermissionFailure value)? permission,
+    TResult? Function(_GenericFailure value)? generic,
+    TResult? Function(_LocationPermissionDeniedFailure value)?
+        locationPermissionDenied,
+    TResult? Function(_LocationServiceDisabledFailure value)?
+        locationServiceDisabled,
+    TResult? Function(_LocationFetchFailure value)? locationFetch,
+    TResult? Function(BookingNotFoundFailure value)? bookingNotFound,
+    TResult? Function(BookingAlreadyCancelledFailure value)?
+        bookingAlreadyCancelled,
+    TResult? Function(CancellationNotAllowedFailure value)?
+        cancellationNotAllowed,
+    TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
+  }) {
+    return invalidPromoCode?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(NetworkFailure value)? network,
+    TResult Function(ServerFailure value)? server,
+    TResult Function(CacheFailure value)? cache,
+    TResult Function(UnknownFailure value)? unknown,
+    TResult Function(InvalidOtpFailure value)? invalidOtp,
+    TResult Function(OtpExpiredFailure value)? otpExpired,
+    TResult Function(PhoneNumberAlreadyExistsFailure value)?
+        phoneNumberAlreadyExists,
+    TResult Function(InvalidCredentialsFailure value)? invalidCredentials,
+    TResult Function(SessionExpiredFailure value)? sessionExpired,
+    TResult Function(AccountNotFoundFailure value)? accountNotFound,
+    TResult Function(ValidationFailure value)? validation,
+    TResult Function(_ParsingFailure value)? parsing,
+    TResult Function(_UnauthorizedFailure value)? unauthorized,
+    TResult Function(_NotFoundFailure value)? notFound,
+    TResult Function(_PermissionFailure value)? permission,
+    TResult Function(_GenericFailure value)? generic,
+    TResult Function(_LocationPermissionDeniedFailure value)?
+        locationPermissionDenied,
+    TResult Function(_LocationServiceDisabledFailure value)?
+        locationServiceDisabled,
+    TResult Function(_LocationFetchFailure value)? locationFetch,
+    TResult Function(BookingNotFoundFailure value)? bookingNotFound,
+    TResult Function(BookingAlreadyCancelledFailure value)?
+        bookingAlreadyCancelled,
+    TResult Function(CancellationNotAllowedFailure value)?
+        cancellationNotAllowed,
+    TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
+    required TResult orElse(),
+  }) {
+    if (invalidPromoCode != null) {
+      return invalidPromoCode(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class InvalidPromoCodeFailure extends Failure {
+  const factory InvalidPromoCodeFailure({final String message}) =
+      _$InvalidPromoCodeFailureImpl;
+  const InvalidPromoCodeFailure._() : super._();
+
+  @override
+  String get message;
+  @override
+  @JsonKey(ignore: true)
+  _$$InvalidPromoCodeFailureImplCopyWith<_$InvalidPromoCodeFailureImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$NoConnectionFailureImplCopyWith<$Res>
+    implements $FailureCopyWith<$Res> {
+  factory _$$NoConnectionFailureImplCopyWith(_$NoConnectionFailureImpl value,
+          $Res Function(_$NoConnectionFailureImpl) then) =
+      __$$NoConnectionFailureImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message});
+}
+
+/// @nodoc
+class __$$NoConnectionFailureImplCopyWithImpl<$Res>
+    extends _$FailureCopyWithImpl<$Res, _$NoConnectionFailureImpl>
+    implements _$$NoConnectionFailureImplCopyWith<$Res> {
+  __$$NoConnectionFailureImplCopyWithImpl(_$NoConnectionFailureImpl _value,
+      $Res Function(_$NoConnectionFailureImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? message = null,
+  }) {
+    return _then(_$NoConnectionFailureImpl(
+      message: null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$NoConnectionFailureImpl extends NoConnectionFailure {
+  const _$NoConnectionFailureImpl({this.message = 'No internet connection'})
+      : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+
+  @override
+  String toString() {
+    return 'Failure.noConnection(message: $message)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$NoConnectionFailureImpl &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$NoConnectionFailureImplCopyWith<_$NoConnectionFailureImpl> get copyWith =>
+      __$$NoConnectionFailureImplCopyWithImpl<_$NoConnectionFailureImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message) network,
+    required TResult Function(String message, int? statusCode) server,
+    required TResult Function(String message) cache,
+    required TResult Function(String message) unknown,
+    required TResult Function(String message, int? attemptsRemaining)
+        invalidOtp,
+    required TResult Function(String message) otpExpired,
+    required TResult Function(String message) phoneNumberAlreadyExists,
+    required TResult Function(String message) invalidCredentials,
+    required TResult Function(String message) sessionExpired,
+    required TResult Function(String message) accountNotFound,
+    required TResult Function(String message, Map<String, String>? fieldErrors)
+        validation,
+    required TResult Function(String message) parsing,
+    required TResult Function(String message, String? code) unauthorized,
+    required TResult Function(String message) notFound,
+    required TResult Function(String message) permission,
+    required TResult Function(String message, String? code) generic,
+    required TResult Function(
+            LocationPermissionStatus status, String message, String? code)
+        locationPermissionDenied,
+    required TResult Function(String message, String? code)
+        locationServiceDisabled,
+    required TResult Function(String message, String? code) locationFetch,
+    required TResult Function(String message) bookingNotFound,
+    required TResult Function(String message) bookingAlreadyCancelled,
+    required TResult Function(String message, String? reason)
+        cancellationNotAllowed,
+    required TResult Function(String message) bookingFetch,
+    required TResult Function(String message) shopNotFound,
+    required TResult Function(String message) noSlotsAvailable,
+    required TResult Function(String message) bookingCreationFailed,
+    required TResult Function(String message) slotNoLongerAvailable,
+    required TResult Function(String message) invalidPromoCode,
+    required TResult Function(String message) noConnection,
+  }) {
+    return noConnection(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message)? network,
+    TResult? Function(String message, int? statusCode)? server,
+    TResult? Function(String message)? cache,
+    TResult? Function(String message)? unknown,
+    TResult? Function(String message, int? attemptsRemaining)? invalidOtp,
+    TResult? Function(String message)? otpExpired,
+    TResult? Function(String message)? phoneNumberAlreadyExists,
+    TResult? Function(String message)? invalidCredentials,
+    TResult? Function(String message)? sessionExpired,
+    TResult? Function(String message)? accountNotFound,
+    TResult? Function(String message, Map<String, String>? fieldErrors)?
+        validation,
+    TResult? Function(String message)? parsing,
+    TResult? Function(String message, String? code)? unauthorized,
+    TResult? Function(String message)? notFound,
+    TResult? Function(String message)? permission,
+    TResult? Function(String message, String? code)? generic,
+    TResult? Function(
+            LocationPermissionStatus status, String message, String? code)?
+        locationPermissionDenied,
+    TResult? Function(String message, String? code)? locationServiceDisabled,
+    TResult? Function(String message, String? code)? locationFetch,
+    TResult? Function(String message)? bookingNotFound,
+    TResult? Function(String message)? bookingAlreadyCancelled,
+    TResult? Function(String message, String? reason)? cancellationNotAllowed,
+    TResult? Function(String message)? bookingFetch,
+    TResult? Function(String message)? shopNotFound,
+    TResult? Function(String message)? noSlotsAvailable,
+    TResult? Function(String message)? bookingCreationFailed,
+    TResult? Function(String message)? slotNoLongerAvailable,
+    TResult? Function(String message)? invalidPromoCode,
+    TResult? Function(String message)? noConnection,
+  }) {
+    return noConnection?.call(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message)? network,
+    TResult Function(String message, int? statusCode)? server,
+    TResult Function(String message)? cache,
+    TResult Function(String message)? unknown,
+    TResult Function(String message, int? attemptsRemaining)? invalidOtp,
+    TResult Function(String message)? otpExpired,
+    TResult Function(String message)? phoneNumberAlreadyExists,
+    TResult Function(String message)? invalidCredentials,
+    TResult Function(String message)? sessionExpired,
+    TResult Function(String message)? accountNotFound,
+    TResult Function(String message, Map<String, String>? fieldErrors)?
+        validation,
+    TResult Function(String message)? parsing,
+    TResult Function(String message, String? code)? unauthorized,
+    TResult Function(String message)? notFound,
+    TResult Function(String message)? permission,
+    TResult Function(String message, String? code)? generic,
+    TResult Function(
+            LocationPermissionStatus status, String message, String? code)?
+        locationPermissionDenied,
+    TResult Function(String message, String? code)? locationServiceDisabled,
+    TResult Function(String message, String? code)? locationFetch,
+    TResult Function(String message)? bookingNotFound,
+    TResult Function(String message)? bookingAlreadyCancelled,
+    TResult Function(String message, String? reason)? cancellationNotAllowed,
+    TResult Function(String message)? bookingFetch,
+    TResult Function(String message)? shopNotFound,
+    TResult Function(String message)? noSlotsAvailable,
+    TResult Function(String message)? bookingCreationFailed,
+    TResult Function(String message)? slotNoLongerAvailable,
+    TResult Function(String message)? invalidPromoCode,
+    TResult Function(String message)? noConnection,
+    required TResult orElse(),
+  }) {
+    if (noConnection != null) {
+      return noConnection(message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(NetworkFailure value) network,
+    required TResult Function(ServerFailure value) server,
+    required TResult Function(CacheFailure value) cache,
+    required TResult Function(UnknownFailure value) unknown,
+    required TResult Function(InvalidOtpFailure value) invalidOtp,
+    required TResult Function(OtpExpiredFailure value) otpExpired,
+    required TResult Function(PhoneNumberAlreadyExistsFailure value)
+        phoneNumberAlreadyExists,
+    required TResult Function(InvalidCredentialsFailure value)
+        invalidCredentials,
+    required TResult Function(SessionExpiredFailure value) sessionExpired,
+    required TResult Function(AccountNotFoundFailure value) accountNotFound,
+    required TResult Function(ValidationFailure value) validation,
+    required TResult Function(_ParsingFailure value) parsing,
+    required TResult Function(_UnauthorizedFailure value) unauthorized,
+    required TResult Function(_NotFoundFailure value) notFound,
+    required TResult Function(_PermissionFailure value) permission,
+    required TResult Function(_GenericFailure value) generic,
+    required TResult Function(_LocationPermissionDeniedFailure value)
+        locationPermissionDenied,
+    required TResult Function(_LocationServiceDisabledFailure value)
+        locationServiceDisabled,
+    required TResult Function(_LocationFetchFailure value) locationFetch,
+    required TResult Function(BookingNotFoundFailure value) bookingNotFound,
+    required TResult Function(BookingAlreadyCancelledFailure value)
+        bookingAlreadyCancelled,
+    required TResult Function(CancellationNotAllowedFailure value)
+        cancellationNotAllowed,
+    required TResult Function(BookingFetchFailure value) bookingFetch,
+    required TResult Function(ShopNotFoundFailure value) shopNotFound,
+    required TResult Function(NoSlotsAvailableFailure value) noSlotsAvailable,
+    required TResult Function(BookingCreationFailure value)
+        bookingCreationFailed,
+    required TResult Function(SlotNoLongerAvailableFailure value)
+        slotNoLongerAvailable,
+    required TResult Function(InvalidPromoCodeFailure value) invalidPromoCode,
+    required TResult Function(NoConnectionFailure value) noConnection,
+  }) {
+    return noConnection(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(NetworkFailure value)? network,
+    TResult? Function(ServerFailure value)? server,
+    TResult? Function(CacheFailure value)? cache,
+    TResult? Function(UnknownFailure value)? unknown,
+    TResult? Function(InvalidOtpFailure value)? invalidOtp,
+    TResult? Function(OtpExpiredFailure value)? otpExpired,
+    TResult? Function(PhoneNumberAlreadyExistsFailure value)?
+        phoneNumberAlreadyExists,
+    TResult? Function(InvalidCredentialsFailure value)? invalidCredentials,
+    TResult? Function(SessionExpiredFailure value)? sessionExpired,
+    TResult? Function(AccountNotFoundFailure value)? accountNotFound,
+    TResult? Function(ValidationFailure value)? validation,
+    TResult? Function(_ParsingFailure value)? parsing,
+    TResult? Function(_UnauthorizedFailure value)? unauthorized,
+    TResult? Function(_NotFoundFailure value)? notFound,
+    TResult? Function(_PermissionFailure value)? permission,
+    TResult? Function(_GenericFailure value)? generic,
+    TResult? Function(_LocationPermissionDeniedFailure value)?
+        locationPermissionDenied,
+    TResult? Function(_LocationServiceDisabledFailure value)?
+        locationServiceDisabled,
+    TResult? Function(_LocationFetchFailure value)? locationFetch,
+    TResult? Function(BookingNotFoundFailure value)? bookingNotFound,
+    TResult? Function(BookingAlreadyCancelledFailure value)?
+        bookingAlreadyCancelled,
+    TResult? Function(CancellationNotAllowedFailure value)?
+        cancellationNotAllowed,
+    TResult? Function(BookingFetchFailure value)? bookingFetch,
+    TResult? Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult? Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult? Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult? Function(SlotNoLongerAvailableFailure value)?
+        slotNoLongerAvailable,
+    TResult? Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult? Function(NoConnectionFailure value)? noConnection,
+  }) {
+    return noConnection?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(NetworkFailure value)? network,
+    TResult Function(ServerFailure value)? server,
+    TResult Function(CacheFailure value)? cache,
+    TResult Function(UnknownFailure value)? unknown,
+    TResult Function(InvalidOtpFailure value)? invalidOtp,
+    TResult Function(OtpExpiredFailure value)? otpExpired,
+    TResult Function(PhoneNumberAlreadyExistsFailure value)?
+        phoneNumberAlreadyExists,
+    TResult Function(InvalidCredentialsFailure value)? invalidCredentials,
+    TResult Function(SessionExpiredFailure value)? sessionExpired,
+    TResult Function(AccountNotFoundFailure value)? accountNotFound,
+    TResult Function(ValidationFailure value)? validation,
+    TResult Function(_ParsingFailure value)? parsing,
+    TResult Function(_UnauthorizedFailure value)? unauthorized,
+    TResult Function(_NotFoundFailure value)? notFound,
+    TResult Function(_PermissionFailure value)? permission,
+    TResult Function(_GenericFailure value)? generic,
+    TResult Function(_LocationPermissionDeniedFailure value)?
+        locationPermissionDenied,
+    TResult Function(_LocationServiceDisabledFailure value)?
+        locationServiceDisabled,
+    TResult Function(_LocationFetchFailure value)? locationFetch,
+    TResult Function(BookingNotFoundFailure value)? bookingNotFound,
+    TResult Function(BookingAlreadyCancelledFailure value)?
+        bookingAlreadyCancelled,
+    TResult Function(CancellationNotAllowedFailure value)?
+        cancellationNotAllowed,
+    TResult Function(BookingFetchFailure value)? bookingFetch,
+    TResult Function(ShopNotFoundFailure value)? shopNotFound,
+    TResult Function(NoSlotsAvailableFailure value)? noSlotsAvailable,
+    TResult Function(BookingCreationFailure value)? bookingCreationFailed,
+    TResult Function(SlotNoLongerAvailableFailure value)? slotNoLongerAvailable,
+    TResult Function(InvalidPromoCodeFailure value)? invalidPromoCode,
+    TResult Function(NoConnectionFailure value)? noConnection,
+    required TResult orElse(),
+  }) {
+    if (noConnection != null) {
+      return noConnection(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class NoConnectionFailure extends Failure {
+  const factory NoConnectionFailure({final String message}) =
+      _$NoConnectionFailureImpl;
+  const NoConnectionFailure._() : super._();
+
+  @override
+  String get message;
+  @override
+  @JsonKey(ignore: true)
+  _$$NoConnectionFailureImplCopyWith<_$NoConnectionFailureImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

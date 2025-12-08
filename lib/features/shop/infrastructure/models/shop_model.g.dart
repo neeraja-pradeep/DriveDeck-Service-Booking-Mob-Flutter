@@ -400,9 +400,8 @@ ShopModel _$ShopModelFromJson(Map<String, dynamic> json) => ShopModel(
       openHours: json['open_hours'] as String?,
       operatingDays: json['operating_days'] as String?,
       minBookingDuration: json['min_booking_duration'] as String?,
-      images: (json['images'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
+      images:
+          (json['images'] as List<dynamic>?)?.map((e) => e as String).toList(),
       vehicleTypes: (json['vehicle_types'] as List<dynamic>?)
           ?.map((e) => ShopVehicleTypeModel.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -435,10 +434,10 @@ Map<String, dynamic> _$ShopModelToJson(ShopModel instance) => <String, dynamic>{
       'operating_days': instance.operatingDays,
       'min_booking_duration': instance.minBookingDuration,
       'images': instance.images,
-      'vehicle_types': instance.vehicleTypes?.map((e) => e.toJson()).toList(),
-      'services': instance.services?.map((e) => e.toJson()).toList(),
-      'packages': instance.packages?.map((e) => e.toJson()).toList(),
-      'accessories': instance.accessories?.map((e) => e.toJson()).toList(),
+      'vehicle_types': instance.vehicleTypes,
+      'services': instance.services,
+      'packages': instance.packages,
+      'accessories': instance.accessories,
       'is_favorite': instance.isFavorite,
       'phone_number': instance.phoneNumber,
       'latitude': instance.latitude,
@@ -561,6 +560,6 @@ Map<String, dynamic> _$ShopDateAvailabilityModelToJson(
         ShopDateAvailabilityModel instance) =>
     <String, dynamic>{
       'date': instance.date,
-      'slots': instance.slots.map((e) => e.toJson()).toList(),
+      'slots': instance.slots,
       'is_open': instance.isOpen,
     };

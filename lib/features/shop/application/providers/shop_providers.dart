@@ -64,8 +64,9 @@ final getShopServicesUseCaseProvider = Provider<GetShopServicesUseCase>((ref) {
 });
 
 /// Provider for GetAvailableSlotsUseCase.
-final getAvailableSlotsUseCaseProvider =
-    Provider<GetAvailableSlotsUseCase>((ref) {
+final getAvailableSlotsUseCaseProvider = Provider<GetAvailableSlotsUseCase>((
+  ref,
+) {
   final repository = ref.watch(shopRepositoryProvider);
   return GetAvailableSlotsUseCase(repository: repository);
 });
@@ -83,7 +84,7 @@ final createBookingUseCaseProvider = Provider<CreateBookingUseCase>((ref) {
 /// Notifier for shop list state.
 class ShopListNotifier extends StateNotifier<ShopListState> {
   ShopListNotifier({required this.repository})
-      : super(const ShopListState.initial());
+    : super(const ShopListState.initial());
 
   final ShopRepository repository;
   int _currentPage = 1;
@@ -110,20 +111,19 @@ class ShopListNotifier extends StateNotifier<ShopListState> {
         search: search,
       );
 
-      state = result.fold(
-        (failure) => ShopListState.error(failure: failure),
-        (shops) {
-          _shops = refresh ? shops : [..._shops, ...shops];
-          return ShopListState.loaded(
-            shops: _shops,
-            currentPage: _currentPage,
-            hasMore: shops.length >= 10,
-          );
-        },
-      );
+      state = result.fold((failure) => ShopListState.error(failure: failure), (
+        shops,
+      ) {
+        _shops = refresh ? shops : [..._shops, ...shops];
+        return ShopListState.loaded(
+          shops: _shops,
+          currentPage: _currentPage,
+          hasMore: shops.length >= 10,
+        );
+      });
     } catch (e) {
       state = ShopListState.error(
-        failure: Failure.unexpected(message: e.toString()),
+        failure: Failure.unknown(message: e.toString()),
       );
     }
   }
@@ -147,32 +147,32 @@ class ShopListNotifier extends StateNotifier<ShopListState> {
 /// Provider for shop list state.
 final shopListStateProvider =
     StateNotifierProvider<ShopListNotifier, ShopListState>((ref) {
-  final repository = ref.watch(shopRepositoryProvider);
-  return ShopListNotifier(repository: repository);
-});
+      final repository = ref.watch(shopRepositoryProvider);
+      return ShopListNotifier(repository: repository);
+    });
 
 // ============================================================================
 // Nearby Shops Provider
 // ============================================================================
 
 /// Provider for nearby shops.
-final nearbyShopsProvider = FutureProvider.family<List<Shop>, ({
-  double latitude,
-  double longitude,
-  double? maxKm,
-})>((ref, params) async {
-  final repository = ref.watch(shopRepositoryProvider);
-  final result = await repository.getNearbyShops(
-    latitude: params.latitude,
-    longitude: params.longitude,
-    maxKm: params.maxKm ?? 10,
-  );
+final nearbyShopsProvider =
+    FutureProvider.family<
+      List<Shop>,
+      ({double latitude, double longitude, double? maxKm})
+    >((ref, params) async {
+      final repository = ref.watch(shopRepositoryProvider);
+      final result = await repository.getNearbyShops(
+        latitude: params.latitude,
+        longitude: params.longitude,
+        maxKm: params.maxKm ?? 10,
+      );
 
-  return result.fold(
-    (failure) => throw Exception(failure.userMessage),
-    (shops) => shops,
-  );
-});
+      return result.fold(
+        (failure) => throw Exception(failure.userMessage),
+        (shops) => shops,
+      );
+    });
 
 // ============================================================================
 // Shop Details Provider
@@ -181,7 +181,7 @@ final nearbyShopsProvider = FutureProvider.family<List<Shop>, ({
 /// Notifier for shop details state.
 class ShopDetailsNotifier extends StateNotifier<ShopDetailsState> {
   ShopDetailsNotifier({required this.useCase})
-      : super(const ShopDetailsState.initial());
+    : super(const ShopDetailsState.initial());
 
   final GetShopDetailsUseCase useCase;
 
@@ -198,7 +198,7 @@ class ShopDetailsNotifier extends StateNotifier<ShopDetailsState> {
       );
     } catch (e) {
       state = ShopDetailsState.error(
-        failure: Failure.unexpected(message: e.toString()),
+        failure: Failure.unknown(message: e.toString()),
       );
     }
   }
@@ -207,27 +207,26 @@ class ShopDetailsNotifier extends StateNotifier<ShopDetailsState> {
 /// Provider for shop details state.
 final shopDetailsStateProvider =
     StateNotifierProvider.family<ShopDetailsNotifier, ShopDetailsState, int>((
-  ref,
-  shopId,
-) {
-  final useCase = ref.watch(getShopDetailsUseCaseProvider);
-  final notifier = ShopDetailsNotifier(useCase: useCase);
-  notifier.loadShopDetailsAsync(shopId);
-  return notifier;
-});
+      ref,
+      shopId,
+    ) {
+      final useCase = ref.watch(getShopDetailsUseCaseProvider);
+      final notifier = ShopDetailsNotifier(useCase: useCase);
+      notifier.loadShopDetailsAsync(shopId);
+      return notifier;
+    });
 
 /// Simple future provider for shop details.
-final shopDetailsFutureProvider =
-    FutureProvider.family<Shop, int>((ref, shopId) async {
+final shopDetailsFutureProvider = FutureProvider.family<Shop, int>((
+  ref,
+  shopId,
+) async {
   final useCase = ref.watch(getShopDetailsUseCaseProvider);
   final result = await useCase(shopId);
 
-  return result.fold(
-    (failure) {
-      throw failure;
-    },
-    (shop) => shop,
-  );
+  return result.fold((failure) {
+    throw failure;
+  }, (shop) => shop);
 });
 
 // ============================================================================
@@ -235,21 +234,23 @@ final shopDetailsFutureProvider =
 // ============================================================================
 
 /// Provider for shop availability.
-final shopAvailabilityProvider = FutureProvider.family<
-    List<ShopDateAvailability>,
-    ({int shopId, DateTime startDate, int? days})>((ref, params) async {
-  final repository = ref.watch(shopRepositoryProvider);
-  final result = await repository.getShopAvailability(
-    shopId: params.shopId,
-    startDate: params.startDate,
-    days: params.days ?? 7,
-  );
+final shopAvailabilityProvider =
+    FutureProvider.family<
+      List<ShopDateAvailability>,
+      ({int shopId, DateTime startDate, int? days})
+    >((ref, params) async {
+      final repository = ref.watch(shopRepositoryProvider);
+      final result = await repository.getShopAvailability(
+        shopId: params.shopId,
+        startDate: params.startDate,
+        days: params.days ?? 7,
+      );
 
-  return result.fold(
-    (failure) => throw Exception(failure.userMessage),
-    (availability) => availability,
-  );
-});
+      return result.fold(
+        (failure) => throw Exception(failure.userMessage),
+        (availability) => availability,
+      );
+    });
 
 // ============================================================================
 // Selection State Providers
@@ -273,18 +274,18 @@ class SelectedServicesNotifier extends StateNotifier<Map<String, ShopService>> {
     state = {};
   }
 
-  double get totalPrice =>
-      state.values.fold(0.0, (sum, s) => sum + s.price);
+  double get totalPrice => state.values.fold(0.0, (sum, s) => sum + s.price);
 
   int get count => state.length;
 }
 
 /// Provider for selected services.
 final selectedShopServicesProvider =
-    StateNotifierProvider<SelectedServicesNotifier, Map<String, ShopService>>(
-        (ref) {
-  return SelectedServicesNotifier();
-});
+    StateNotifierProvider<SelectedServicesNotifier, Map<String, ShopService>>((
+      ref,
+    ) {
+      return SelectedServicesNotifier();
+    });
 
 /// Notifier for selected packages.
 class SelectedPackagesNotifier extends StateNotifier<Map<String, ShopPackage>> {
@@ -304,18 +305,18 @@ class SelectedPackagesNotifier extends StateNotifier<Map<String, ShopPackage>> {
     state = {};
   }
 
-  double get totalPrice =>
-      state.values.fold(0.0, (sum, p) => sum + p.price);
+  double get totalPrice => state.values.fold(0.0, (sum, p) => sum + p.price);
 
   int get count => state.length;
 }
 
 /// Provider for selected packages.
 final selectedShopPackagesProvider =
-    StateNotifierProvider<SelectedPackagesNotifier, Map<String, ShopPackage>>(
-        (ref) {
-  return SelectedPackagesNotifier();
-});
+    StateNotifierProvider<SelectedPackagesNotifier, Map<String, ShopPackage>>((
+      ref,
+    ) {
+      return SelectedPackagesNotifier();
+    });
 
 /// Notifier for selected accessories.
 class SelectedAccessoriesNotifier
@@ -336,17 +337,19 @@ class SelectedAccessoriesNotifier
     state = {};
   }
 
-  double get totalPrice =>
-      state.values.fold(0.0, (sum, a) => sum + a.price);
+  double get totalPrice => state.values.fold(0.0, (sum, a) => sum + a.price);
 
   int get count => state.length;
 }
 
 /// Provider for selected accessories.
-final selectedShopAccessoriesProvider = StateNotifierProvider<
-    SelectedAccessoriesNotifier, Map<String, ShopAccessory>>((ref) {
-  return SelectedAccessoriesNotifier();
-});
+final selectedShopAccessoriesProvider =
+    StateNotifierProvider<
+      SelectedAccessoriesNotifier,
+      Map<String, ShopAccessory>
+    >((ref) {
+      return SelectedAccessoriesNotifier();
+    });
 
 /// Provider for selected vehicle type.
 final selectedShopVehicleProvider = StateProvider<ShopVehicleType?>((ref) {
@@ -359,12 +362,12 @@ final totalShopSelectionPriceProvider = Provider<double>((ref) {
   final packages = ref.watch(selectedShopPackagesProvider);
   final accessories = ref.watch(selectedShopAccessoriesProvider);
 
-  final servicesTotal =
-      services.values.fold(0.0, (sum, s) => sum + s.price);
-  final packagesTotal =
-      packages.values.fold(0.0, (sum, p) => sum + p.price);
-  final accessoriesTotal =
-      accessories.values.fold(0.0, (sum, a) => sum + a.price);
+  final servicesTotal = services.values.fold(0.0, (sum, s) => sum + s.price);
+  final packagesTotal = packages.values.fold(0.0, (sum, p) => sum + p.price);
+  final accessoriesTotal = accessories.values.fold(
+    0.0,
+    (sum, a) => sum + a.price,
+  );
 
   return servicesTotal + packagesTotal + accessoriesTotal;
 });
@@ -385,7 +388,7 @@ final totalShopSelectionCountProvider = Provider<int>((ref) {
 /// Notifier for favorite shops.
 class FavoriteShopsNotifier extends StateNotifier<FavoriteShopsState> {
   FavoriteShopsNotifier({required this.repository})
-      : super(const FavoriteShopsState.initial());
+    : super(const FavoriteShopsState.initial());
 
   final ShopRepository repository;
 
@@ -402,7 +405,7 @@ class FavoriteShopsNotifier extends StateNotifier<FavoriteShopsState> {
       );
     } catch (e) {
       state = FavoriteShopsState.error(
-        failure: Failure.unexpected(message: e.toString()),
+        failure: Failure.unknown(message: e.toString()),
       );
     }
   }
@@ -434,9 +437,9 @@ class FavoriteShopsNotifier extends StateNotifier<FavoriteShopsState> {
 /// Provider for favorite shops state.
 final favoriteShopsStateProvider =
     StateNotifierProvider<FavoriteShopsNotifier, FavoriteShopsState>((ref) {
-  final repository = ref.watch(shopRepositoryProvider);
-  return FavoriteShopsNotifier(repository: repository);
-});
+      final repository = ref.watch(shopRepositoryProvider);
+      return FavoriteShopsNotifier(repository: repository);
+    });
 
 // ============================================================================
 // UI State Providers

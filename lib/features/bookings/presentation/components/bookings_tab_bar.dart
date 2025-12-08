@@ -18,9 +18,9 @@ class BookingsTabBar extends ConsumerWidget {
 
     return Container(
       height: 48.h,
-      padding: EdgeInsets.all(4.w),
+      padding: EdgeInsets.all(9.w),
       decoration: BoxDecoration(
-        color: Colors.grey.shade100,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
@@ -77,7 +77,7 @@ class _TabButton extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
         decoration: BoxDecoration(
-          color: isSelected ? Colors.white : Colors.transparent,
+          color: isSelected ? Colors.white : Colors.grey.shade100,
           borderRadius: BorderRadius.circular(10.r),
           boxShadow: isSelected
               ? [
@@ -104,10 +104,7 @@ class _TabButton extends StatelessWidget {
               if (count > 0) ...[
                 SizedBox(width: 6.w),
                 Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 8.w,
-                    vertical: 2.h,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                   decoration: BoxDecoration(
                     color: isSelected
                         ? const Color(0xFFFFB74D)

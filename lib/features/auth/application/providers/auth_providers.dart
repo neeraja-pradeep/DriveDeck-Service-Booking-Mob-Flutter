@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../app/bootstrap/app_bootstrap.dart';
 import '../../../../core/network/api_client.dart';
@@ -111,16 +112,24 @@ final Provider<ApiClient> apiClientProvider = Provider<ApiClient>((ref) {
         final xcsrfToken = await secureStore.getXcsrfToken();
         final userId = await secureStore.getUserId();
 
+        debugPrint('🔍 SecureStore Query:');
+        debugPrint('   sessionId: $sessionId');
+        debugPrint('   xcsrfToken: $xcsrfToken');
+        debugPrint('   userId: $userId');
+
         if (sessionId != null && xcsrfToken != null && userId != null) {
-          return {
+          final headers = {
             'sessionid': sessionId,
             'X-CSRFToken': xcsrfToken,
             'user-id': userId,
           };
+          debugPrint('✅ Session data found - returning headers');
+          return headers;
         }
+        debugPrint('⚠️  Session data incomplete or missing');
         return null;
       } catch (e) {
-        // Return null if there's an error getting session data
+        debugPrint('❌ Error getting session data: $e');
         return null;
       }
     },

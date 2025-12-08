@@ -63,7 +63,9 @@ class _$OpeningHoursCopyWithImpl<$Res, $Val extends OpeningHours>
     implements $OpeningHoursCopyWith<$Res> {
   _$OpeningHoursCopyWithImpl(this._value, this._then);
 
+  // ignore: unused_field
   final $Val _value;
+  // ignore: unused_field
   final $Res Function($Val) _then;
 
   @pragma('vm:prefer-inline')
@@ -80,25 +82,32 @@ class _$OpeningHoursCopyWithImpl<$Res, $Val extends OpeningHours>
     return _then(_value.copyWith(
       monday: null == monday
           ? _value.monday
-          : monday as DayHours,
+          : monday // ignore: cast_nullable_to_non_nullable
+              as DayHours,
       tuesday: null == tuesday
           ? _value.tuesday
-          : tuesday as DayHours,
+          : tuesday // ignore: cast_nullable_to_non_nullable
+              as DayHours,
       wednesday: null == wednesday
           ? _value.wednesday
-          : wednesday as DayHours,
+          : wednesday // ignore: cast_nullable_to_non_nullable
+              as DayHours,
       thursday: null == thursday
           ? _value.thursday
-          : thursday as DayHours,
+          : thursday // ignore: cast_nullable_to_non_nullable
+              as DayHours,
       friday: null == friday
           ? _value.friday
-          : friday as DayHours,
+          : friday // ignore: cast_nullable_to_non_nullable
+              as DayHours,
       saturday: null == saturday
           ? _value.saturday
-          : saturday as DayHours,
+          : saturday // ignore: cast_nullable_to_non_nullable
+              as DayHours,
       sunday: null == sunday
           ? _value.sunday
-          : sunday as DayHours,
+          : sunday // ignore: cast_nullable_to_non_nullable
+              as DayHours,
     ) as $Val);
   }
 
@@ -214,25 +223,32 @@ class __$$OpeningHoursImplCopyWithImpl<$Res>
     return _then(_$OpeningHoursImpl(
       monday: null == monday
           ? _value.monday
-          : monday as DayHours,
+          : monday // ignore: cast_nullable_to_non_nullable
+              as DayHours,
       tuesday: null == tuesday
           ? _value.tuesday
-          : tuesday as DayHours,
+          : tuesday // ignore: cast_nullable_to_non_nullable
+              as DayHours,
       wednesday: null == wednesday
           ? _value.wednesday
-          : wednesday as DayHours,
+          : wednesday // ignore: cast_nullable_to_non_nullable
+              as DayHours,
       thursday: null == thursday
           ? _value.thursday
-          : thursday as DayHours,
+          : thursday // ignore: cast_nullable_to_non_nullable
+              as DayHours,
       friday: null == friday
           ? _value.friday
-          : friday as DayHours,
+          : friday // ignore: cast_nullable_to_non_nullable
+              as DayHours,
       saturday: null == saturday
           ? _value.saturday
-          : saturday as DayHours,
+          : saturday // ignore: cast_nullable_to_non_nullable
+              as DayHours,
       sunday: null == sunday
           ? _value.sunday
-          : sunday as DayHours,
+          : sunday // ignore: cast_nullable_to_non_nullable
+              as DayHours,
     ));
   }
 }
@@ -292,8 +308,8 @@ class _$OpeningHoursImpl extends _OpeningHours {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, monday, tuesday, wednesday, thursday, friday, saturday, sunday);
+  int get hashCode => Object.hash(runtimeType, monday, tuesday, wednesday,
+      thursday, friday, saturday, sunday);
 
   @JsonKey(ignore: true)
   @override
@@ -303,7 +319,9 @@ class _$OpeningHoursImpl extends _OpeningHours {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$OpeningHoursImplToJson(this);
+    return _$$OpeningHoursImplToJson(
+      this,
+    );
   }
 }
 
@@ -370,7 +388,9 @@ class _$DayHoursCopyWithImpl<$Res, $Val extends DayHours>
     implements $DayHoursCopyWith<$Res> {
   _$DayHoursCopyWithImpl(this._value, this._then);
 
+  // ignore: unused_field
   final $Val _value;
+  // ignore: unused_field
   final $Res Function($Val) _then;
 
   @pragma('vm:prefer-inline')
@@ -383,13 +403,16 @@ class _$DayHoursCopyWithImpl<$Res, $Val extends DayHours>
     return _then(_value.copyWith(
       openTime: null == openTime
           ? _value.openTime
-          : openTime as String,
+          : openTime // ignore: cast_nullable_to_non_nullable
+              as String,
       closeTime: null == closeTime
           ? _value.closeTime
-          : closeTime as String,
+          : closeTime // ignore: cast_nullable_to_non_nullable
+              as String,
       isClosed: null == isClosed
           ? _value.isClosed
-          : isClosed as bool,
+          : isClosed // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -423,13 +446,16 @@ class __$$DayHoursImplCopyWithImpl<$Res>
     return _then(_$DayHoursImpl(
       openTime: null == openTime
           ? _value.openTime
-          : openTime as String,
+          : openTime // ignore: cast_nullable_to_non_nullable
+              as String,
       closeTime: null == closeTime
           ? _value.closeTime
-          : closeTime as String,
+          : closeTime // ignore: cast_nullable_to_non_nullable
+              as String,
       isClosed: null == isClosed
           ? _value.isClosed
-          : isClosed as bool,
+          : isClosed // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -438,9 +464,7 @@ class __$$DayHoursImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$DayHoursImpl extends _DayHours {
   const _$DayHoursImpl(
-      {required this.openTime,
-      required this.closeTime,
-      this.isClosed = false})
+      {required this.openTime, required this.closeTime, this.isClosed = false})
       : super._();
 
   factory _$DayHoursImpl.fromJson(Map<String, dynamic> json) =>
@@ -484,7 +508,9 @@ class _$DayHoursImpl extends _DayHours {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$DayHoursImplToJson(this);
+    return _$$DayHoursImplToJson(
+      this,
+    );
   }
 }
 

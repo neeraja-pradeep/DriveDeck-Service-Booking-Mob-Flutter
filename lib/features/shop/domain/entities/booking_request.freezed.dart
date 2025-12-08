@@ -65,7 +65,9 @@ class _$BookingRequestCopyWithImpl<$Res, $Val extends BookingRequest>
     implements $BookingRequestCopyWith<$Res> {
   _$BookingRequestCopyWithImpl(this._value, this._then);
 
+  // ignore: unused_field
   final $Val _value;
+  // ignore: unused_field
   final $Res Function($Val) _then;
 
   @pragma('vm:prefer-inline')
@@ -87,40 +89,52 @@ class _$BookingRequestCopyWithImpl<$Res, $Val extends BookingRequest>
     return _then(_value.copyWith(
       shopId: null == shopId
           ? _value.shopId
-          : shopId as int,
+          : shopId // ignore: cast_nullable_to_non_nullable
+              as int,
       selectedServiceIds: null == selectedServiceIds
           ? _value.selectedServiceIds
-          : selectedServiceIds as List<String>,
+          : selectedServiceIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       selectedPackageIds: null == selectedPackageIds
           ? _value.selectedPackageIds
-          : selectedPackageIds as List<String>,
+          : selectedPackageIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       selectedAccessoryIds: null == selectedAccessoryIds
           ? _value.selectedAccessoryIds
-          : selectedAccessoryIds as List<String>,
+          : selectedAccessoryIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       date: null == date
           ? _value.date
-          : date as DateTime,
+          : date // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       timeSlotId: null == timeSlotId
           ? _value.timeSlotId
-          : timeSlotId as int,
+          : timeSlotId // ignore: cast_nullable_to_non_nullable
+              as int,
       vehicleType: null == vehicleType
           ? _value.vehicleType
-          : vehicleType as VehicleType,
+          : vehicleType // ignore: cast_nullable_to_non_nullable
+              as VehicleType,
       pickupAndDelivery: null == pickupAndDelivery
           ? _value.pickupAndDelivery
-          : pickupAndDelivery as bool,
+          : pickupAndDelivery // ignore: cast_nullable_to_non_nullable
+              as bool,
       promoCode: freezed == promoCode
           ? _value.promoCode
-          : promoCode as String?,
+          : promoCode // ignore: cast_nullable_to_non_nullable
+              as String?,
       paymentMethod: freezed == paymentMethod
           ? _value.paymentMethod
-          : paymentMethod as String?,
+          : paymentMethod // ignore: cast_nullable_to_non_nullable
+              as String?,
       vehicleId: freezed == vehicleId
           ? _value.vehicleId
-          : vehicleId as String?,
+          : vehicleId // ignore: cast_nullable_to_non_nullable
+              as String?,
       notes: freezed == notes
           ? _value.notes
-          : notes as String?,
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -175,40 +189,52 @@ class __$$BookingRequestImplCopyWithImpl<$Res>
     return _then(_$BookingRequestImpl(
       shopId: null == shopId
           ? _value.shopId
-          : shopId as int,
+          : shopId // ignore: cast_nullable_to_non_nullable
+              as int,
       selectedServiceIds: null == selectedServiceIds
           ? _value._selectedServiceIds
-          : selectedServiceIds as List<String>,
+          : selectedServiceIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       selectedPackageIds: null == selectedPackageIds
           ? _value._selectedPackageIds
-          : selectedPackageIds as List<String>,
+          : selectedPackageIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       selectedAccessoryIds: null == selectedAccessoryIds
           ? _value._selectedAccessoryIds
-          : selectedAccessoryIds as List<String>,
+          : selectedAccessoryIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       date: null == date
           ? _value.date
-          : date as DateTime,
+          : date // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       timeSlotId: null == timeSlotId
           ? _value.timeSlotId
-          : timeSlotId as int,
+          : timeSlotId // ignore: cast_nullable_to_non_nullable
+              as int,
       vehicleType: null == vehicleType
           ? _value.vehicleType
-          : vehicleType as VehicleType,
+          : vehicleType // ignore: cast_nullable_to_non_nullable
+              as VehicleType,
       pickupAndDelivery: null == pickupAndDelivery
           ? _value.pickupAndDelivery
-          : pickupAndDelivery as bool,
+          : pickupAndDelivery // ignore: cast_nullable_to_non_nullable
+              as bool,
       promoCode: freezed == promoCode
           ? _value.promoCode
-          : promoCode as String?,
+          : promoCode // ignore: cast_nullable_to_non_nullable
+              as String?,
       paymentMethod: freezed == paymentMethod
           ? _value.paymentMethod
-          : paymentMethod as String?,
+          : paymentMethod // ignore: cast_nullable_to_non_nullable
+              as String?,
       vehicleId: freezed == vehicleId
           ? _value.vehicleId
-          : vehicleId as String?,
+          : vehicleId // ignore: cast_nullable_to_non_nullable
+              as String?,
       notes: freezed == notes
           ? _value.notes
-          : notes as String?,
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -243,6 +269,7 @@ class _$BookingRequestImpl implements _BookingRequest {
   List<String> get selectedServiceIds {
     if (_selectedServiceIds is EqualUnmodifiableListView)
       return _selectedServiceIds;
+    // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_selectedServiceIds);
   }
 
@@ -251,6 +278,7 @@ class _$BookingRequestImpl implements _BookingRequest {
   List<String> get selectedPackageIds {
     if (_selectedPackageIds is EqualUnmodifiableListView)
       return _selectedPackageIds;
+    // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_selectedPackageIds);
   }
 
@@ -259,6 +287,7 @@ class _$BookingRequestImpl implements _BookingRequest {
   List<String> get selectedAccessoryIds {
     if (_selectedAccessoryIds is EqualUnmodifiableListView)
       return _selectedAccessoryIds;
+    // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_selectedAccessoryIds);
   }
 
@@ -334,11 +363,14 @@ class _$BookingRequestImpl implements _BookingRequest {
   @override
   @pragma('vm:prefer-inline')
   _$$BookingRequestImplCopyWith<_$BookingRequestImpl> get copyWith =>
-      __$$BookingRequestImplCopyWithImpl<_$BookingRequestImpl>(this, _$identity);
+      __$$BookingRequestImplCopyWithImpl<_$BookingRequestImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$BookingRequestImplToJson(this);
+    return _$$BookingRequestImplToJson(
+      this,
+    );
   }
 }
 
@@ -419,7 +451,9 @@ class _$BookingDateCopyWithImpl<$Res, $Val extends BookingDate>
     implements $BookingDateCopyWith<$Res> {
   _$BookingDateCopyWithImpl(this._value, this._then);
 
+  // ignore: unused_field
   final $Val _value;
+  // ignore: unused_field
   final $Res Function($Val) _then;
 
   @pragma('vm:prefer-inline')
@@ -431,10 +465,12 @@ class _$BookingDateCopyWithImpl<$Res, $Val extends BookingDate>
     return _then(_value.copyWith(
       date: null == date
           ? _value.date
-          : date as DateTime,
+          : date // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       slots: null == slots
           ? _value.slots
-          : slots as List<TimeSlotInfo>,
+          : slots // ignore: cast_nullable_to_non_nullable
+              as List<TimeSlotInfo>,
     ) as $Val);
   }
 }
@@ -467,10 +503,12 @@ class __$$BookingDateImplCopyWithImpl<$Res>
     return _then(_$BookingDateImpl(
       date: null == date
           ? _value.date
-          : date as DateTime,
+          : date // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       slots: null == slots
           ? _value._slots
-          : slots as List<TimeSlotInfo>,
+          : slots // ignore: cast_nullable_to_non_nullable
+              as List<TimeSlotInfo>,
     ));
   }
 }
@@ -492,6 +530,7 @@ class _$BookingDateImpl extends _BookingDate {
   @override
   List<TimeSlotInfo> get slots {
     if (_slots is EqualUnmodifiableListView) return _slots;
+    // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_slots);
   }
 
@@ -522,7 +561,9 @@ class _$BookingDateImpl extends _BookingDate {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$BookingDateImplToJson(this);
+    return _$$BookingDateImplToJson(
+      this,
+    );
   }
 }
 
@@ -582,7 +623,9 @@ class _$TimeSlotInfoCopyWithImpl<$Res, $Val extends TimeSlotInfo>
     implements $TimeSlotInfoCopyWith<$Res> {
   _$TimeSlotInfoCopyWithImpl(this._value, this._then);
 
+  // ignore: unused_field
   final $Val _value;
+  // ignore: unused_field
   final $Res Function($Val) _then;
 
   @pragma('vm:prefer-inline')
@@ -597,19 +640,24 @@ class _$TimeSlotInfoCopyWithImpl<$Res, $Val extends TimeSlotInfo>
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
-          : id as int,
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       startTime: null == startTime
           ? _value.startTime
-          : startTime as String,
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as String,
       endTime: null == endTime
           ? _value.endTime
-          : endTime as String,
+          : endTime // ignore: cast_nullable_to_non_nullable
+              as String,
       isAvailable: null == isAvailable
           ? _value.isAvailable
-          : isAvailable as bool,
+          : isAvailable // ignore: cast_nullable_to_non_nullable
+              as bool,
       availableCapacity: freezed == availableCapacity
           ? _value.availableCapacity
-          : availableCapacity as int?,
+          : availableCapacity // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -650,19 +698,24 @@ class __$$TimeSlotInfoImplCopyWithImpl<$Res>
     return _then(_$TimeSlotInfoImpl(
       id: null == id
           ? _value.id
-          : id as int,
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       startTime: null == startTime
           ? _value.startTime
-          : startTime as String,
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as String,
       endTime: null == endTime
           ? _value.endTime
-          : endTime as String,
+          : endTime // ignore: cast_nullable_to_non_nullable
+              as String,
       isAvailable: null == isAvailable
           ? _value.isAvailable
-          : isAvailable as bool,
+          : isAvailable // ignore: cast_nullable_to_non_nullable
+              as bool,
       availableCapacity: freezed == availableCapacity
           ? _value.availableCapacity
-          : availableCapacity as int?,
+          : availableCapacity // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -725,7 +778,9 @@ class _$TimeSlotInfoImpl extends _TimeSlotInfo {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$TimeSlotInfoImplToJson(this);
+    return _$$TimeSlotInfoImplToJson(
+      this,
+    );
   }
 }
 

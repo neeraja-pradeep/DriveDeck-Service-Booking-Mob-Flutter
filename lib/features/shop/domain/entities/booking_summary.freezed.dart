@@ -76,7 +76,9 @@ class _$BookingSummaryCopyWithImpl<$Res, $Val extends BookingSummary>
     implements $BookingSummaryCopyWith<$Res> {
   _$BookingSummaryCopyWithImpl(this._value, this._then);
 
+  // ignore: unused_field
   final $Val _value;
+  // ignore: unused_field
   final $Res Function($Val) _then;
 
   @pragma('vm:prefer-inline')
@@ -102,52 +104,68 @@ class _$BookingSummaryCopyWithImpl<$Res, $Val extends BookingSummary>
     return _then(_value.copyWith(
       shopId: null == shopId
           ? _value.shopId
-          : shopId as int,
+          : shopId // ignore: cast_nullable_to_non_nullable
+              as int,
       shopName: null == shopName
           ? _value.shopName
-          : shopName as String,
+          : shopName // ignore: cast_nullable_to_non_nullable
+              as String,
       shopAddress: null == shopAddress
           ? _value.shopAddress
-          : shopAddress as String,
+          : shopAddress // ignore: cast_nullable_to_non_nullable
+              as String,
       shopImageUrl: freezed == shopImageUrl
           ? _value.shopImageUrl
-          : shopImageUrl as String?,
+          : shopImageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       services: null == services
           ? _value.services
-          : services as List<SelectedServiceItem>,
+          : services // ignore: cast_nullable_to_non_nullable
+              as List<SelectedServiceItem>,
       packages: null == packages
           ? _value.packages
-          : packages as List<SelectedServiceItem>,
+          : packages // ignore: cast_nullable_to_non_nullable
+              as List<SelectedServiceItem>,
       accessories: null == accessories
           ? _value.accessories
-          : accessories as List<SelectedServiceItem>,
+          : accessories // ignore: cast_nullable_to_non_nullable
+              as List<SelectedServiceItem>,
       date: null == date
           ? _value.date
-          : date as DateTime,
+          : date // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       timeSlot: null == timeSlot
           ? _value.timeSlot
-          : timeSlot as TimeSlotInfo,
+          : timeSlot // ignore: cast_nullable_to_non_nullable
+              as TimeSlotInfo,
       vehicleType: null == vehicleType
           ? _value.vehicleType
-          : vehicleType as VehicleType,
+          : vehicleType // ignore: cast_nullable_to_non_nullable
+              as VehicleType,
       pickupAndDelivery: null == pickupAndDelivery
           ? _value.pickupAndDelivery
-          : pickupAndDelivery as bool,
+          : pickupAndDelivery // ignore: cast_nullable_to_non_nullable
+              as bool,
       subtotal: null == subtotal
           ? _value.subtotal
-          : subtotal as double,
+          : subtotal // ignore: cast_nullable_to_non_nullable
+              as double,
       adminFee: null == adminFee
           ? _value.adminFee
-          : adminFee as double,
+          : adminFee // ignore: cast_nullable_to_non_nullable
+              as double,
       discount: null == discount
           ? _value.discount
-          : discount as double,
+          : discount // ignore: cast_nullable_to_non_nullable
+              as double,
       promoCode: freezed == promoCode
           ? _value.promoCode
-          : promoCode as String?,
+          : promoCode // ignore: cast_nullable_to_non_nullable
+              as String?,
       paymentMethod: freezed == paymentMethod
           ? _value.paymentMethod
-          : paymentMethod as String?,
+          : paymentMethod // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -221,52 +239,68 @@ class __$$BookingSummaryImplCopyWithImpl<$Res>
     return _then(_$BookingSummaryImpl(
       shopId: null == shopId
           ? _value.shopId
-          : shopId as int,
+          : shopId // ignore: cast_nullable_to_non_nullable
+              as int,
       shopName: null == shopName
           ? _value.shopName
-          : shopName as String,
+          : shopName // ignore: cast_nullable_to_non_nullable
+              as String,
       shopAddress: null == shopAddress
           ? _value.shopAddress
-          : shopAddress as String,
+          : shopAddress // ignore: cast_nullable_to_non_nullable
+              as String,
       shopImageUrl: freezed == shopImageUrl
           ? _value.shopImageUrl
-          : shopImageUrl as String?,
+          : shopImageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       services: null == services
           ? _value._services
-          : services as List<SelectedServiceItem>,
+          : services // ignore: cast_nullable_to_non_nullable
+              as List<SelectedServiceItem>,
       packages: null == packages
           ? _value._packages
-          : packages as List<SelectedServiceItem>,
+          : packages // ignore: cast_nullable_to_non_nullable
+              as List<SelectedServiceItem>,
       accessories: null == accessories
           ? _value._accessories
-          : accessories as List<SelectedServiceItem>,
+          : accessories // ignore: cast_nullable_to_non_nullable
+              as List<SelectedServiceItem>,
       date: null == date
           ? _value.date
-          : date as DateTime,
+          : date // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       timeSlot: null == timeSlot
           ? _value.timeSlot
-          : timeSlot as TimeSlotInfo,
+          : timeSlot // ignore: cast_nullable_to_non_nullable
+              as TimeSlotInfo,
       vehicleType: null == vehicleType
           ? _value.vehicleType
-          : vehicleType as VehicleType,
+          : vehicleType // ignore: cast_nullable_to_non_nullable
+              as VehicleType,
       pickupAndDelivery: null == pickupAndDelivery
           ? _value.pickupAndDelivery
-          : pickupAndDelivery as bool,
+          : pickupAndDelivery // ignore: cast_nullable_to_non_nullable
+              as bool,
       subtotal: null == subtotal
           ? _value.subtotal
-          : subtotal as double,
+          : subtotal // ignore: cast_nullable_to_non_nullable
+              as double,
       adminFee: null == adminFee
           ? _value.adminFee
-          : adminFee as double,
+          : adminFee // ignore: cast_nullable_to_non_nullable
+              as double,
       discount: null == discount
           ? _value.discount
-          : discount as double,
+          : discount // ignore: cast_nullable_to_non_nullable
+              as double,
       promoCode: freezed == promoCode
           ? _value.promoCode
-          : promoCode as String?,
+          : promoCode // ignore: cast_nullable_to_non_nullable
+              as String?,
       paymentMethod: freezed == paymentMethod
           ? _value.paymentMethod
-          : paymentMethod as String?,
+          : paymentMethod // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -311,6 +345,7 @@ class _$BookingSummaryImpl extends _BookingSummary {
   @override
   List<SelectedServiceItem> get services {
     if (_services is EqualUnmodifiableListView) return _services;
+    // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_services);
   }
 
@@ -318,6 +353,7 @@ class _$BookingSummaryImpl extends _BookingSummary {
   @override
   List<SelectedServiceItem> get packages {
     if (_packages is EqualUnmodifiableListView) return _packages;
+    // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_packages);
   }
 
@@ -325,6 +361,7 @@ class _$BookingSummaryImpl extends _BookingSummary {
   @override
   List<SelectedServiceItem> get accessories {
     if (_accessories is EqualUnmodifiableListView) return _accessories;
+    // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_accessories);
   }
 
@@ -416,11 +453,14 @@ class _$BookingSummaryImpl extends _BookingSummary {
   @override
   @pragma('vm:prefer-inline')
   _$$BookingSummaryImplCopyWith<_$BookingSummaryImpl> get copyWith =>
-      __$$BookingSummaryImplCopyWithImpl<_$BookingSummaryImpl>(this, _$identity);
+      __$$BookingSummaryImplCopyWithImpl<_$BookingSummaryImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$BookingSummaryImplToJson(this);
+    return _$$BookingSummaryImplToJson(
+      this,
+    );
   }
 }
 
@@ -516,7 +556,9 @@ class _$SelectedServiceItemCopyWithImpl<$Res, $Val extends SelectedServiceItem>
     implements $SelectedServiceItemCopyWith<$Res> {
   _$SelectedServiceItemCopyWithImpl(this._value, this._then);
 
+  // ignore: unused_field
   final $Val _value;
+  // ignore: unused_field
   final $Res Function($Val) _then;
 
   @pragma('vm:prefer-inline')
@@ -530,16 +572,20 @@ class _$SelectedServiceItemCopyWithImpl<$Res, $Val extends SelectedServiceItem>
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
-          : id as String,
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       name: null == name
           ? _value.name
-          : name as String,
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
       price: null == price
           ? _value.price
-          : price as double,
+          : price // ignore: cast_nullable_to_non_nullable
+              as double,
       description: freezed == description
           ? _value.description
-          : description as String?,
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -574,16 +620,20 @@ class __$$SelectedServiceItemImplCopyWithImpl<$Res>
     return _then(_$SelectedServiceItemImpl(
       id: null == id
           ? _value.id
-          : id as String,
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       name: null == name
           ? _value.name
-          : name as String,
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
       price: null == price
           ? _value.price
-          : price as double,
+          : price // ignore: cast_nullable_to_non_nullable
+              as double,
       description: freezed == description
           ? _value.description
-          : description as String?,
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -639,7 +689,9 @@ class _$SelectedServiceItemImpl implements _SelectedServiceItem {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SelectedServiceItemImplToJson(this);
+    return _$$SelectedServiceItemImplToJson(
+      this,
+    );
   }
 }
 

@@ -6,7 +6,7 @@ class ShopConstants {
   static const int kDefaultPageSize = 10;
 
   /// Default maximum distance in kilometers for nearby shops.
-  static const int kDefaultMaxDistanceKm = 10;
+  static const double kDefaultMaxDistanceKm = 10;
 
   /// Default number of days for availability check.
   static const int kDefaultAvailabilityDays = 7;

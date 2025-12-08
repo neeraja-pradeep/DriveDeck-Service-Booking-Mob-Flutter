@@ -51,7 +51,9 @@ class _$BookingConfirmationCopyWithImpl<$Res, $Val extends BookingConfirmation>
     implements $BookingConfirmationCopyWith<$Res> {
   _$BookingConfirmationCopyWithImpl(this._value, this._then);
 
+  // ignore: unused_field
   final $Val _value;
+  // ignore: unused_field
   final $Res Function($Val) _then;
 
   @pragma('vm:prefer-inline')
@@ -66,19 +68,24 @@ class _$BookingConfirmationCopyWithImpl<$Res, $Val extends BookingConfirmation>
     return _then(_value.copyWith(
       bookingId: null == bookingId
           ? _value.bookingId
-          : bookingId as int,
+          : bookingId // ignore: cast_nullable_to_non_nullable
+              as int,
       bookingReference: null == bookingReference
           ? _value.bookingReference
-          : bookingReference as String,
+          : bookingReference // ignore: cast_nullable_to_non_nullable
+              as String,
       status: null == status
           ? _value.status
-          : status as BookingStatus,
+          : status // ignore: cast_nullable_to_non_nullable
+              as BookingStatus,
       createdAt: null == createdAt
           ? _value.createdAt
-          : createdAt as DateTime,
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       message: freezed == message
           ? _value.message
-          : message as String?,
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -119,19 +126,24 @@ class __$$BookingConfirmationImplCopyWithImpl<$Res>
     return _then(_$BookingConfirmationImpl(
       bookingId: null == bookingId
           ? _value.bookingId
-          : bookingId as int,
+          : bookingId // ignore: cast_nullable_to_non_nullable
+              as int,
       bookingReference: null == bookingReference
           ? _value.bookingReference
-          : bookingReference as String,
+          : bookingReference // ignore: cast_nullable_to_non_nullable
+              as String,
       status: null == status
           ? _value.status
-          : status as BookingStatus,
+          : status // ignore: cast_nullable_to_non_nullable
+              as BookingStatus,
       createdAt: null == createdAt
           ? _value.createdAt
-          : createdAt as DateTime,
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       message: freezed == message
           ? _value.message
-          : message as String?,
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -194,7 +206,9 @@ class _$BookingConfirmationImpl implements _BookingConfirmation {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$BookingConfirmationImplToJson(this);
+    return _$$BookingConfirmationImplToJson(
+      this,
+    );
   }
 }
 

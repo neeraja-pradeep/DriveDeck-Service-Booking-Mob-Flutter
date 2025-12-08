@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'endpoints.dart';
 
@@ -133,14 +134,37 @@ class _AuthInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    // Get session data if available
-    final sessionData = await getSessionData?.call();
-    if (sessionData != null) {
-      // Add session headers
-      options.headers.addAll(sessionData);
-    } else {
-      // Fallback to development headers
-      options.headers['dev'] = '18'; // Development user ID
+    try {
+      // Get session data if available
+      final sessionData = await getSessionData?.call();
+
+      if (sessionData != null) {
+        // Add session headers (sessionid, X-CSRFToken, user-id)
+        options.headers.addAll(sessionData);
+
+        // Also add Bearer token if sessionid is available
+        // This supports Django's standard token authentication
+        final sessionId = sessionData['sessionid'];
+        if (sessionId != null && sessionId.isNotEmpty) {
+          options.headers['Authorization'] = 'Bearer $sessionId';
+        }
+
+        // Debug: Log headers being added
+        debugPrint('🔐 Auth Headers Added: ${sessionData.keys.toList()}');
+        debugPrint(
+          '   - sessionid: ${sessionData['sessionid']?.substring(0, 10)}...',
+        );
+        debugPrint(
+          '   - X-CSRFToken: ${sessionData['X-CSRFToken']?.substring(0, 10)}...',
+        );
+        debugPrint('   - user-id: ${sessionData['user-id']}');
+      } else {
+        debugPrint(
+          '⚠️  No session data found - making unauthenticated request',
+        );
+      }
+    } catch (e) {
+      debugPrint('❌ Error in AuthInterceptor: $e');
     }
 
     handler.next(options);

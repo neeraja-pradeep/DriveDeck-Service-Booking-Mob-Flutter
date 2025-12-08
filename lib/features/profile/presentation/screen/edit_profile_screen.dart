@@ -276,42 +276,56 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     TextInputType keyboardType = TextInputType.text,
     String? Function(String?)? validator,
   }) {
+    // Define the specific background color requested
+    const fillColor = Color(0xFFF6F6F6);
+
+    // Define the border style for the filled box
+    final borderStyle = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10.r), // Standard rounded corners
+      borderSide: BorderSide.none,
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
           style: TextStyle(
-            fontSize: 14.sp,
+            fontSize: 16.sp,
             fontWeight: FontWeight.w500,
-            color: AppColors.textPrimary,
+            color: const Color.fromARGB(255, 21, 21, 21),
           ),
         ),
         SizedBox(height: 8.h),
-        TextFormField(
-          controller: controller,
-          enabled: enabled,
-          keyboardType: keyboardType,
-          validator: validator,
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: enabled ? AppColors.textSecondary : AppColors.textHint,
-          ),
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 12.h),
-            border: const UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.grey200),
+        // Enforce the specific Width (358px)
+        SizedBox(
+          width: 358.w,
+          child: TextFormField(
+            controller: controller,
+            enabled: enabled,
+            keyboardType: keyboardType,
+            validator: validator,
+            style: TextStyle(
+              fontSize: 14.sp,
+              color: enabled ? AppColors.textSecondary : AppColors.textHint,
             ),
-            enabledBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.grey200),
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: fillColor,
+              // Vertical padding of ~16.h combined with font size aligns text
+              // and creates a visual height of approx 52px.
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 16.h,
+              ),
+              border: borderStyle,
+              enabledBorder: borderStyle,
+              focusedBorder: borderStyle,
+              disabledBorder: borderStyle,
+              errorBorder: borderStyle.copyWith(
+                borderSide: const BorderSide(color: Colors.red, width: 1),
+              ),
             ),
-            focusedBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.primary),
-            ),
-            disabledBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.grey200),
-            ),
-            filled: false,
           ),
         ),
       ],

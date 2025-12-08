@@ -114,6 +114,14 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
                       color: Theme.of(context).primaryColor,
                     ),
                   ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: const BorderSide(color: Colors.red),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: const BorderSide(color: Colors.red),
+                  ),
                 ),
                 onChanged: (_) {
                   if (_usernameError != null) {
@@ -170,6 +178,14 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
                     borderSide: BorderSide(
                       color: Theme.of(context).primaryColor,
                     ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: const BorderSide(color: Colors.red),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: const BorderSide(color: Colors.red),
                   ),
                 ),
                 onChanged: (_) {
@@ -230,6 +246,14 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
                     borderSide: BorderSide(
                       color: Theme.of(context).primaryColor,
                     ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: const BorderSide(color: Colors.red),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: const BorderSide(color: Colors.red),
                   ),
                 ),
                 onChanged: (_) {

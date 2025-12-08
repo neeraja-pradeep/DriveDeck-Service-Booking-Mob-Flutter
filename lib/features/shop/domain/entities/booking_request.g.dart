@@ -64,7 +64,7 @@ _$BookingDateImpl _$$BookingDateImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$BookingDateImplToJson(_$BookingDateImpl instance) =>
     <String, dynamic>{
       'date': instance.date.toIso8601String(),
-      'slots': instance.slots.map((e) => e.toJson()).toList(),
+      'slots': instance.slots,
     };
 
 _$TimeSlotInfoImpl _$$TimeSlotInfoImplFromJson(Map<String, dynamic> json) =>

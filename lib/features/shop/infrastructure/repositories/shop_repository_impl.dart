@@ -161,21 +161,20 @@ class ShopRepositoryImpl implements ShopRepository {
 
   @override
   Future<Either<Failure, List<ShopAccessory>>> getShopAccessories(
-      int shopId) async {
+    int shopId,
+  ) async {
     try {
       if (await networkInfo.isConnected) {
         final accessories = await remoteDataSource.getShopAccessories(shopId);
         return Right(accessories.map((a) => a.toDomain()).toList());
       } else {
         final shop = await localDataSource.getShopDetails(shopId);
-        return Right(
-            shop.accessories?.map((a) => a.toDomain()).toList() ?? []);
+        return Right(shop.accessories?.map((a) => a.toDomain()).toList() ?? []);
       }
     } catch (e) {
       try {
         final shop = await localDataSource.getShopDetails(shopId);
-        return Right(
-            shop.accessories?.map((a) => a.toDomain()).toList() ?? []);
+        return Right(shop.accessories?.map((a) => a.toDomain()).toList() ?? []);
       } catch (_) {
         return Left(Failure.server(message: e.toString()));
       }
@@ -225,7 +224,9 @@ class ShopRepositoryImpl implements ShopRepository {
         await remoteDataSource.addToFavorites(shopId);
         return const Right(unit);
       } else {
-        return const Left(Failure.noConnection());
+        return const Left(
+          Failure.noConnection(message: 'No internet connection'),
+        );
       }
     } catch (e) {
       return Left(Failure.server(message: e.toString()));
@@ -239,7 +240,9 @@ class ShopRepositoryImpl implements ShopRepository {
         await remoteDataSource.removeFromFavorites(shopId);
         return const Right(unit);
       } else {
-        return const Left(Failure.noConnection());
+        return const Left(
+          Failure.noConnection(message: 'No internet connection'),
+        );
       }
     } catch (e) {
       return Left(Failure.server(message: e.toString()));
@@ -253,7 +256,9 @@ class ShopRepositoryImpl implements ShopRepository {
         final shops = await remoteDataSource.getFavoriteShops();
         return Right(shops.map((s) => s.toDomain()).toList());
       } else {
-        return const Left(Failure.noConnection());
+        return const Left(
+          Failure.noConnection(message: 'No internet connection'),
+        );
       }
     } catch (e) {
       return Left(Failure.server(message: e.toString()));
@@ -269,7 +274,9 @@ class ShopRepositoryImpl implements ShopRepository {
         final confirmation = await remoteDataSource.createBooking(request);
         return Right(confirmation.toDomain());
       } else {
-        return const Left(Failure.noConnection());
+        return const Left(
+          Failure.noConnection(message: 'No internet connection'),
+        );
       }
     } catch (e) {
       return Left(Failure.bookingCreationFailed(message: e.toString()));
