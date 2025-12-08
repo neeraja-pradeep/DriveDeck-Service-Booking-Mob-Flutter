@@ -326,6 +326,7 @@ mixin _$RegisterCredentials {
   String get username => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
   String get confirmPassword => throw _privateConstructorUsedError;
+  String? get vehicleType => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RegisterCredentialsCopyWith<RegisterCredentials> get copyWith =>
@@ -342,7 +343,8 @@ abstract class $RegisterCredentialsCopyWith<$Res> {
       {String phoneNumber,
       String username,
       String password,
-      String confirmPassword});
+      String confirmPassword,
+      String? vehicleType});
 }
 
 /// @nodoc
@@ -362,6 +364,7 @@ class _$RegisterCredentialsCopyWithImpl<$Res, $Val extends RegisterCredentials>
     Object? username = null,
     Object? password = null,
     Object? confirmPassword = null,
+    Object? vehicleType = freezed,
   }) {
     return _then(_value.copyWith(
       phoneNumber: null == phoneNumber
@@ -380,6 +383,10 @@ class _$RegisterCredentialsCopyWithImpl<$Res, $Val extends RegisterCredentials>
           ? _value.confirmPassword
           : confirmPassword // ignore: cast_nullable_to_non_nullable
               as String,
+      vehicleType: freezed == vehicleType
+          ? _value.vehicleType
+          : vehicleType // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -396,7 +403,8 @@ abstract class _$$RegisterCredentialsImplCopyWith<$Res>
       {String phoneNumber,
       String username,
       String password,
-      String confirmPassword});
+      String confirmPassword,
+      String? vehicleType});
 }
 
 /// @nodoc
@@ -414,6 +422,7 @@ class __$$RegisterCredentialsImplCopyWithImpl<$Res>
     Object? username = null,
     Object? password = null,
     Object? confirmPassword = null,
+    Object? vehicleType = freezed,
   }) {
     return _then(_$RegisterCredentialsImpl(
       phoneNumber: null == phoneNumber
@@ -432,6 +441,10 @@ class __$$RegisterCredentialsImplCopyWithImpl<$Res>
           ? _value.confirmPassword
           : confirmPassword // ignore: cast_nullable_to_non_nullable
               as String,
+      vehicleType: freezed == vehicleType
+          ? _value.vehicleType
+          : vehicleType // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -443,7 +456,8 @@ class _$RegisterCredentialsImpl implements _RegisterCredentials {
       {required this.phoneNumber,
       required this.username,
       required this.password,
-      required this.confirmPassword});
+      required this.confirmPassword,
+      this.vehicleType});
 
   @override
   final String phoneNumber;
@@ -453,10 +467,12 @@ class _$RegisterCredentialsImpl implements _RegisterCredentials {
   final String password;
   @override
   final String confirmPassword;
+  @override
+  final String? vehicleType;
 
   @override
   String toString() {
-    return 'RegisterCredentials(phoneNumber: $phoneNumber, username: $username, password: $password, confirmPassword: $confirmPassword)';
+    return 'RegisterCredentials(phoneNumber: $phoneNumber, username: $username, password: $password, confirmPassword: $confirmPassword, vehicleType: $vehicleType)';
   }
 
   @override
@@ -471,12 +487,14 @@ class _$RegisterCredentialsImpl implements _RegisterCredentials {
             (identical(other.password, password) ||
                 other.password == password) &&
             (identical(other.confirmPassword, confirmPassword) ||
-                other.confirmPassword == confirmPassword));
+                other.confirmPassword == confirmPassword) &&
+            (identical(other.vehicleType, vehicleType) ||
+                other.vehicleType == vehicleType));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, phoneNumber, username, password, confirmPassword);
+      runtimeType, phoneNumber, username, password, confirmPassword, vehicleType);
 
   @JsonKey(ignore: true)
   @override
@@ -491,7 +509,8 @@ abstract class _RegisterCredentials implements RegisterCredentials {
       {required final String phoneNumber,
       required final String username,
       required final String password,
-      required final String confirmPassword}) = _$RegisterCredentialsImpl;
+      required final String confirmPassword,
+      final String? vehicleType}) = _$RegisterCredentialsImpl;
 
   @override
   String get phoneNumber;
@@ -501,6 +520,8 @@ abstract class _RegisterCredentials implements RegisterCredentials {
   String get password;
   @override
   String get confirmPassword;
+  @override
+  String? get vehicleType;
   @override
   @JsonKey(ignore: true)
   _$$RegisterCredentialsImplCopyWith<_$RegisterCredentialsImpl> get copyWith =>

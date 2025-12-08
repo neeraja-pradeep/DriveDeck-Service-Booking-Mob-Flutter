@@ -28,5 +28,6 @@ class RegisterCredentials with _$RegisterCredentials {
     required String username,
     required String password,
     required String confirmPassword,
+    String? vehicleType,
   }) = _RegisterCredentials;
 }

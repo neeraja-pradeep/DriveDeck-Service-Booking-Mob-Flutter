@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../app/router/routes.dart';
 import '../../../../app/theme/colors.dart';
 import '../../../../core/utils/validators.dart';
 import '../../application/providers/auth_providers.dart';
@@ -344,7 +346,7 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
     // Use only the 10-digit phone number (API expects exactly 10 digits)
     final phoneNumber = _phoneController.text.trim();
 
-    // Register
+    // Create credentials to pass to vehicle selection screen
     final credentials = RegisterCredentials(
       phoneNumber: phoneNumber,
       username: _usernameController.text.trim(),
@@ -352,14 +354,8 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
       confirmPassword: _confirmPasswordController.text,
     );
 
-    // debugPrint('🎯 UI: Starting registration with credentials:');
-    // debugPrint('📱 Phone: ${credentials.phoneNumber}');
-    // debugPrint('👤 Username: ${credentials.username}');
-    // debugPrint('🔒 Password length: ${credentials.password.length}');
-    // debugPrint(
-    //   '🔒 Confirm password matches: ${credentials.password == credentials.confirmPassword}',
-    // );
-
-    ref.read(registerStateProvider.notifier).register(credentials);
+    // Navigate to vehicle selection screen
+    // ignore: deprecated_member_use
+    context.push(Routes.vehicleSelection, extra: credentials);
   }
 }

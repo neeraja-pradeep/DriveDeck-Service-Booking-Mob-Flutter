@@ -6,6 +6,8 @@ import '../../features/auth/application/providers/auth_providers.dart';
 import '../../features/auth/application/states/auth_state.dart';
 import '../../features/auth/presentation/screen/login_screen.dart';
 import '../../features/auth/presentation/screen/otp_verification_screen.dart';
+import '../../features/auth/presentation/screen/vehicle_selection_screen.dart';
+import '../../features/auth/domain/entities/auth_credentials.dart';
 import '../../features/navigation/presentation/screens/main_navigation_screen.dart';
 import '../../features/bookings/presentation/screens/booking_detail_screen.dart';
 import '../../features/home/presentation/screens/shop_detail_screen.dart';
@@ -32,7 +34,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isLoggedIn = authState.isAuthenticated;
       final isLoggingIn =
           state.matchedLocation == Routes.login ||
-          state.matchedLocation == Routes.otpVerification;
+          state.matchedLocation == Routes.otpVerification ||
+          state.matchedLocation == Routes.vehicleSelection;
       final isSplash = state.matchedLocation == Routes.splash;
 
       // If on splash, check auth state
@@ -82,6 +85,15 @@ final routerProvider = Provider<GoRouter>((ref) {
             phoneNumber: args?['phoneNumber'] as String? ?? '',
             rememberMe: args?['rememberMe'] as bool? ?? false,
           );
+        },
+      ),
+
+      // Vehicle selection route
+      GoRoute(
+        path: Routes.vehicleSelection,
+        builder: (context, state) {
+          final registrationData = state.extra as RegisterCredentials;
+          return VehicleSelectionScreen(registrationData: registrationData);
         },
       ),
 
