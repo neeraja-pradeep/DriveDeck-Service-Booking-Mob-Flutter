@@ -25,7 +25,10 @@ class CheckoutScreen extends ConsumerWidget {
             children: [
               Icon(Icons.error_outline, size: 48.sp, color: AppColors.error),
               SizedBox(height: 16.h),
-              Text('No booking data found', style: AppTypography.bodyLarge),
+              const Text(
+                'No booking data found',
+                style: AppTypography.bodyLarge,
+              ),
               SizedBox(height: 16.h),
               ElevatedButton(
                 onPressed: () => context.go('/home'),
@@ -116,7 +119,7 @@ class CheckoutScreen extends ConsumerWidget {
             onPressed: () {
               // More options
             },
-            icon: Icon(Icons.more_vert, color: AppColors.textPrimary),
+            icon: const Icon(Icons.more_vert, color: AppColors.textPrimary),
           ),
         ],
       ),
@@ -361,7 +364,7 @@ class CheckoutScreen extends ConsumerWidget {
           ],
 
           SizedBox(height: 12.h),
-          Divider(color: AppColors.grey200),
+          const Divider(color: AppColors.grey200),
           SizedBox(height: 12.h),
 
           // Total price
@@ -461,7 +464,7 @@ class CheckoutScreen extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  Icon(Icons.chevron_right, color: AppColors.primary),
+                  const Icon(Icons.chevron_right, color: AppColors.primary),
                 ],
               ),
             ),
@@ -607,7 +610,7 @@ class CheckoutScreen extends ConsumerWidget {
               ),
             ),
 
-            Divider(height: 1, color: AppColors.grey200),
+            const Divider(height: 1, color: AppColors.grey200),
 
             // Payment options
             Expanded(
@@ -699,7 +702,7 @@ class CheckoutScreen extends ConsumerWidget {
                 ],
               ),
             ),
-            Icon(Icons.chevron_right, color: AppColors.textSecondary),
+            const Icon(Icons.chevron_right, color: AppColors.textSecondary),
           ],
         ),
       ),

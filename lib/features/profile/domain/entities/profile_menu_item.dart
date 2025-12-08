@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 /// Profile menu item options.
 enum ProfileMenuItem {
-  editProfile,
-  myBookings,
+  myGarage,
+  membership,
+  history,
   settings,
   helpSupport,
   logout,
@@ -13,21 +14,23 @@ enum ProfileMenuItem {
 extension ProfileMenuItemX on ProfileMenuItem {
   /// Get display title for menu item.
   String get title => switch (this) {
-        ProfileMenuItem.editProfile => 'Edit Profile',
-        ProfileMenuItem.myBookings => 'My Bookings',
-        ProfileMenuItem.settings => 'Settings',
-        ProfileMenuItem.helpSupport => 'Help & Support',
-        ProfileMenuItem.logout => 'Logout',
-      };
+    ProfileMenuItem.myGarage => 'My Garage',
+    ProfileMenuItem.membership => 'Membership',
+    ProfileMenuItem.history => 'History',
+    ProfileMenuItem.settings => 'Settings',
+    ProfileMenuItem.helpSupport => 'Help & Support',
+    ProfileMenuItem.logout => 'Logout',
+  };
 
   /// Get icon for menu item.
   IconData get icon => switch (this) {
-        ProfileMenuItem.editProfile => Icons.person_outline,
-        ProfileMenuItem.myBookings => Icons.calendar_today_outlined,
-        ProfileMenuItem.settings => Icons.settings_outlined,
-        ProfileMenuItem.helpSupport => Icons.help_outline,
-        ProfileMenuItem.logout => Icons.logout,
-      };
+    ProfileMenuItem.myGarage => Icons.garage,
+    ProfileMenuItem.membership => Icons.card_membership,
+    ProfileMenuItem.history => Icons.history,
+    ProfileMenuItem.settings => Icons.settings_outlined,
+    ProfileMenuItem.helpSupport => Icons.help_outline,
+    ProfileMenuItem.logout => Icons.logout,
+  };
 
   /// Check if menu item is destructive action.
   bool get isDestructive => this == ProfileMenuItem.logout;

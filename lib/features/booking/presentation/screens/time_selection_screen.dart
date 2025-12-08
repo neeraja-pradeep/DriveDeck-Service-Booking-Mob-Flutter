@@ -152,7 +152,7 @@ class _TimeSelectionScreenState extends ConsumerState<TimeSelectionScreen> {
                       ref.read(currentCalendarMonthProvider.notifier).state =
                           newMonth;
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.chevron_left,
                       color: AppColors.textSecondary,
                     ),
@@ -166,7 +166,7 @@ class _TimeSelectionScreenState extends ConsumerState<TimeSelectionScreen> {
                       ref.read(currentCalendarMonthProvider.notifier).state =
                           newMonth;
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.chevron_right,
                       color: AppColors.textSecondary,
                     ),
