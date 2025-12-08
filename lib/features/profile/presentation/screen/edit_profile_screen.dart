@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:newapp/app/theme/colors.dart';
 import 'package:newapp/app/theme/typography.dart';
-import 'package:newapp/core/error/failure.dart';
 import 'package:newapp/features/profile/application/providers/profile_providers.dart';
 import 'package:newapp/features/profile/application/states/edit_profile_state.dart';
 import 'package:newapp/features/profile/domain/entities/update_profile_request.dart';
@@ -30,10 +29,16 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   void initState() {
     super.initState();
     final currentProfile = ref.read(currentUserProfileProvider);
-    _nameController = TextEditingController(text: currentProfile?.firstName ?? '');
-    _lastNameController = TextEditingController(text: currentProfile?.lastName ?? '');
+    _nameController = TextEditingController(
+      text: currentProfile?.firstName ?? '',
+    );
+    _lastNameController = TextEditingController(
+      text: currentProfile?.lastName ?? '',
+    );
     _emailController = TextEditingController(text: currentProfile?.email ?? '');
-    _phoneController = TextEditingController(text: currentProfile?.phoneNumber ?? '');
+    _phoneController = TextEditingController(
+      text: currentProfile?.phoneNumber ?? '',
+    );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (currentProfile != null) {
@@ -53,7 +58,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final currentProfile = ref.watch(currentUserProfileProvider) ?? UserProfile.empty();
+    final currentProfile =
+        ref.watch(currentUserProfileProvider) ?? UserProfile.empty();
     final editState = ref.watch(editProfileStateProvider);
     final isSaving = editState is EditProfileSaving;
 
@@ -64,9 +70,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         );
         context.pop();
       } else if (next is EditProfileError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.failure.toUserMessage())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.failure.toUserMessage())));
       }
     });
 
@@ -85,9 +91,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         ),
         title: Text(
           'Personal Info',
-          style: AppTypography.titleLarge.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppTypography.titleLarge.copyWith(fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
         actions: [
@@ -193,7 +197,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                     child: OutlinedButton(
                       onPressed: isSaving ? null : _saveProfile,
                       style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: AppColors.grey300),
+                        side: const BorderSide(color: AppColors.grey300),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(26.r),
                         ),
@@ -202,7 +206,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                           ? SizedBox(
                               width: 24.w,
                               height: 24.w,
-                              child: CircularProgressIndicator(
+                              child: const CircularProgressIndicator(
                                 strokeWidth: 2,
                                 color: AppColors.textPrimary,
                               ),
@@ -241,7 +245,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                profile.fullName.isNotEmpty ? profile.fullName : profile.username,
+                profile.fullName.isNotEmpty
+                    ? profile.fullName
+                    : profile.username,
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w600,
@@ -293,16 +299,16 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
           ),
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 12.h),
-            border: UnderlineInputBorder(
+            border: const UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.grey200),
             ),
-            enabledBorder: UnderlineInputBorder(
+            enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.grey200),
             ),
-            focusedBorder: UnderlineInputBorder(
+            focusedBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.primary),
             ),
-            disabledBorder: UnderlineInputBorder(
+            disabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: AppColors.grey200),
             ),
             filled: false,

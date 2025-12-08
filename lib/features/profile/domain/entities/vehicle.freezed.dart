@@ -41,18 +41,17 @@ abstract class $VehicleCopyWith<$Res> {
   factory $VehicleCopyWith(Vehicle value, $Res Function(Vehicle) then) =
       _$VehicleCopyWithImpl<$Res, Vehicle>;
   @useResult
-  $Res call({
-    String id,
-    String make,
-    String model,
-    int? year,
-    String? licensePlate,
-    String? color,
-    GarageVehicleType vehicleType,
-    String? imageUrl,
-    bool isDefault,
-    DateTime? createdAt,
-  });
+  $Res call(
+      {String id,
+      String make,
+      String model,
+      int? year,
+      String? licensePlate,
+      String? color,
+      GarageVehicleType vehicleType,
+      String? imageUrl,
+      bool isDefault,
+      DateTime? createdAt});
 }
 
 /// @nodoc
@@ -60,7 +59,9 @@ class _$VehicleCopyWithImpl<$Res, $Val extends Vehicle>
     implements $VehicleCopyWith<$Res> {
   _$VehicleCopyWithImpl(this._value, this._then);
 
+  // ignore: unused_field
   final $Val _value;
+  // ignore: unused_field
   final $Res Function($Val) _then;
 
   @pragma('vm:prefer-inline')
@@ -80,34 +81,44 @@ class _$VehicleCopyWithImpl<$Res, $Val extends Vehicle>
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
-          : id as String,
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       make: null == make
           ? _value.make
-          : make as String,
+          : make // ignore: cast_nullable_to_non_nullable
+              as String,
       model: null == model
           ? _value.model
-          : model as String,
+          : model // ignore: cast_nullable_to_non_nullable
+              as String,
       year: freezed == year
           ? _value.year
-          : year as int?,
+          : year // ignore: cast_nullable_to_non_nullable
+              as int?,
       licensePlate: freezed == licensePlate
           ? _value.licensePlate
-          : licensePlate as String?,
+          : licensePlate // ignore: cast_nullable_to_non_nullable
+              as String?,
       color: freezed == color
           ? _value.color
-          : color as String?,
+          : color // ignore: cast_nullable_to_non_nullable
+              as String?,
       vehicleType: null == vehicleType
           ? _value.vehicleType
-          : vehicleType as GarageVehicleType,
+          : vehicleType // ignore: cast_nullable_to_non_nullable
+              as GarageVehicleType,
       imageUrl: freezed == imageUrl
           ? _value.imageUrl
-          : imageUrl as String?,
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       isDefault: null == isDefault
           ? _value.isDefault
-          : isDefault as bool,
+          : isDefault // ignore: cast_nullable_to_non_nullable
+              as bool,
       createdAt: freezed == createdAt
           ? _value.createdAt
-          : createdAt as DateTime?,
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -119,18 +130,17 @@ abstract class _$$VehicleImplCopyWith<$Res> implements $VehicleCopyWith<$Res> {
       __$$VehicleImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String id,
-    String make,
-    String model,
-    int? year,
-    String? licensePlate,
-    String? color,
-    GarageVehicleType vehicleType,
-    String? imageUrl,
-    bool isDefault,
-    DateTime? createdAt,
-  });
+  $Res call(
+      {String id,
+      String make,
+      String model,
+      int? year,
+      String? licensePlate,
+      String? color,
+      GarageVehicleType vehicleType,
+      String? imageUrl,
+      bool isDefault,
+      DateTime? createdAt});
 }
 
 /// @nodoc
@@ -158,34 +168,44 @@ class __$$VehicleImplCopyWithImpl<$Res>
     return _then(_$VehicleImpl(
       id: null == id
           ? _value.id
-          : id as String,
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       make: null == make
           ? _value.make
-          : make as String,
+          : make // ignore: cast_nullable_to_non_nullable
+              as String,
       model: null == model
           ? _value.model
-          : model as String,
+          : model // ignore: cast_nullable_to_non_nullable
+              as String,
       year: freezed == year
           ? _value.year
-          : year as int?,
+          : year // ignore: cast_nullable_to_non_nullable
+              as int?,
       licensePlate: freezed == licensePlate
           ? _value.licensePlate
-          : licensePlate as String?,
+          : licensePlate // ignore: cast_nullable_to_non_nullable
+              as String?,
       color: freezed == color
           ? _value.color
-          : color as String?,
+          : color // ignore: cast_nullable_to_non_nullable
+              as String?,
       vehicleType: null == vehicleType
           ? _value.vehicleType
-          : vehicleType as GarageVehicleType,
+          : vehicleType // ignore: cast_nullable_to_non_nullable
+              as GarageVehicleType,
       imageUrl: freezed == imageUrl
           ? _value.imageUrl
-          : imageUrl as String?,
+          : imageUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       isDefault: null == isDefault
           ? _value.isDefault
-          : isDefault as bool,
+          : isDefault // ignore: cast_nullable_to_non_nullable
+              as bool,
       createdAt: freezed == createdAt
           ? _value.createdAt
-          : createdAt as DateTime?,
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -193,18 +213,17 @@ class __$$VehicleImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$VehicleImpl implements _Vehicle {
-  const _$VehicleImpl({
-    required this.id,
-    required this.make,
-    required this.model,
-    this.year,
-    this.licensePlate,
-    this.color,
-    required this.vehicleType,
-    this.imageUrl,
-    this.isDefault = false,
-    this.createdAt,
-  });
+  const _$VehicleImpl(
+      {required this.id,
+      required this.make,
+      required this.model,
+      this.year,
+      this.licensePlate,
+      this.color,
+      required this.vehicleType,
+      this.imageUrl,
+      this.isDefault = false,
+      this.createdAt});
 
   factory _$VehicleImpl.fromJson(Map<String, dynamic> json) =>
       _$$VehicleImplFromJson(json);
@@ -271,23 +290,24 @@ class _$VehicleImpl implements _Vehicle {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$VehicleImplToJson(this);
+    return _$$VehicleImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _Vehicle implements Vehicle {
-  const factory _Vehicle({
-    required final String id,
-    required final String make,
-    required final String model,
-    final int? year,
-    final String? licensePlate,
-    final String? color,
-    required final GarageVehicleType vehicleType,
-    final String? imageUrl,
-    final bool isDefault,
-    final DateTime? createdAt,
-  }) = _$VehicleImpl;
+  const factory _Vehicle(
+      {required final String id,
+      required final String make,
+      required final String model,
+      final int? year,
+      final String? licensePlate,
+      final String? color,
+      required final GarageVehicleType vehicleType,
+      final String? imageUrl,
+      final bool isDefault,
+      final DateTime? createdAt}) = _$VehicleImpl;
 
   factory _Vehicle.fromJson(Map<String, dynamic> json) = _$VehicleImpl.fromJson;
 

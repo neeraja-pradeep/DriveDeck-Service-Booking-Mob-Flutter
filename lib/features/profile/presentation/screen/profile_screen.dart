@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:newapp/app/theme/colors.dart';
 import 'package:newapp/features/profile/application/providers/profile_providers.dart';
-import 'package:newapp/features/profile/application/states/profile_state.dart';
 
 // Modular components
 import '../components/profile_header_section.dart';

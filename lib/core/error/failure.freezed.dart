@@ -281,8 +281,9 @@ class __$$NetworkFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$NetworkFailureImpl implements NetworkFailure {
-  const _$NetworkFailureImpl({this.message = 'Network error occurred'});
+class _$NetworkFailureImpl extends NetworkFailure {
+  const _$NetworkFailureImpl({this.message = 'Network error occurred'})
+      : super._();
 
   @override
   @JsonKey()
@@ -528,8 +529,9 @@ class _$NetworkFailureImpl implements NetworkFailure {
   }
 }
 
-abstract class NetworkFailure implements Failure {
+abstract class NetworkFailure extends Failure {
   const factory NetworkFailure({final String message}) = _$NetworkFailureImpl;
+  const NetworkFailure._() : super._();
 
   @override
   String get message;
@@ -579,8 +581,9 @@ class __$$ServerFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ServerFailureImpl implements ServerFailure {
-  const _$ServerFailureImpl({required this.message, this.statusCode});
+class _$ServerFailureImpl extends ServerFailure {
+  const _$ServerFailureImpl({required this.message, this.statusCode})
+      : super._();
 
   @override
   final String message;
@@ -828,10 +831,11 @@ class _$ServerFailureImpl implements ServerFailure {
   }
 }
 
-abstract class ServerFailure implements Failure {
+abstract class ServerFailure extends Failure {
   const factory ServerFailure(
       {required final String message,
       final int? statusCode}) = _$ServerFailureImpl;
+  const ServerFailure._() : super._();
 
   @override
   String get message;
@@ -877,8 +881,8 @@ class __$$CacheFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CacheFailureImpl implements CacheFailure {
-  const _$CacheFailureImpl({this.message = 'Cache error occurred'});
+class _$CacheFailureImpl extends CacheFailure {
+  const _$CacheFailureImpl({this.message = 'Cache error occurred'}) : super._();
 
   @override
   @JsonKey()
@@ -1123,8 +1127,9 @@ class _$CacheFailureImpl implements CacheFailure {
   }
 }
 
-abstract class CacheFailure implements Failure {
+abstract class CacheFailure extends Failure {
   const factory CacheFailure({final String message}) = _$CacheFailureImpl;
+  const CacheFailure._() : super._();
 
   @override
   String get message;
@@ -1169,8 +1174,9 @@ class __$$UnknownFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UnknownFailureImpl implements UnknownFailure {
-  const _$UnknownFailureImpl({this.message = 'An unexpected error occurred'});
+class _$UnknownFailureImpl extends UnknownFailure {
+  const _$UnknownFailureImpl({this.message = 'An unexpected error occurred'})
+      : super._();
 
   @override
   @JsonKey()
@@ -1416,8 +1422,9 @@ class _$UnknownFailureImpl implements UnknownFailure {
   }
 }
 
-abstract class UnknownFailure implements Failure {
+abstract class UnknownFailure extends Failure {
   const factory UnknownFailure({final String message}) = _$UnknownFailureImpl;
+  const UnknownFailure._() : super._();
 
   @override
   String get message;
@@ -1467,9 +1474,10 @@ class __$$InvalidOtpFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$InvalidOtpFailureImpl implements InvalidOtpFailure {
+class _$InvalidOtpFailureImpl extends InvalidOtpFailure {
   const _$InvalidOtpFailureImpl(
-      {this.message = 'Invalid OTP code', this.attemptsRemaining});
+      {this.message = 'Invalid OTP code', this.attemptsRemaining})
+      : super._();
 
   @override
   @JsonKey()
@@ -1719,10 +1727,11 @@ class _$InvalidOtpFailureImpl implements InvalidOtpFailure {
   }
 }
 
-abstract class InvalidOtpFailure implements Failure {
+abstract class InvalidOtpFailure extends Failure {
   const factory InvalidOtpFailure(
       {final String message,
       final int? attemptsRemaining}) = _$InvalidOtpFailureImpl;
+  const InvalidOtpFailure._() : super._();
 
   @override
   String get message;
@@ -1768,9 +1777,10 @@ class __$$OtpExpiredFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$OtpExpiredFailureImpl implements OtpExpiredFailure {
+class _$OtpExpiredFailureImpl extends OtpExpiredFailure {
   const _$OtpExpiredFailureImpl(
-      {this.message = 'OTP has expired. Please request a new one.'});
+      {this.message = 'OTP has expired. Please request a new one.'})
+      : super._();
 
   @override
   @JsonKey()
@@ -2016,9 +2026,10 @@ class _$OtpExpiredFailureImpl implements OtpExpiredFailure {
   }
 }
 
-abstract class OtpExpiredFailure implements Failure {
+abstract class OtpExpiredFailure extends Failure {
   const factory OtpExpiredFailure({final String message}) =
       _$OtpExpiredFailureImpl;
+  const OtpExpiredFailure._() : super._();
 
   @override
   String get message;
@@ -2066,9 +2077,10 @@ class __$$PhoneNumberAlreadyExistsFailureImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$PhoneNumberAlreadyExistsFailureImpl
-    implements PhoneNumberAlreadyExistsFailure {
+    extends PhoneNumberAlreadyExistsFailure {
   const _$PhoneNumberAlreadyExistsFailureImpl(
-      {this.message = 'This phone number is already registered'});
+      {this.message = 'This phone number is already registered'})
+      : super._();
 
   @override
   @JsonKey()
@@ -2315,9 +2327,10 @@ class _$PhoneNumberAlreadyExistsFailureImpl
   }
 }
 
-abstract class PhoneNumberAlreadyExistsFailure implements Failure {
+abstract class PhoneNumberAlreadyExistsFailure extends Failure {
   const factory PhoneNumberAlreadyExistsFailure({final String message}) =
       _$PhoneNumberAlreadyExistsFailureImpl;
+  const PhoneNumberAlreadyExistsFailure._() : super._();
 
   @override
   String get message;
@@ -2365,8 +2378,9 @@ class __$$InvalidCredentialsFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$InvalidCredentialsFailureImpl implements InvalidCredentialsFailure {
-  const _$InvalidCredentialsFailureImpl({this.message = 'Invalid credentials'});
+class _$InvalidCredentialsFailureImpl extends InvalidCredentialsFailure {
+  const _$InvalidCredentialsFailureImpl({this.message = 'Invalid credentials'})
+      : super._();
 
   @override
   @JsonKey()
@@ -2612,9 +2626,10 @@ class _$InvalidCredentialsFailureImpl implements InvalidCredentialsFailure {
   }
 }
 
-abstract class InvalidCredentialsFailure implements Failure {
+abstract class InvalidCredentialsFailure extends Failure {
   const factory InvalidCredentialsFailure({final String message}) =
       _$InvalidCredentialsFailureImpl;
+  const InvalidCredentialsFailure._() : super._();
 
   @override
   String get message;
@@ -2660,9 +2675,10 @@ class __$$SessionExpiredFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SessionExpiredFailureImpl implements SessionExpiredFailure {
+class _$SessionExpiredFailureImpl extends SessionExpiredFailure {
   const _$SessionExpiredFailureImpl(
-      {this.message = 'Your session has expired. Please login again.'});
+      {this.message = 'Your session has expired. Please login again.'})
+      : super._();
 
   @override
   @JsonKey()
@@ -2908,9 +2924,10 @@ class _$SessionExpiredFailureImpl implements SessionExpiredFailure {
   }
 }
 
-abstract class SessionExpiredFailure implements Failure {
+abstract class SessionExpiredFailure extends Failure {
   const factory SessionExpiredFailure({final String message}) =
       _$SessionExpiredFailureImpl;
+  const SessionExpiredFailure._() : super._();
 
   @override
   String get message;
@@ -2957,8 +2974,9 @@ class __$$AccountNotFoundFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AccountNotFoundFailureImpl implements AccountNotFoundFailure {
-  const _$AccountNotFoundFailureImpl({this.message = 'Account not found'});
+class _$AccountNotFoundFailureImpl extends AccountNotFoundFailure {
+  const _$AccountNotFoundFailureImpl({this.message = 'Account not found'})
+      : super._();
 
   @override
   @JsonKey()
@@ -3204,9 +3222,10 @@ class _$AccountNotFoundFailureImpl implements AccountNotFoundFailure {
   }
 }
 
-abstract class AccountNotFoundFailure implements Failure {
+abstract class AccountNotFoundFailure extends Failure {
   const factory AccountNotFoundFailure({final String message}) =
       _$AccountNotFoundFailureImpl;
+  const AccountNotFoundFailure._() : super._();
 
   @override
   String get message;
@@ -3256,10 +3275,11 @@ class __$$ValidationFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ValidationFailureImpl implements ValidationFailure {
+class _$ValidationFailureImpl extends ValidationFailure {
   const _$ValidationFailureImpl(
       {required this.message, final Map<String, String>? fieldErrors})
-      : _fieldErrors = fieldErrors;
+      : _fieldErrors = fieldErrors,
+        super._();
 
   @override
   final String message;
@@ -3516,10 +3536,11 @@ class _$ValidationFailureImpl implements ValidationFailure {
   }
 }
 
-abstract class ValidationFailure implements Failure {
+abstract class ValidationFailure extends Failure {
   const factory ValidationFailure(
       {required final String message,
       final Map<String, String>? fieldErrors}) = _$ValidationFailureImpl;
+  const ValidationFailure._() : super._();
 
   @override
   String get message;
@@ -3565,8 +3586,9 @@ class __$$ParsingFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ParsingFailureImpl implements _ParsingFailure {
-  const _$ParsingFailureImpl({this.message = 'Failed to parse data'});
+class _$ParsingFailureImpl extends _ParsingFailure {
+  const _$ParsingFailureImpl({this.message = 'Failed to parse data'})
+      : super._();
 
   @override
   @JsonKey()
@@ -3812,8 +3834,9 @@ class _$ParsingFailureImpl implements _ParsingFailure {
   }
 }
 
-abstract class _ParsingFailure implements Failure {
+abstract class _ParsingFailure extends Failure {
   const factory _ParsingFailure({final String message}) = _$ParsingFailureImpl;
+  const _ParsingFailure._() : super._();
 
   @override
   String get message;
@@ -3863,9 +3886,10 @@ class __$$UnauthorizedFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UnauthorizedFailureImpl implements _UnauthorizedFailure {
+class _$UnauthorizedFailureImpl extends _UnauthorizedFailure {
   const _$UnauthorizedFailureImpl(
-      {this.message = 'Authentication required', this.code});
+      {this.message = 'Authentication required', this.code})
+      : super._();
 
   @override
   @JsonKey()
@@ -4114,9 +4138,10 @@ class _$UnauthorizedFailureImpl implements _UnauthorizedFailure {
   }
 }
 
-abstract class _UnauthorizedFailure implements Failure {
+abstract class _UnauthorizedFailure extends Failure {
   const factory _UnauthorizedFailure(
       {final String message, final String? code}) = _$UnauthorizedFailureImpl;
+  const _UnauthorizedFailure._() : super._();
 
   @override
   String get message;
@@ -4162,8 +4187,9 @@ class __$$NotFoundFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$NotFoundFailureImpl implements _NotFoundFailure {
-  const _$NotFoundFailureImpl({this.message = 'Resource not found'});
+class _$NotFoundFailureImpl extends _NotFoundFailure {
+  const _$NotFoundFailureImpl({this.message = 'Resource not found'})
+      : super._();
 
   @override
   @JsonKey()
@@ -4409,9 +4435,10 @@ class _$NotFoundFailureImpl implements _NotFoundFailure {
   }
 }
 
-abstract class _NotFoundFailure implements Failure {
+abstract class _NotFoundFailure extends Failure {
   const factory _NotFoundFailure({final String message}) =
       _$NotFoundFailureImpl;
+  const _NotFoundFailure._() : super._();
 
   @override
   String get message;
@@ -4456,8 +4483,9 @@ class __$$PermissionFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PermissionFailureImpl implements _PermissionFailure {
-  const _$PermissionFailureImpl({this.message = 'Permission denied'});
+class _$PermissionFailureImpl extends _PermissionFailure {
+  const _$PermissionFailureImpl({this.message = 'Permission denied'})
+      : super._();
 
   @override
   @JsonKey()
@@ -4703,9 +4731,10 @@ class _$PermissionFailureImpl implements _PermissionFailure {
   }
 }
 
-abstract class _PermissionFailure implements Failure {
+abstract class _PermissionFailure extends Failure {
   const factory _PermissionFailure({final String message}) =
       _$PermissionFailureImpl;
+  const _PermissionFailure._() : super._();
 
   @override
   String get message;
@@ -4755,9 +4784,10 @@ class __$$GenericFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$GenericFailureImpl implements _GenericFailure {
+class _$GenericFailureImpl extends _GenericFailure {
   const _$GenericFailureImpl(
-      {this.message = 'An unexpected error occurred', this.code});
+      {this.message = 'An unexpected error occurred', this.code})
+      : super._();
 
   @override
   @JsonKey()
@@ -5006,9 +5036,10 @@ class _$GenericFailureImpl implements _GenericFailure {
   }
 }
 
-abstract class _GenericFailure implements Failure {
+abstract class _GenericFailure extends Failure {
   const factory _GenericFailure({final String message, final String? code}) =
       _$GenericFailureImpl;
+  const _GenericFailure._() : super._();
 
   @override
   String get message;
@@ -5067,11 +5098,12 @@ class __$$LocationPermissionDeniedFailureImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LocationPermissionDeniedFailureImpl
-    implements _LocationPermissionDeniedFailure {
+    extends _LocationPermissionDeniedFailure {
   const _$LocationPermissionDeniedFailureImpl(
       {required this.status,
       this.message = 'Location permission denied',
-      this.code});
+      this.code})
+      : super._();
 
   @override
   final LocationPermissionStatus status;
@@ -5324,11 +5356,12 @@ class _$LocationPermissionDeniedFailureImpl
   }
 }
 
-abstract class _LocationPermissionDeniedFailure implements Failure {
+abstract class _LocationPermissionDeniedFailure extends Failure {
   const factory _LocationPermissionDeniedFailure(
       {required final LocationPermissionStatus status,
       final String message,
       final String? code}) = _$LocationPermissionDeniedFailureImpl;
+  const _LocationPermissionDeniedFailure._() : super._();
 
   LocationPermissionStatus get status;
   @override
@@ -5384,9 +5417,10 @@ class __$$LocationServiceDisabledFailureImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LocationServiceDisabledFailureImpl
-    implements _LocationServiceDisabledFailure {
+    extends _LocationServiceDisabledFailure {
   const _$LocationServiceDisabledFailureImpl(
-      {this.message = 'Location service disabled', this.code});
+      {this.message = 'Location service disabled', this.code})
+      : super._();
 
   @override
   @JsonKey()
@@ -5636,10 +5670,11 @@ class _$LocationServiceDisabledFailureImpl
   }
 }
 
-abstract class _LocationServiceDisabledFailure implements Failure {
+abstract class _LocationServiceDisabledFailure extends Failure {
   const factory _LocationServiceDisabledFailure(
       {final String message,
       final String? code}) = _$LocationServiceDisabledFailureImpl;
+  const _LocationServiceDisabledFailure._() : super._();
 
   @override
   String get message;
@@ -5691,8 +5726,9 @@ class __$$LocationFetchFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LocationFetchFailureImpl implements _LocationFetchFailure {
-  const _$LocationFetchFailureImpl({required this.message, this.code});
+class _$LocationFetchFailureImpl extends _LocationFetchFailure {
+  const _$LocationFetchFailureImpl({required this.message, this.code})
+      : super._();
 
   @override
   final String message;
@@ -5941,10 +5977,11 @@ class _$LocationFetchFailureImpl implements _LocationFetchFailure {
   }
 }
 
-abstract class _LocationFetchFailure implements Failure {
+abstract class _LocationFetchFailure extends Failure {
   const factory _LocationFetchFailure(
       {required final String message,
       final String? code}) = _$LocationFetchFailureImpl;
+  const _LocationFetchFailure._() : super._();
 
   @override
   String get message;
@@ -5992,8 +6029,9 @@ class __$$BookingNotFoundFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$BookingNotFoundFailureImpl implements BookingNotFoundFailure {
-  const _$BookingNotFoundFailureImpl({this.message = 'Booking not found'});
+class _$BookingNotFoundFailureImpl extends BookingNotFoundFailure {
+  const _$BookingNotFoundFailureImpl({this.message = 'Booking not found'})
+      : super._();
 
   @override
   @JsonKey()
@@ -6239,9 +6277,10 @@ class _$BookingNotFoundFailureImpl implements BookingNotFoundFailure {
   }
 }
 
-abstract class BookingNotFoundFailure implements Failure {
+abstract class BookingNotFoundFailure extends Failure {
   const factory BookingNotFoundFailure({final String message}) =
       _$BookingNotFoundFailureImpl;
+  const BookingNotFoundFailure._() : super._();
 
   @override
   String get message;
@@ -6289,9 +6328,10 @@ class __$$BookingAlreadyCancelledFailureImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$BookingAlreadyCancelledFailureImpl
-    implements BookingAlreadyCancelledFailure {
+    extends BookingAlreadyCancelledFailure {
   const _$BookingAlreadyCancelledFailureImpl(
-      {this.message = 'Booking is already cancelled'});
+      {this.message = 'Booking is already cancelled'})
+      : super._();
 
   @override
   @JsonKey()
@@ -6538,9 +6578,10 @@ class _$BookingAlreadyCancelledFailureImpl
   }
 }
 
-abstract class BookingAlreadyCancelledFailure implements Failure {
+abstract class BookingAlreadyCancelledFailure extends Failure {
   const factory BookingAlreadyCancelledFailure({final String message}) =
       _$BookingAlreadyCancelledFailureImpl;
+  const BookingAlreadyCancelledFailure._() : super._();
 
   @override
   String get message;
@@ -6594,10 +6635,11 @@ class __$$CancellationNotAllowedFailureImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$CancellationNotAllowedFailureImpl
-    implements CancellationNotAllowedFailure {
+    extends CancellationNotAllowedFailure {
   const _$CancellationNotAllowedFailureImpl(
       {this.message = 'This booking cannot be cancelled at this time',
-      this.reason});
+      this.reason})
+      : super._();
 
   @override
   @JsonKey()
@@ -6847,10 +6889,11 @@ class _$CancellationNotAllowedFailureImpl
   }
 }
 
-abstract class CancellationNotAllowedFailure implements Failure {
+abstract class CancellationNotAllowedFailure extends Failure {
   const factory CancellationNotAllowedFailure(
       {final String message,
       final String? reason}) = _$CancellationNotAllowedFailureImpl;
+  const CancellationNotAllowedFailure._() : super._();
 
   @override
   String get message;
@@ -6897,8 +6940,9 @@ class __$$BookingFetchFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$BookingFetchFailureImpl implements BookingFetchFailure {
-  const _$BookingFetchFailureImpl({this.message = 'Failed to fetch bookings'});
+class _$BookingFetchFailureImpl extends BookingFetchFailure {
+  const _$BookingFetchFailureImpl({this.message = 'Failed to fetch bookings'})
+      : super._();
 
   @override
   @JsonKey()
@@ -7144,9 +7188,10 @@ class _$BookingFetchFailureImpl implements BookingFetchFailure {
   }
 }
 
-abstract class BookingFetchFailure implements Failure {
+abstract class BookingFetchFailure extends Failure {
   const factory BookingFetchFailure({final String message}) =
       _$BookingFetchFailureImpl;
+  const BookingFetchFailure._() : super._();
 
   @override
   String get message;

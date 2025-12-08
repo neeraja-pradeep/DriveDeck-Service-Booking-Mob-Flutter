@@ -1,4 +1,6 @@
 import '../../../domain/entities/vehicle.dart';
+import '../../../../../core/network/api_client.dart';
+import '../../../../../core/network/endpoints.dart';
 
 /// Local data source for garage/vehicles.
 abstract class GarageLocalDataSource {
@@ -18,70 +20,65 @@ abstract class GarageLocalDataSource {
   Future<void> clearCache();
 }
 
-/// Implementation of GarageLocalDataSource with mock data.
+/// Implementation of GarageLocalDataSource with API calls.
+/// Uses actual API endpoints - returns empty list if no vehicles exist.
 class GarageLocalDataSourceImpl implements GarageLocalDataSource {
-  GarageLocalDataSourceImpl();
+  GarageLocalDataSourceImpl({required ApiClient apiClient})
+    : _apiClient = apiClient;
 
-  // In-memory storage for demo purposes
-  List<Vehicle> _vehicles = [];
-  bool _initialized = false;
-
-  /// Initialize with mock data.
-  void _initializeMockData() {
-    if (_initialized) return;
-    _initialized = true;
-
-    _vehicles = [
-      Vehicle(
-        id: '1',
-        make: 'BMW',
-        model: '3 Series',
-        year: 2022,
-        licensePlate: 'KL-10-A-2022-BMW 3ari',
-        vehicleType: GarageVehicleType.sedan,
-        imageUrl: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400',
-        isDefault: true,
-        createdAt: DateTime.now().subtract(const Duration(days: 30)),
-      ),
-      Vehicle(
-        id: '2',
-        make: 'Ford',
-        model: 'Endeavour',
-        year: 2021,
-        licensePlate: 'KL-51-A-1542-FordEndeavour',
-        vehicleType: GarageVehicleType.suv,
-        imageUrl: 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=400',
-        isDefault: false,
-        createdAt: DateTime.now().subtract(const Duration(days: 60)),
-      ),
-    ];
-  }
+  final ApiClient _apiClient;
 
   @override
   Future<List<Vehicle>> getVehicles() async {
-    _initializeMockData();
-    await Future<void>.delayed(const Duration(milliseconds: 300));
-    return List.from(_vehicles);
+    try {
+      final response = await _apiClient.get<List<dynamic>>(
+        Endpoints.userVehicles(),
+      );
+
+      if (response.statusCode == 200 && response.data != null) {
+        final vehicles = (response.data as List)
+            .map((v) => Vehicle.fromJson(v as Map<String, dynamic>))
+            .toList();
+        return vehicles;
+      }
+      // Return empty list if no data or non-200 status
+      return [];
+    } catch (e) {
+      // Handle 404 gracefully - endpoint not yet implemented on backend
+      // Return empty list to show empty state in UI instead of error
+      if (e.toString().contains('404')) {
+        return [];
+      }
+      // Rethrow other errors to let the UI handle them
+      rethrow;
+    }
   }
 
   @override
   Future<void> saveVehicles(List<Vehicle> vehicles) async {
-    _vehicles = List.from(vehicles);
+    // Not used - individual operations handle updates
   }
 
   @override
   Future<void> addVehicle(Vehicle vehicle) async {
-    _vehicles.add(vehicle);
+    try {
+      await _apiClient.post(Endpoints.createVehicle(), data: vehicle.toJson());
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
   Future<void> removeVehicle(String vehicleId) async {
-    _vehicles.removeWhere((v) => v.id == vehicleId);
+    try {
+      await _apiClient.delete(Endpoints.deleteVehicle(vehicleId));
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
   Future<void> clearCache() async {
-    _vehicles.clear();
-    _initialized = false;
+    // Cache clearing not applicable for API calls
   }
 }

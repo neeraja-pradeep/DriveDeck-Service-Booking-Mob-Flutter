@@ -46,9 +46,7 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
         ),
         title: Text(
           'My Garage',
-          style: AppTypography.titleLarge.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppTypography.titleLarge.copyWith(fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
       ),
@@ -150,17 +148,14 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
     return switch (state) {
       GarageInitial() || GarageLoading() => _buildLoadingState(),
       GarageError(message: final message) => _buildErrorState(message),
-      GarageLoaded() => vehicles.isEmpty
-          ? _buildEmptyState()
-          : _buildVehicleGrid(vehicles),
+      GarageLoaded() =>
+        vehicles.isEmpty ? _buildEmptyState() : _buildVehicleGrid(vehicles),
     };
   }
 
   Widget _buildLoadingState() {
-    return Center(
-      child: CircularProgressIndicator(
-        color: AppColors.primary,
-      ),
+    return const Center(
+      child: CircularProgressIndicator(color: AppColors.primary),
     );
   }
 
@@ -169,16 +164,9 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.error_outline,
-            size: 48.sp,
-            color: AppColors.error,
-          ),
+          Icon(Icons.error_outline, size: 48.sp, color: AppColors.error),
           SizedBox(height: 16.h),
-          Text(
-            'Failed to load vehicles',
-            style: AppTypography.bodyLarge,
-          ),
+          const Text('Failed to load vehicles', style: AppTypography.bodyLarge),
           SizedBox(height: 8.h),
           ElevatedButton(
             onPressed: () =>
@@ -201,10 +189,7 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
             color: AppColors.grey400,
           ),
           SizedBox(height: 16.h),
-          Text(
-            'No vehicles found',
-            style: AppTypography.titleMedium,
-          ),
+          const Text('No vehicles found', style: AppTypography.titleMedium),
           SizedBox(height: 8.h),
           Text(
             'Add your vehicles to get started',
@@ -270,7 +255,7 @@ class _VehicleCard extends StatelessWidget {
                       fit: BoxFit.cover,
                       placeholder: (context, url) => Container(
                         color: AppColors.grey200,
-                        child: Center(
+                        child: const Center(
                           child: CircularProgressIndicator(
                             color: AppColors.primary,
                             strokeWidth: 2,

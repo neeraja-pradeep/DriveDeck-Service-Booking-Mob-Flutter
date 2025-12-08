@@ -2,10 +2,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entities/vehicle.dart';
 import '../../infrastructure/data_sources/local/garage_local_ds.dart';
+import '../../../auth/application/providers/auth_providers.dart';
 
 /// Provider for garage local data source.
 final garageLocalDataSourceProvider = Provider<GarageLocalDataSource>((ref) {
-  return GarageLocalDataSourceImpl();
+  final apiClient = ref.watch(apiClientProvider);
+  return GarageLocalDataSourceImpl(apiClient: apiClient);
 });
 
 /// State for garage screen.
@@ -65,8 +67,9 @@ class GarageNotifier extends StateNotifier<GarageState> {
     if (currentState is GarageLoaded) {
       try {
         await _dataSource.removeVehicle(vehicleId);
-        final updatedVehicles =
-            currentState.vehicles.where((v) => v.id != vehicleId).toList();
+        final updatedVehicles = currentState.vehicles
+            .where((v) => v.id != vehicleId)
+            .toList();
         state = GarageLoaded(updatedVehicles);
       } catch (e) {
         state = GarageError(e.toString());
@@ -112,8 +115,9 @@ class GarageNotifier extends StateNotifier<GarageState> {
 }
 
 /// Provider for garage state.
-final garageStateProvider =
-    StateNotifierProvider<GarageNotifier, GarageState>((ref) {
+final garageStateProvider = StateNotifierProvider<GarageNotifier, GarageState>((
+  ref,
+) {
   final dataSource = ref.watch(garageLocalDataSourceProvider);
   return GarageNotifier(dataSource);
 });

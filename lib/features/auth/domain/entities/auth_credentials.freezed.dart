@@ -493,8 +493,8 @@ class _$RegisterCredentialsImpl implements _RegisterCredentials {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, phoneNumber, username, password, confirmPassword, vehicleType);
+  int get hashCode => Object.hash(runtimeType, phoneNumber, username, password,
+      confirmPassword, vehicleType);
 
   @JsonKey(ignore: true)
   @override

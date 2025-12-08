@@ -52,10 +52,14 @@ class LogoutDialog extends ConsumerWidget {
                 // Log Out button (outlined red)
                 Expanded(
                   child: OutlinedButton(
-                    onPressed:
-                        isLoggingOut ? null : () => _handleLogout(context, ref),
+                    onPressed: isLoggingOut
+                        ? null
+                        : () => _handleLogout(context, ref),
                     style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: AppColors.error, width: 1.5),
+                      side: const BorderSide(
+                        color: AppColors.error,
+                        width: 1.5,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.r),
                       ),
@@ -65,7 +69,7 @@ class LogoutDialog extends ConsumerWidget {
                         ? SizedBox(
                             width: 20.w,
                             height: 20.w,
-                            child: CircularProgressIndicator(
+                            child: const CircularProgressIndicator(
                               strokeWidth: 2,
                               valueColor: AlwaysStoppedAnimation<Color>(
                                 AppColors.error,
@@ -86,10 +90,11 @@ class LogoutDialog extends ConsumerWidget {
                 // Cancel button (filled black)
                 Expanded(
                   child: ElevatedButton(
-                    onPressed:
-                        isLoggingOut ? null : () => Navigator.of(context).pop(),
+                    onPressed: isLoggingOut
+                        ? null
+                        : () => Navigator.of(context).pop(),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.black,
+                      backgroundColor: AppColors.primary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.r),
                       ),

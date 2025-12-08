@@ -95,4 +95,18 @@ class Endpoints {
 
   /// Update user profile.
   static String updateProfile() => '$apiPrefix/accounts/profile/';
+
+  // ============================================================================
+  // Vehicle Endpoints
+  // ============================================================================
+
+  /// Get all user vehicles.
+  static String userVehicles() => '$apiPrefix/vehicles/';
+
+  /// Create a new vehicle.
+  static String createVehicle() => '$apiPrefix/vehicles/';
+
+  /// Delete a vehicle.
+  static String deleteVehicle(String vehicleId) =>
+      '$apiPrefix/vehicles/$vehicleId/';
 }
