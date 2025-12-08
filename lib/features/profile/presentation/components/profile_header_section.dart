@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:newapp/app/theme/colors.dart';
-import 'package:newapp/app/theme/typography.dart';
 import 'package:newapp/features/profile/domain/entities/user_profile.dart';
 import 'package:newapp/features/profile/presentation/components/profile_avatar.dart';
 import 'package:newapp/features/profile/application/providers/profile_providers.dart';
@@ -76,6 +76,7 @@ class ProfileHeaderSection extends ConsumerWidget {
                 // Profile avatar
                 ProfileAvatar(
                   initials: currentProfile?.initials ?? '?',
+                  imageUrl: currentProfile?.profilePicture,
                   size: 60.w,
                 ),
 
@@ -113,10 +114,10 @@ class ProfileHeaderSection extends ConsumerWidget {
 
                 SizedBox(width: 12.w),
 
-                // Edit icon
+                // Edit icon - navigates to edit profile screen
                 GestureDetector(
                   onTap: () {
-                    // TODO: Navigate to edit profile
+                    context.push('/edit-profile');
                   },
                   child: Container(
                     padding: EdgeInsets.all(8.w),
