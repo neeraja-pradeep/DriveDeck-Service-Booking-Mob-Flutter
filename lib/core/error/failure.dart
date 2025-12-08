@@ -122,6 +122,31 @@ sealed class Failure with _$Failure {
     @Default('Failed to fetch bookings') String message,
   }) = BookingFetchFailure;
 
+  // Shop-specific failures
+  const factory Failure.shopNotFound({
+    @Default('Shop not found') String message,
+  }) = ShopNotFoundFailure;
+
+  const factory Failure.noSlotsAvailable({
+    @Default('No slots available for the selected date') String message,
+  }) = NoSlotsAvailableFailure;
+
+  const factory Failure.bookingCreationFailed({
+    required String message,
+  }) = BookingCreationFailure;
+
+  const factory Failure.slotNoLongerAvailable({
+    @Default('The selected time slot is no longer available') String message,
+  }) = SlotNoLongerAvailableFailure;
+
+  const factory Failure.invalidPromoCode({
+    @Default('Invalid or expired promo code') String message,
+  }) = InvalidPromoCodeFailure;
+
+  const factory Failure.noConnection({
+    @Default('No internet connection') String message,
+  }) = NoConnectionFailure;
+
   // 2. MOVE THE GETTER LOGIC HERE (Inside the class body)
 
   /// Returns a user-friendly message for the failure.
@@ -183,6 +208,12 @@ sealed class Failure with _$Failure {
     bookingAlreadyCancelled: (message) => message,
     cancellationNotAllowed: (message, reason) => reason ?? message,
     bookingFetch: (message) => message,
+    shopNotFound: (message) => message,
+    noSlotsAvailable: (message) => message,
+    bookingCreationFailed: (message) => message,
+    slotNoLongerAvailable: (message) => message,
+    invalidPromoCode: (message) => message,
+    noConnection: (message) => message,
   );
 
   /// Returns the error code if available.
@@ -210,6 +241,12 @@ sealed class Failure with _$Failure {
     bookingAlreadyCancelled: (_) => null,
     cancellationNotAllowed: (_, _) => null,
     bookingFetch: (_) => null,
+    shopNotFound: (_) => null,
+    noSlotsAvailable: (_) => null,
+    bookingCreationFailed: (_) => null,
+    slotNoLongerAvailable: (_) => null,
+    invalidPromoCode: (_) => null,
+    noConnection: (_) => null,
   );
 
   /// Legacy method support
