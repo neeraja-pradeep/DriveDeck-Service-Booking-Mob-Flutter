@@ -73,18 +73,40 @@ class Endpoints {
   // ============================================================================
 
   /// Get all shops.
-  static String shops() => '$apiPrefix/shops/';
+  static String shops() => '$apiPrefix/shop/shops/';
+
+  /// Get nearby shops.
+  static String nearbyShops() => '$apiPrefix/shop/shops/near-you/';
 
   /// Get shop details.
-  static String shopDetails(String shopId) => '$apiPrefix/shops/$shopId/';
+  static String shopDetails(int shopId) => '$apiPrefix/shop/shops/$shopId/';
 
   /// Get shop services.
-  static String shopServices(String shopId) =>
-      '$apiPrefix/shops/$shopId/services/';
+  static String shopServices(int shopId) =>
+      '$apiPrefix/shop/shops/$shopId/services/';
 
-  /// Get shop time slots.
+  /// Get shop packages.
+  static String shopPackages(int shopId) =>
+      '$apiPrefix/shop/shops/$shopId/packages/';
+
+  /// Get shop accessories.
+  static String shopAccessories(int shopId) =>
+      '$apiPrefix/shop/shops/$shopId/accessories/';
+
+  /// Get shop availability for date range.
+  static String shopAvailability(int shopId) =>
+      '$apiPrefix/shop/shops/$shopId/date-day/';
+
+  /// Get shop time slots (legacy).
   static String shopTimeSlots(String shopId) =>
-      '$apiPrefix/shops/$shopId/slots/';
+      '$apiPrefix/shop/shops/$shopId/slots/';
+
+  /// Shop favorites.
+  static String shopFavorites() => '$apiPrefix/shop/favorites/';
+
+  /// Shop favorite by ID.
+  static String shopFavorite(int shopId) =>
+      '$apiPrefix/shop/favorites/$shopId/';
 
   // ============================================================================
   // User Endpoints

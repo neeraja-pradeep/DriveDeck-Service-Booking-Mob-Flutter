@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'endpoints.dart';
 
 /// HTTP client wrapper for API communication.
@@ -175,3 +176,8 @@ class ConditionalResponse<T> {
   /// The Last-Modified header value from response.
   final String? lastModified;
 }
+
+/// Provider for the API client.
+final apiClientProvider = Provider<ApiClient>((ref) {
+  return ApiClient();
+});
