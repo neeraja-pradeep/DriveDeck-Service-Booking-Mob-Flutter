@@ -27,7 +27,7 @@ class Endpoints {
   static String login() => '$apiPrefix/accounts/login/';
 
   /// Logout endpoint.
-  static String logout() => '$apiPrefix/auth/logout/';
+  static String logout() => '$apiPrefix/accounts/logout/';
 
   /// Refresh token endpoint.
   static String refreshToken() => '$apiPrefix/accounts/refresh/';
