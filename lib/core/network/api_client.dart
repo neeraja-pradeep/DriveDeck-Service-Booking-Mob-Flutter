@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'endpoints.dart';
 
 /// HTTP client wrapper for API communication.
@@ -139,24 +139,15 @@ class _AuthInterceptor extends Interceptor {
       final sessionData = await getSessionData?.call();
 
       if (sessionData != null) {
-        // Add session headers (sessionid, X-CSRFToken, user-id)
+        // Add session headers (Cookie with sessionid/csrftoken, X-CSRFToken, user-id)
         options.headers.addAll(sessionData);
-
-        // Also add Bearer token if sessionid is available
-        // This supports Django's standard token authentication
-        final sessionId = sessionData['sessionid'];
-        if (sessionId != null && sessionId.isNotEmpty) {
-          options.headers['Authorization'] = 'Bearer $sessionId';
-        }
 
         // Debug: Log headers being added
         debugPrint('🔐 Auth Headers Added: ${sessionData.keys.toList()}');
-        debugPrint(
-          '   - sessionid: ${sessionData['sessionid']?.substring(0, 10)}...',
-        );
-        debugPrint(
-          '   - X-CSRFToken: ${sessionData['X-CSRFToken']?.substring(0, 10)}...',
-        );
+        if (sessionData['Cookie'] != null) {
+          debugPrint('   - Cookie: ${sessionData['Cookie']?.substring(0, 30)}...');
+        }
+        debugPrint('   - X-CSRFToken: ${sessionData['X-CSRFToken']?.substring(0, 10)}...');
         debugPrint('   - user-id: ${sessionData['user-id']}');
       } else {
         debugPrint(
@@ -201,7 +192,5 @@ class ConditionalResponse<T> {
   final String? lastModified;
 }
 
-/// Provider for the API client.
-final apiClientProvider = Provider<ApiClient>((ref) {
-  return ApiClient();
-});
+// Note: apiClientProvider is defined in auth_providers.dart with session cookie support.
+// Always import apiClientProvider from auth_providers.dart to ensure proper authentication.

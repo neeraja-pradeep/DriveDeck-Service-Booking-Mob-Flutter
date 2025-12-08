@@ -1,30 +1,20 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:newapp/core/network/api_client.dart';
-import 'package:newapp/core/network/endpoints.dart';
-import 'package:newapp/core/storage/secure_store.dart';
-import 'package:newapp/features/profile/application/providers/edit_profile_notifier.dart';
-import 'package:newapp/features/profile/application/providers/profile_notifier.dart';
-import 'package:newapp/features/profile/application/states/edit_profile_state.dart';
-import 'package:newapp/features/profile/application/states/profile_state.dart';
-import 'package:newapp/features/profile/application/usecases/get_profile_usecase.dart';
-import 'package:newapp/features/profile/application/usecases/logout_usecase.dart';
-import 'package:newapp/features/profile/application/usecases/update_profile_usecase.dart';
-import 'package:newapp/features/profile/domain/entities/user_profile.dart';
-import 'package:newapp/features/profile/domain/repositories/profile_repository.dart';
-import 'package:newapp/features/profile/infrastructure/data_sources/local/profile_local_ds.dart';
-import 'package:newapp/features/profile/infrastructure/data_sources/remote/profile_api.dart';
-import 'package:newapp/features/profile/infrastructure/repositories/profile_repository_impl.dart';
 
-// Core providers
-final secureStoreProvider = Provider<SecureStore>((ref) {
-  return SecureStore.create();
-});
+import '../../../auth/application/providers/auth_providers.dart';
+import '../providers/edit_profile_notifier.dart';
+import '../providers/profile_notifier.dart';
+import '../states/edit_profile_state.dart';
+import '../states/profile_state.dart';
+import '../usecases/get_profile_usecase.dart';
+import '../usecases/logout_usecase.dart';
+import '../usecases/update_profile_usecase.dart';
+import '../../domain/entities/user_profile.dart';
+import '../../domain/repositories/profile_repository.dart';
+import '../../infrastructure/data_sources/local/profile_local_ds.dart';
+import '../../infrastructure/data_sources/remote/profile_api.dart';
+import '../../infrastructure/repositories/profile_repository_impl.dart';
 
-final apiClientProvider = Provider<ApiClient>((ref) {
-  return ApiClient(baseUrl: Endpoints.baseUrl);
-});
-
-// Profile API provider
+// Profile API provider - uses shared apiClientProvider for session cookie auth
 final profileApiProvider = Provider<ProfileApi>((ref) {
   final apiClient = ref.watch(apiClientProvider);
   return ProfileApiImpl(apiClient: apiClient);

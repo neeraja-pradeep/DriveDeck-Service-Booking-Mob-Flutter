@@ -96,6 +96,9 @@ final Provider<bool> appBootstrapProvider = Provider<bool>((ref) {
 /// - **Session**: Automatic token attachment and session management
 /// - **Auth**: Development fallback headers for authentication
 ///
+/// **Django Session Auth**: Uses Cookie header for sessionid/csrftoken
+/// as required by Django's session-based authentication.
+///
 /// **Session Expiry Handling**: Uses ref.invalidate() to avoid circular dependencies
 /// When session expires → Invalidates authStateProvider → Triggers re-authentication
 ///
@@ -118,12 +121,13 @@ final Provider<ApiClient> apiClientProvider = Provider<ApiClient>((ref) {
         debugPrint('   userId: $userId');
 
         if (sessionId != null && xcsrfToken != null && userId != null) {
+          // Django session-based auth requires tokens in Cookie header
           final headers = {
-            'sessionid': sessionId,
+            'Cookie': 'sessionid=$sessionId; csrftoken=$xcsrfToken',
             'X-CSRFToken': xcsrfToken,
             'user-id': userId,
           };
-          debugPrint('✅ Session data found - returning headers');
+          debugPrint('✅ Session data found - returning headers with Cookie');
           return headers;
         }
         debugPrint('⚠️  Session data incomplete or missing');

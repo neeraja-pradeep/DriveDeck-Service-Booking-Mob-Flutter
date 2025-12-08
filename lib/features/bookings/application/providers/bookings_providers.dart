@@ -1,7 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/network/api_client.dart';
+import '../../../auth/application/providers/auth_providers.dart';
 import '../../domain/entities/booking.dart';
 import '../../domain/entities/bookings_tab.dart';
 import '../../domain/repositories/bookings_repository.dart';
@@ -20,11 +20,6 @@ import 'bookings_notifier.dart';
 // =============================================================================
 // Core Providers
 // =============================================================================
-
-/// Provider for the API client.
-final apiClientProvider = Provider<ApiClient>((ref) {
-  return ApiClient();
-});
 
 /// Provider for connectivity.
 final connectivityProvider = Provider<Connectivity>((ref) {

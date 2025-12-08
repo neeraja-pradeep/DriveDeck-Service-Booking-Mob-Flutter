@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/error/failure.dart';
-import '../../../../core/network/api_client.dart';
 import '../../../../core/network/network_info.dart';
+import '../../../auth/application/providers/auth_providers.dart';
 import '../../domain/entities/shop.dart';
 import '../../domain/entities/shop_tab.dart';
 import '../../domain/repositories/shop_repository.dart';

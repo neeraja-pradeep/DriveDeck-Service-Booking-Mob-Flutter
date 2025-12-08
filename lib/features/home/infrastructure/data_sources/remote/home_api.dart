@@ -2,18 +2,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../core/network/api_client.dart';
 import '../../../../../core/network/endpoints.dart';
+import '../../../../auth/application/providers/auth_providers.dart';
 import '../../models/car_wash_shop_model.dart';
 import '../../models/service_category_model.dart';
 import '../../models/user_profile_model.dart';
 
-/// Provider for the API client (local to home feature).
-final homeApiClientProvider = Provider<ApiClient>((ref) {
-  return ApiClient();
-});
-
 /// Provider for the Home API data source.
+/// Uses the shared apiClientProvider to ensure session cookies are attached.
 final homeApiProvider = Provider<HomeApi>((ref) {
-  return HomeApi(ref.read(homeApiClientProvider));
+  final apiClient = ref.read(apiClientProvider);
+  return HomeApi(apiClient);
 });
 
 /// Remote data source for home screen API calls.
