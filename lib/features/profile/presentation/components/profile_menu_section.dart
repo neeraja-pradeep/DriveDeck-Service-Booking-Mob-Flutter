@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:newapp/app/theme/colors.dart';
 import 'package:newapp/features/profile/domain/entities/profile_menu_item.dart';
 import 'package:newapp/features/profile/presentation/components/profile_menu_item_tile.dart';
@@ -91,27 +92,35 @@ class ProfileMenuSection extends ConsumerWidget {
     WidgetRef ref,
     ProfileMenuItem item,
   ) {
-    // Navigation logic here
     switch (item) {
       case ProfileMenuItem.myGarage:
-        // Navigator.pushNamed(context, '/my_garage');
+        context.push('/garage');
         break;
       case ProfileMenuItem.membership:
-        // Navigator.pushNamed(context, '/membership');
+        _showComingSoonSnackBar(context, 'Membership');
         break;
       case ProfileMenuItem.history:
-        // Navigator.pushNamed(context, '/history');
+        _showComingSoonSnackBar(context, 'History');
         break;
       case ProfileMenuItem.settings:
-        // Navigator.pushNamed(context, '/settings');
+        _showComingSoonSnackBar(context, 'Settings');
         break;
       case ProfileMenuItem.helpSupport:
-        // Navigator.pushNamed(context, '/help_support');
+        _showComingSoonSnackBar(context, 'Help & Support');
         break;
       case ProfileMenuItem.logout:
         _showLogoutDialog(context, ref);
         break;
     }
+  }
+
+  void _showComingSoonSnackBar(BuildContext context, String feature) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('$feature coming soon'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 
   void _showLogoutDialog(BuildContext context, WidgetRef ref) {

@@ -11,6 +11,7 @@ import '../../features/bookings/presentation/screens/booking_detail_screen.dart'
 import '../../features/home/presentation/screens/shop_detail_screen.dart';
 import '../../features/booking/presentation/screens/time_selection_screen.dart';
 import '../../features/booking/presentation/screens/checkout_screen.dart';
+import '../../features/profile/presentation/screen/garage_screen.dart';
 import 'routes.dart';
 
 /// Global navigator keys for nested navigation
@@ -117,6 +118,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.checkout,
         builder: (context, state) => const CheckoutScreen(),
+      ),
+
+      // Garage route
+      GoRoute(
+        path: Routes.garage,
+        builder: (context, state) => const GarageScreen(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

@@ -227,6 +227,7 @@ class Routes {
 
   // Profile routes
   static const String profile = '/profile';
+  static const String garage = '/garage';
 
   // Booking routes
   static const String bookings = '/bookings';
