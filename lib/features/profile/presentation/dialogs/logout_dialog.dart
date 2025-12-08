@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:newapp/app/router/routes.dart';
 import 'package:newapp/app/theme/colors.dart';
 import 'package:newapp/app/theme/typography.dart';
+import 'package:newapp/features/auth/application/providers/auth_providers.dart';
 import 'package:newapp/features/profile/application/providers/profile_providers.dart';
 
 /// Logout confirmation dialog matching the app design.
@@ -145,12 +145,14 @@ class LogoutDialog extends ConsumerWidget {
   }
 
   Future<void> _handleLogout(BuildContext context, WidgetRef ref) async {
-    final success = await ref.read(profileStateProvider.notifier).logout();
+    // Close the dialog first
+    Navigator.of(context).pop();
 
-    if (success && context.mounted) {
-      Navigator.of(context).pop(); // Close dialog
-      // Navigate to login screen
-      const LoginRoute().go(context);
-    }
+    // Clear profile data
+    await ref.read(profileStateProvider.notifier).logout();
+
+    // Logout via AuthNotifier - this updates auth state to unauthenticated
+    // and the router will automatically redirect to login
+    await ref.read(authStateProvider.notifier).logout();
   }
 }
