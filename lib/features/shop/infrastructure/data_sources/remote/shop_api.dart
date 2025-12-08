@@ -1,5 +1,7 @@
 import '../../../../../core/network/api_client.dart';
 import '../../../../../core/network/endpoints.dart';
+import '../../../domain/entities/booking_request.dart';
+import '../../models/booking_confirmation_model.dart';
 import '../../models/shop_model.dart';
 
 /// Remote data source for shop API calls.
@@ -46,6 +48,9 @@ abstract class ShopApi {
 
   /// Get user's favorite shops.
   Future<List<ShopModel>> getFavoriteShops();
+
+  /// Create a new booking.
+  Future<BookingConfirmationModel> createBooking(BookingRequest request);
 }
 
 /// Implementation of ShopApi using ApiClient.
@@ -165,5 +170,14 @@ class ShopApiImpl implements ShopApi {
     final response = await apiClient.get(Endpoints.shopFavorites());
     final List<dynamic> results = response.data['results'] ?? response.data;
     return results.map((json) => ShopModel.fromJson(json)).toList();
+  }
+
+  @override
+  Future<BookingConfirmationModel> createBooking(BookingRequest request) async {
+    final response = await apiClient.post(
+      Endpoints.bookings(),
+      data: request.toJson(),
+    );
+    return BookingConfirmationModel.fromJson(response.data);
   }
 }

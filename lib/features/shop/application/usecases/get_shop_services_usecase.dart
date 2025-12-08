@@ -5,8 +5,8 @@ import '../../domain/entities/shop.dart';
 import '../../domain/repositories/shop_repository.dart';
 
 /// Use case for getting shop services.
-class GetShopServicesUsecase {
-  GetShopServicesUsecase({required this.repository});
+class GetShopServicesUseCase {
+  GetShopServicesUseCase({required this.repository});
 
   final ShopRepository repository;
 

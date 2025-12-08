@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 /// Tabs available in shop details screen.
 enum ShopTab {
   services,
@@ -8,40 +10,31 @@ enum ShopTab {
 /// Extension for shop tab display properties.
 extension ShopTabExtension on ShopTab {
   /// Get display name for the tab.
-  String get displayName {
-    switch (this) {
-      case ShopTab.services:
-        return 'Services';
-      case ShopTab.packages:
-        return 'Packages';
-      case ShopTab.accessories:
-        return 'Accessories';
-    }
-  }
+  String get displayName => switch (this) {
+        ShopTab.services => 'Services',
+        ShopTab.packages => 'Packages',
+        ShopTab.accessories => 'Accessories',
+      };
+
+  /// Get color for the tab.
+  Color get color => switch (this) {
+        ShopTab.services => const Color(0xFF4CAF50),
+        ShopTab.packages => const Color(0xFF2196F3),
+        ShopTab.accessories => const Color(0xFFFF9800),
+      };
 
   /// Get index for the tab.
-  int get index {
-    switch (this) {
-      case ShopTab.services:
-        return 0;
-      case ShopTab.packages:
-        return 1;
-      case ShopTab.accessories:
-        return 2;
-    }
-  }
+  int get tabIndex => switch (this) {
+        ShopTab.services => 0,
+        ShopTab.packages => 1,
+        ShopTab.accessories => 2,
+      };
 
   /// Get tab from index.
-  static ShopTab fromIndex(int index) {
-    switch (index) {
-      case 0:
-        return ShopTab.services;
-      case 1:
-        return ShopTab.packages;
-      case 2:
-        return ShopTab.accessories;
-      default:
-        return ShopTab.services;
-    }
-  }
+  static ShopTab fromIndex(int index) => switch (index) {
+        0 => ShopTab.services,
+        1 => ShopTab.packages,
+        2 => ShopTab.accessories,
+        _ => ShopTab.services,
+      };
 }

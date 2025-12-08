@@ -5,8 +5,8 @@ import '../../domain/entities/shop.dart';
 import '../../domain/repositories/shop_repository.dart';
 
 /// Use case for getting available time slots.
-class GetAvailableSlotsUsecase {
-  GetAvailableSlotsUsecase({required this.repository});
+class GetAvailableSlotsUseCase {
+  GetAvailableSlotsUseCase({required this.repository});
 
   final ShopRepository repository;
 

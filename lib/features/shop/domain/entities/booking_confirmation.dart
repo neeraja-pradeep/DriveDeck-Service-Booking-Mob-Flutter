@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'booking_confirmation.freezed.dart';
@@ -30,58 +32,34 @@ enum BookingStatus {
 /// Extension for booking status.
 extension BookingStatusExtension on BookingStatus {
   /// Get display name.
-  String get displayName {
-    switch (this) {
-      case BookingStatus.pending:
-        return 'Pending';
-      case BookingStatus.confirmed:
-        return 'Confirmed';
-      case BookingStatus.inProgress:
-        return 'In Progress';
-      case BookingStatus.completed:
-        return 'Completed';
-      case BookingStatus.cancelled:
-        return 'Cancelled';
-    }
-  }
+  String get displayName => switch (this) {
+        BookingStatus.pending => 'Pending',
+        BookingStatus.confirmed => 'Confirmed',
+        BookingStatus.inProgress => 'In Progress',
+        BookingStatus.completed => 'Completed',
+        BookingStatus.cancelled => 'Cancelled',
+      };
 
-  /// Get status color hex.
-  int get colorHex {
-    switch (this) {
-      case BookingStatus.pending:
-        return 0xFFFFA726; // Orange
-      case BookingStatus.confirmed:
-        return 0xFF42A5F5; // Blue
-      case BookingStatus.inProgress:
-        return 0xFF66BB6A; // Green
-      case BookingStatus.completed:
-        return 0xFF4CAF50; // Green
-      case BookingStatus.cancelled:
-        return 0xFFEF5350; // Red
-    }
-  }
+  /// Get status color.
+  Color get color => switch (this) {
+        BookingStatus.pending => const Color(0xFFFFA726),
+        BookingStatus.confirmed => const Color(0xFF42A5F5),
+        BookingStatus.inProgress => const Color(0xFF66BB6A),
+        BookingStatus.completed => const Color(0xFF4CAF50),
+        BookingStatus.cancelled => const Color(0xFFEF5350),
+      };
 
   /// Check if booking is active (not cancelled or completed).
   bool get isActive =>
       this != BookingStatus.cancelled && this != BookingStatus.completed;
 
   /// Parse from string.
-  static BookingStatus fromString(String value) {
-    switch (value.toLowerCase()) {
-      case 'pending':
-        return BookingStatus.pending;
-      case 'confirmed':
-        return BookingStatus.confirmed;
-      case 'in_progress':
-      case 'inprogress':
-        return BookingStatus.inProgress;
-      case 'completed':
-        return BookingStatus.completed;
-      case 'cancelled':
-      case 'canceled':
-        return BookingStatus.cancelled;
-      default:
-        return BookingStatus.pending;
-    }
-  }
+  static BookingStatus fromString(String value) => switch (value.toLowerCase()) {
+        'pending' => BookingStatus.pending,
+        'confirmed' => BookingStatus.confirmed,
+        'in_progress' || 'inprogress' => BookingStatus.inProgress,
+        'completed' => BookingStatus.completed,
+        'cancelled' || 'canceled' => BookingStatus.cancelled,
+        _ => BookingStatus.pending,
+      };
 }

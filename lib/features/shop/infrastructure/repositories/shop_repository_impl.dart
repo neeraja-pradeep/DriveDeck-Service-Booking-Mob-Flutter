@@ -2,6 +2,8 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failure.dart';
 import '../../../../core/network/network_info.dart';
+import '../../domain/entities/booking_confirmation.dart';
+import '../../domain/entities/booking_request.dart';
 import '../../domain/entities/shop.dart';
 import '../../domain/repositories/shop_repository.dart';
 import '../data_sources/local/shop_local_ds.dart';
@@ -16,7 +18,7 @@ class ShopRepositoryImpl implements ShopRepository {
   });
 
   final ShopApi remoteDataSource;
-  final ShopLocalDataSource localDataSource;
+  final ShopLocalDs localDataSource;
   final NetworkInfo networkInfo;
 
   @override
@@ -255,6 +257,22 @@ class ShopRepositoryImpl implements ShopRepository {
       }
     } catch (e) {
       return Left(Failure.server(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, BookingConfirmation>> createBooking(
+    BookingRequest request,
+  ) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final confirmation = await remoteDataSource.createBooking(request);
+        return Right(confirmation.toDomain());
+      } else {
+        return const Left(Failure.noConnection());
+      }
+    } catch (e) {
+      return Left(Failure.bookingCreationFailed(message: e.toString()));
     }
   }
 }

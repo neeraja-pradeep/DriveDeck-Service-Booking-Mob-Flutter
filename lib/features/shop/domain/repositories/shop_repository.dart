@@ -1,18 +1,21 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failure.dart';
+import '../entities/booking_confirmation.dart';
+import '../entities/booking_request.dart';
 import '../entities/shop.dart';
+import '../shop_constants.dart';
 
 /// Repository interface for shop operations.
 abstract class ShopRepository {
   /// Get list of shops with optional filters.
   ///
   /// [page] - Page number for pagination (default: 1)
-  /// [pageSize] - Number of items per page (default: 10)
+  /// [pageSize] - Number of items per page
   /// [search] - Optional search query
   Future<Either<Failure, List<Shop>>> getShops({
     int page = 1,
-    int pageSize = 10,
+    int pageSize = ShopConstants.kDefaultPageSize,
     String? search,
   });
 
@@ -20,13 +23,13 @@ abstract class ShopRepository {
   ///
   /// [latitude] - User's latitude
   /// [longitude] - User's longitude
-  /// [maxKm] - Maximum distance in kilometers (default: 10)
-  /// [limit] - Maximum number of results (default: 10)
+  /// [maxKm] - Maximum distance in kilometers
+  /// [limit] - Maximum number of results
   Future<Either<Failure, List<Shop>>> getNearbyShops({
     required double latitude,
     required double longitude,
-    double maxKm = 10,
-    int limit = 10,
+    double maxKm = ShopConstants.kDefaultMaxDistanceKm,
+    int limit = ShopConstants.kDefaultNearbyShopsLimit,
   });
 
   /// Get detailed information about a specific shop.
@@ -53,11 +56,11 @@ abstract class ShopRepository {
   ///
   /// [shopId] - The ID of the shop
   /// [startDate] - Start date for availability check
-  /// [days] - Number of days to check (default: 7)
+  /// [days] - Number of days to check
   Future<Either<Failure, List<ShopDateAvailability>>> getShopAvailability({
     required int shopId,
     required DateTime startDate,
-    int days = 7,
+    int days = ShopConstants.kDefaultAvailabilityDays,
   });
 
   /// Add shop to user's favorites.
@@ -72,4 +75,11 @@ abstract class ShopRepository {
 
   /// Get user's favorite shops.
   Future<Either<Failure, List<Shop>>> getFavoriteShops();
+
+  /// Create a new booking.
+  ///
+  /// [request] - The booking request containing all booking details
+  Future<Either<Failure, BookingConfirmation>> createBooking(
+    BookingRequest request,
+  );
 }

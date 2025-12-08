@@ -1,7 +1,7 @@
 import '../../models/shop_model.dart';
 
 /// Local data source for shop data - provides mock data for development.
-class ShopLocalDataSource {
+class ShopLocalDs {
   /// Get mock list of shops.
   Future<List<ShopModel>> getShops({
     int page = 1,

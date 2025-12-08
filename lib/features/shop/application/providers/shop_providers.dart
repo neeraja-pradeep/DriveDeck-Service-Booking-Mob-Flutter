@@ -1,21 +1,27 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/error/failure.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/network/network_info.dart';
 import '../../domain/entities/shop.dart';
+import '../../domain/entities/shop_tab.dart';
 import '../../domain/repositories/shop_repository.dart';
 import '../../infrastructure/data_sources/local/shop_local_ds.dart';
 import '../../infrastructure/data_sources/remote/shop_api.dart';
 import '../../infrastructure/repositories/shop_repository_impl.dart';
 import '../states/shop_state.dart';
+import '../usecases/create_booking_usecase.dart';
+import '../usecases/get_available_slots_usecase.dart';
+import '../usecases/get_shop_details_usecase.dart';
+import '../usecases/get_shop_services_usecase.dart';
 
 // ============================================================================
 // Data Source Providers
 // ============================================================================
 
 /// Provider for shop local data source.
-final shopLocalDataSourceProvider = Provider<ShopLocalDataSource>((ref) {
-  return ShopLocalDataSource();
+final shopLocalDsProvider = Provider<ShopLocalDs>((ref) {
+  return ShopLocalDs();
 });
 
 /// Provider for shop remote API.
@@ -31,7 +37,7 @@ final shopApiProvider = Provider<ShopApi>((ref) {
 /// Provider for shop repository.
 final shopRepositoryProvider = Provider<ShopRepository>((ref) {
   final remoteDataSource = ref.watch(shopApiProvider);
-  final localDataSource = ref.watch(shopLocalDataSourceProvider);
+  final localDataSource = ref.watch(shopLocalDsProvider);
   final networkInfo = ref.watch(networkInfoProvider);
 
   return ShopRepositoryImpl(
@@ -39,6 +45,35 @@ final shopRepositoryProvider = Provider<ShopRepository>((ref) {
     localDataSource: localDataSource,
     networkInfo: networkInfo,
   );
+});
+
+// ============================================================================
+// UseCase Providers
+// ============================================================================
+
+/// Provider for GetShopDetailsUseCase.
+final getShopDetailsUseCaseProvider = Provider<GetShopDetailsUseCase>((ref) {
+  final repository = ref.watch(shopRepositoryProvider);
+  return GetShopDetailsUseCase(repository: repository);
+});
+
+/// Provider for GetShopServicesUseCase.
+final getShopServicesUseCaseProvider = Provider<GetShopServicesUseCase>((ref) {
+  final repository = ref.watch(shopRepositoryProvider);
+  return GetShopServicesUseCase(repository: repository);
+});
+
+/// Provider for GetAvailableSlotsUseCase.
+final getAvailableSlotsUseCaseProvider =
+    Provider<GetAvailableSlotsUseCase>((ref) {
+  final repository = ref.watch(shopRepositoryProvider);
+  return GetAvailableSlotsUseCase(repository: repository);
+});
+
+/// Provider for CreateBookingUseCase.
+final createBookingUseCaseProvider = Provider<CreateBookingUseCase>((ref) {
+  final repository = ref.watch(shopRepositoryProvider);
+  return CreateBookingUseCase(repository: repository);
 });
 
 // ============================================================================
@@ -55,51 +90,57 @@ class ShopListNotifier extends StateNotifier<ShopListState> {
   List<Shop> _shops = [];
 
   /// Load shops with optional search query.
-  Future<void> loadShops({String? search, bool refresh = false}) async {
-    if (refresh) {
-      _currentPage = 1;
-      _shops = [];
-    }
+  Future<void> loadShopsAsync({String? search, bool refresh = false}) async {
+    try {
+      if (refresh) {
+        _currentPage = 1;
+        _shops = [];
+      }
 
-    state = _currentPage == 1
-        ? const ShopListState.loading()
-        : ShopListState.loaded(
+      state = _currentPage == 1
+          ? const ShopListState.loading()
+          : ShopListState.loaded(
+              shops: _shops,
+              currentPage: _currentPage,
+              hasMore: true,
+            );
+
+      final result = await repository.getShops(
+        page: _currentPage,
+        search: search,
+      );
+
+      state = result.fold(
+        (failure) => ShopListState.error(failure: failure),
+        (shops) {
+          _shops = refresh ? shops : [..._shops, ...shops];
+          return ShopListState.loaded(
             shops: _shops,
             currentPage: _currentPage,
-            hasMore: true,
+            hasMore: shops.length >= 10,
           );
-
-    final result = await repository.getShops(
-      page: _currentPage,
-      search: search,
-    );
-
-    state = result.fold(
-      (failure) => ShopListState.error(failure: failure),
-      (shops) {
-        _shops = refresh ? shops : [..._shops, ...shops];
-        return ShopListState.loaded(
-          shops: _shops,
-          currentPage: _currentPage,
-          hasMore: shops.length >= 10,
-        );
-      },
-    );
+        },
+      );
+    } catch (e) {
+      state = ShopListState.error(
+        failure: Failure.unexpected(message: e.toString()),
+      );
+    }
   }
 
   /// Load more shops for pagination.
-  Future<void> loadMore({String? search}) async {
+  Future<void> loadMoreAsync({String? search}) async {
     if (state is! ShopListLoaded) return;
     final currentState = state as ShopListLoaded;
     if (!currentState.hasMore) return;
 
     _currentPage++;
-    await loadShops(search: search);
+    await loadShopsAsync(search: search);
   }
 
   /// Refresh shop list.
-  Future<void> refresh({String? search}) async {
-    await loadShops(search: search, refresh: true);
+  Future<void> refreshAsync({String? search}) async {
+    await loadShopsAsync(search: search, refresh: true);
   }
 }
 
@@ -139,21 +180,27 @@ final nearbyShopsProvider = FutureProvider.family<List<Shop>, ({
 
 /// Notifier for shop details state.
 class ShopDetailsNotifier extends StateNotifier<ShopDetailsState> {
-  ShopDetailsNotifier({required this.repository})
+  ShopDetailsNotifier({required this.useCase})
       : super(const ShopDetailsState.initial());
 
-  final ShopRepository repository;
+  final GetShopDetailsUseCase useCase;
 
   /// Load shop details.
-  Future<void> loadShopDetails(int shopId) async {
-    state = const ShopDetailsState.loading();
+  Future<void> loadShopDetailsAsync(int shopId) async {
+    try {
+      state = const ShopDetailsState.loading();
 
-    final result = await repository.getShopDetails(shopId);
+      final result = await useCase(shopId);
 
-    state = result.fold(
-      (failure) => ShopDetailsState.error(failure: failure),
-      (shop) => ShopDetailsState.loaded(shop: shop),
-    );
+      state = result.fold(
+        (failure) => ShopDetailsState.error(failure: failure),
+        (shop) => ShopDetailsState.loaded(shop: shop),
+      );
+    } catch (e) {
+      state = ShopDetailsState.error(
+        failure: Failure.unexpected(message: e.toString()),
+      );
+    }
   }
 }
 
@@ -163,20 +210,22 @@ final shopDetailsStateProvider =
   ref,
   shopId,
 ) {
-  final repository = ref.watch(shopRepositoryProvider);
-  final notifier = ShopDetailsNotifier(repository: repository);
-  notifier.loadShopDetails(shopId);
+  final useCase = ref.watch(getShopDetailsUseCaseProvider);
+  final notifier = ShopDetailsNotifier(useCase: useCase);
+  notifier.loadShopDetailsAsync(shopId);
   return notifier;
 });
 
 /// Simple future provider for shop details.
 final shopDetailsFutureProvider =
     FutureProvider.family<Shop, int>((ref, shopId) async {
-  final repository = ref.watch(shopRepositoryProvider);
-  final result = await repository.getShopDetails(shopId);
+  final useCase = ref.watch(getShopDetailsUseCaseProvider);
+  final result = await useCase(shopId);
 
   return result.fold(
-    (failure) => throw Exception(failure.userMessage),
+    (failure) {
+      throw failure;
+    },
     (shop) => shop,
   );
 });
@@ -341,30 +390,44 @@ class FavoriteShopsNotifier extends StateNotifier<FavoriteShopsState> {
   final ShopRepository repository;
 
   /// Load favorite shops.
-  Future<void> loadFavorites() async {
-    state = const FavoriteShopsState.loading();
+  Future<void> loadFavoritesAsync() async {
+    try {
+      state = const FavoriteShopsState.loading();
 
-    final result = await repository.getFavoriteShops();
+      final result = await repository.getFavoriteShops();
 
-    state = result.fold(
-      (failure) => FavoriteShopsState.error(failure: failure),
-      (shops) => FavoriteShopsState.loaded(shops: shops),
-    );
+      state = result.fold(
+        (failure) => FavoriteShopsState.error(failure: failure),
+        (shops) => FavoriteShopsState.loaded(shops: shops),
+      );
+    } catch (e) {
+      state = FavoriteShopsState.error(
+        failure: Failure.unexpected(message: e.toString()),
+      );
+    }
   }
 
   /// Add shop to favorites.
-  Future<bool> addToFavorites(int shopId) async {
-    final result = await repository.addToFavorites(shopId);
-    return result.isRight();
+  Future<bool> addToFavoritesAsync(int shopId) async {
+    try {
+      final result = await repository.addToFavorites(shopId);
+      return result.isRight();
+    } catch (_) {
+      return false;
+    }
   }
 
   /// Remove shop from favorites.
-  Future<bool> removeFromFavorites(int shopId) async {
-    final result = await repository.removeFromFavorites(shopId);
-    if (result.isRight()) {
-      await loadFavorites();
+  Future<bool> removeFromFavoritesAsync(int shopId) async {
+    try {
+      final result = await repository.removeFromFavorites(shopId);
+      if (result.isRight()) {
+        await loadFavoritesAsync();
+      }
+      return result.isRight();
+    } catch (_) {
+      return false;
     }
-    return result.isRight();
   }
 }
 
@@ -379,12 +442,10 @@ final favoriteShopsStateProvider =
 // UI State Providers
 // ============================================================================
 
-/// Enum for shop detail tabs.
-enum ShopDetailTabType { services, packages, accessories }
-
 /// Provider for current shop detail tab.
-final shopDetailTabTypeProvider = StateProvider<ShopDetailTabType>((ref) {
-  return ShopDetailTabType.services;
+/// Uses ShopTab enum from domain layer.
+final shopDetailTabProvider = StateProvider<ShopTab>((ref) {
+  return ShopTab.services;
 });
 
 /// Provider for shop search query.
