@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:intl/intl.dart';
 
 part 'booking_confirmation.freezed.dart';
 part 'booking_confirmation.g.dart';
@@ -8,16 +9,33 @@ part 'booking_confirmation.g.dart';
 /// Booking confirmation response after successful booking.
 @freezed
 class BookingConfirmation with _$BookingConfirmation {
+  const BookingConfirmation._();
+
   const factory BookingConfirmation({
     required int bookingId,
     required String bookingReference,
     required BookingStatus status,
     required DateTime createdAt,
     String? message,
+    String? shopName,
+    DateTime? scheduledDate,
+    String? scheduledTime,
   }) = _BookingConfirmation;
 
   factory BookingConfirmation.fromJson(Map<String, dynamic> json) =>
       _$BookingConfirmationFromJson(json);
+
+  /// Get formatted date string.
+  String get formattedDate {
+    final date = scheduledDate ?? createdAt;
+    return DateFormat('MMM dd, yyyy').format(date);
+  }
+
+  /// Get formatted time string.
+  String get formattedTime {
+    if (scheduledTime != null) return scheduledTime!;
+    return DateFormat('hh:mm a').format(createdAt);
+  }
 }
 
 /// Status of a booking.

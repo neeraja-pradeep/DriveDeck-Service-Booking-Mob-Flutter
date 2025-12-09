@@ -15,6 +15,9 @@ import '../../features/booking/presentation/screens/time_selection_screen.dart';
 import '../../features/booking/presentation/screens/checkout_screen.dart';
 import '../../features/profile/presentation/screen/garage_screen.dart';
 import '../../features/profile/presentation/screen/edit_profile_screen.dart';
+import '../../features/profile/presentation/screen/membership_screen.dart';
+import '../../features/profile/presentation/screen/settings_screen.dart';
+import '../../features/profile/presentation/screen/help_screen.dart';
 import 'routes.dart';
 
 /// Global navigator keys for nested navigation
@@ -143,6 +146,24 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.editProfile,
         builder: (context, state) => const EditProfileScreen(),
+      ),
+
+      // Membership route
+      GoRoute(
+        path: Routes.membership,
+        builder: (context, state) => const MembershipScreen(),
+      ),
+
+      // Settings route
+      GoRoute(
+        path: Routes.settings,
+        builder: (context, state) => const SettingsScreen(),
+      ),
+
+      // Help & Support route
+      GoRoute(
+        path: Routes.help,
+        builder: (context, state) => const HelpScreen(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

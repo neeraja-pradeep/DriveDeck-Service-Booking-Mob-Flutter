@@ -14,6 +14,11 @@ _$BookingConfirmationImpl _$$BookingConfirmationImplFromJson(
       status: $enumDecode(_$BookingStatusEnumMap, json['status']),
       createdAt: DateTime.parse(json['createdAt'] as String),
       message: json['message'] as String?,
+      shopName: json['shopName'] as String?,
+      scheduledDate: json['scheduledDate'] == null
+          ? null
+          : DateTime.parse(json['scheduledDate'] as String),
+      scheduledTime: json['scheduledTime'] as String?,
     );
 
 Map<String, dynamic> _$$BookingConfirmationImplToJson(
@@ -24,6 +29,9 @@ Map<String, dynamic> _$$BookingConfirmationImplToJson(
       'status': _$BookingStatusEnumMap[instance.status]!,
       'createdAt': instance.createdAt.toIso8601String(),
       'message': instance.message,
+      'shopName': instance.shopName,
+      'scheduledDate': instance.scheduledDate?.toIso8601String(),
+      'scheduledTime': instance.scheduledTime,
     };
 
 const _$BookingStatusEnumMap = {

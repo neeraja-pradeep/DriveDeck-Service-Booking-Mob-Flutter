@@ -97,16 +97,16 @@ class ProfileMenuSection extends ConsumerWidget {
         context.push('/garage');
         break;
       case ProfileMenuItem.membership:
-        _showComingSoonSnackBar(context, 'Membership');
+        context.push('/membership');
         break;
       case ProfileMenuItem.history:
         _showComingSoonSnackBar(context, 'History');
         break;
       case ProfileMenuItem.settings:
-        _showComingSoonSnackBar(context, 'Settings');
+        context.push('/settings');
         break;
       case ProfileMenuItem.helpSupport:
-        _showComingSoonSnackBar(context, 'Help & Support');
+        context.push('/help');
         break;
       case ProfileMenuItem.logout:
         _showLogoutDialog(context, ref);

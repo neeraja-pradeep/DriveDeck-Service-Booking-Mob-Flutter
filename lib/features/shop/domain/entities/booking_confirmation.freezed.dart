@@ -25,6 +25,9 @@ mixin _$BookingConfirmation {
   BookingStatus get status => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
+  String? get shopName => throw _privateConstructorUsedError;
+  DateTime? get scheduledDate => throw _privateConstructorUsedError;
+  String? get scheduledTime => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +46,10 @@ abstract class $BookingConfirmationCopyWith<$Res> {
       String bookingReference,
       BookingStatus status,
       DateTime createdAt,
-      String? message});
+      String? message,
+      String? shopName,
+      DateTime? scheduledDate,
+      String? scheduledTime});
 }
 
 /// @nodoc
@@ -64,6 +70,9 @@ class _$BookingConfirmationCopyWithImpl<$Res, $Val extends BookingConfirmation>
     Object? status = null,
     Object? createdAt = null,
     Object? message = freezed,
+    Object? shopName = freezed,
+    Object? scheduledDate = freezed,
+    Object? scheduledTime = freezed,
   }) {
     return _then(_value.copyWith(
       bookingId: null == bookingId
@@ -86,6 +95,18 @@ class _$BookingConfirmationCopyWithImpl<$Res, $Val extends BookingConfirmation>
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String?,
+      shopName: freezed == shopName
+          ? _value.shopName
+          : shopName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      scheduledDate: freezed == scheduledDate
+          ? _value.scheduledDate
+          : scheduledDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      scheduledTime: freezed == scheduledTime
+          ? _value.scheduledTime
+          : scheduledTime // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -103,7 +124,10 @@ abstract class _$$BookingConfirmationImplCopyWith<$Res>
       String bookingReference,
       BookingStatus status,
       DateTime createdAt,
-      String? message});
+      String? message,
+      String? shopName,
+      DateTime? scheduledDate,
+      String? scheduledTime});
 }
 
 /// @nodoc
@@ -122,6 +146,9 @@ class __$$BookingConfirmationImplCopyWithImpl<$Res>
     Object? status = null,
     Object? createdAt = null,
     Object? message = freezed,
+    Object? shopName = freezed,
+    Object? scheduledDate = freezed,
+    Object? scheduledTime = freezed,
   }) {
     return _then(_$BookingConfirmationImpl(
       bookingId: null == bookingId
@@ -144,19 +171,35 @@ class __$$BookingConfirmationImplCopyWithImpl<$Res>
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String?,
+      shopName: freezed == shopName
+          ? _value.shopName
+          : shopName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      scheduledDate: freezed == scheduledDate
+          ? _value.scheduledDate
+          : scheduledDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      scheduledTime: freezed == scheduledTime
+          ? _value.scheduledTime
+          : scheduledTime // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$BookingConfirmationImpl implements _BookingConfirmation {
+class _$BookingConfirmationImpl extends _BookingConfirmation {
   const _$BookingConfirmationImpl(
       {required this.bookingId,
       required this.bookingReference,
       required this.status,
       required this.createdAt,
-      this.message});
+      this.message,
+      this.shopName,
+      this.scheduledDate,
+      this.scheduledTime})
+      : super._();
 
   factory _$BookingConfirmationImpl.fromJson(Map<String, dynamic> json) =>
       _$$BookingConfirmationImplFromJson(json);
@@ -171,10 +214,16 @@ class _$BookingConfirmationImpl implements _BookingConfirmation {
   final DateTime createdAt;
   @override
   final String? message;
+  @override
+  final String? shopName;
+  @override
+  final DateTime? scheduledDate;
+  @override
+  final String? scheduledTime;
 
   @override
   String toString() {
-    return 'BookingConfirmation(bookingId: $bookingId, bookingReference: $bookingReference, status: $status, createdAt: $createdAt, message: $message)';
+    return 'BookingConfirmation(bookingId: $bookingId, bookingReference: $bookingReference, status: $status, createdAt: $createdAt, message: $message, shopName: $shopName, scheduledDate: $scheduledDate, scheduledTime: $scheduledTime)';
   }
 
   @override
@@ -189,13 +238,19 @@ class _$BookingConfirmationImpl implements _BookingConfirmation {
             (identical(other.status, status) || other.status == status) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
-            (identical(other.message, message) || other.message == message));
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.shopName, shopName) ||
+                other.shopName == shopName) &&
+            (identical(other.scheduledDate, scheduledDate) ||
+                other.scheduledDate == scheduledDate) &&
+            (identical(other.scheduledTime, scheduledTime) ||
+                other.scheduledTime == scheduledTime));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, bookingId, bookingReference, status, createdAt, message);
+  int get hashCode => Object.hash(runtimeType, bookingId, bookingReference,
+      status, createdAt, message, shopName, scheduledDate, scheduledTime);
 
   @JsonKey(ignore: true)
   @override
@@ -212,13 +267,17 @@ class _$BookingConfirmationImpl implements _BookingConfirmation {
   }
 }
 
-abstract class _BookingConfirmation implements BookingConfirmation {
+abstract class _BookingConfirmation extends BookingConfirmation {
   const factory _BookingConfirmation(
       {required final int bookingId,
       required final String bookingReference,
       required final BookingStatus status,
       required final DateTime createdAt,
-      final String? message}) = _$BookingConfirmationImpl;
+      final String? message,
+      final String? shopName,
+      final DateTime? scheduledDate,
+      final String? scheduledTime}) = _$BookingConfirmationImpl;
+  const _BookingConfirmation._() : super._();
 
   factory _BookingConfirmation.fromJson(Map<String, dynamic> json) =
       _$BookingConfirmationImpl.fromJson;
@@ -233,6 +292,12 @@ abstract class _BookingConfirmation implements BookingConfirmation {
   DateTime get createdAt;
   @override
   String? get message;
+  @override
+  String? get shopName;
+  @override
+  DateTime? get scheduledDate;
+  @override
+  String? get scheduledTime;
   @override
   @JsonKey(ignore: true)
   _$$BookingConfirmationImplCopyWith<_$BookingConfirmationImpl> get copyWith =>

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../app/theme/colors.dart';
 import '../../../../app/theme/typography.dart';
 import '../../application/providers/garage_providers.dart';
 import '../../domain/entities/vehicle.dart';
+import '../components/garage_empty_state.dart';
+import '../components/vehicle_card.dart';
+import '../dialogs/add_vehicle_bottom_sheet.dart';
+import '../dialogs/delete_vehicle_dialog.dart';
 
 /// My Garage screen showing user's vehicles.
 class GarageScreen extends ConsumerStatefulWidget {
@@ -49,6 +52,18 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
           style: AppTypography.titleLarge.copyWith(fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () => AddVehicleBottomSheet.show(context),
+            icon: Icon(
+              Icons.add,
+              color: AppColors.primary,
+              size: 28.sp,
+            ),
+            tooltip: 'Add Vehicle',
+          ),
+          SizedBox(width: 8.w),
+        ],
       ),
       body: Column(
         children: [
@@ -64,6 +79,22 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
           ),
         ],
       ),
+      floatingActionButton: garageState is GarageLoaded &&
+              (garageState).vehicles.isNotEmpty
+          ? FloatingActionButton.extended(
+              onPressed: () => AddVehicleBottomSheet.show(context),
+              backgroundColor: AppColors.primary,
+              icon: const Icon(Icons.add, color: Colors.white),
+              label: Text(
+                'Add Vehicle',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14.sp,
+                ),
+              ),
+            )
+          : null,
     );
   }
 
@@ -97,7 +128,7 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
                             value;
                       },
                       decoration: InputDecoration(
-                        hintText: 'Search...',
+                        hintText: 'Search vehicles...',
                         hintStyle: AppTypography.bodyMedium.copyWith(
                           color: AppColors.textHint,
                         ),
@@ -148,8 +179,11 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
     return switch (state) {
       GarageInitial() || GarageLoading() => _buildLoadingState(),
       GarageError(message: final message) => _buildErrorState(message),
-      GarageLoaded() =>
-        vehicles.isEmpty ? _buildEmptyState() : _buildVehicleGrid(vehicles),
+      GarageLoaded() => vehicles.isEmpty
+          ? GarageEmptyState(
+              onAddVehicle: () => AddVehicleBottomSheet.show(context),
+            )
+          : _buildVehicleList(vehicles),
     };
   }
 
@@ -168,150 +202,91 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
           SizedBox(height: 16.h),
           const Text('Failed to load vehicles', style: AppTypography.bodyLarge),
           SizedBox(height: 8.h),
-          ElevatedButton(
-            onPressed: () =>
-                ref.read(garageStateProvider.notifier).initialize(),
-            child: const Text('Retry'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.directions_car_outlined,
-            size: 64.sp,
-            color: AppColors.grey400,
-          ),
-          SizedBox(height: 16.h),
-          const Text('No vehicles found', style: AppTypography.titleMedium),
-          SizedBox(height: 8.h),
           Text(
-            'Add your vehicles to get started',
-            style: AppTypography.bodyMedium.copyWith(
+            message,
+            style: AppTypography.bodySmall.copyWith(
               color: AppColors.textSecondary,
             ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 16.h),
+          ElevatedButton(
+            onPressed: () => ref.read(garageStateProvider.notifier).initialize(),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+            ),
+            child: const Text('Retry', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildVehicleGrid(List<Vehicle> vehicles) {
-    return Padding(
+  Widget _buildVehicleList(List<Vehicle> vehicles) {
+    return ListView.builder(
       padding: EdgeInsets.all(16.w),
-      child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          mainAxisSpacing: 16.h,
-          crossAxisSpacing: 16.w,
-          childAspectRatio: 0.85,
-        ),
-        itemCount: vehicles.length,
-        itemBuilder: (context, index) {
-          return _VehicleCard(vehicle: vehicles[index]);
-        },
-      ),
+      itemCount: vehicles.length,
+      itemBuilder: (context, index) {
+        final vehicle = vehicles[index];
+        return VehicleCard(
+          vehicle: vehicle,
+          onTap: () {
+            // TODO: Navigate to vehicle detail or edit
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Selected: ${vehicle.make} ${vehicle.model}'),
+                duration: const Duration(seconds: 1),
+              ),
+            );
+          },
+          onSetDefault: () => _onSetDefaultVehicle(vehicle),
+          onDelete: () => _onDeleteVehicle(vehicle),
+        );
+      },
     );
   }
-}
 
-/// Vehicle card widget.
-class _VehicleCard extends StatelessWidget {
-  const _VehicleCard({required this.vehicle});
+  Future<void> _onSetDefaultVehicle(Vehicle vehicle) async {
+    final success = await ref
+        .read(garageStateProvider.notifier)
+        .setDefaultVehicle(vehicle.id);
 
-  final Vehicle vehicle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            success
+                ? '${vehicle.make} ${vehicle.model} set as default'
+                : 'Failed to set default vehicle',
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Vehicle image
-          Expanded(
-            child: ClipRRect(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
-              child: vehicle.imageUrl != null && vehicle.imageUrl!.isNotEmpty
-                  ? CachedNetworkImage(
-                      imageUrl: vehicle.imageUrl!,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => Container(
-                        color: AppColors.grey200,
-                        child: const Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.primary,
-                            strokeWidth: 2,
-                          ),
-                        ),
-                      ),
-                      errorWidget: (context, url, error) => Container(
-                        color: AppColors.grey200,
-                        child: Icon(
-                          Icons.directions_car,
-                          size: 48.sp,
-                          color: AppColors.grey400,
-                        ),
-                      ),
-                    )
-                  : Container(
-                      color: AppColors.grey200,
-                      child: Center(
-                        child: Icon(
-                          Icons.directions_car,
-                          size: 48.sp,
-                          color: AppColors.grey400,
-                        ),
-                      ),
-                    ),
+          backgroundColor: success ? Colors.green : Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _onDeleteVehicle(Vehicle vehicle) async {
+    await DeleteVehicleDialog.show(
+      context,
+      vehicle: vehicle,
+      onConfirm: () async {
+        final success = await ref
+            .read(garageStateProvider.notifier)
+            .deleteVehicle(vehicle.id);
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                success
+                    ? 'Vehicle deleted successfully'
+                    : 'Failed to delete vehicle',
+              ),
+              backgroundColor: success ? Colors.green : Colors.red,
             ),
-          ),
-
-          // Vehicle info
-          Padding(
-            padding: EdgeInsets.all(12.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Vehicle type
-                Text(
-                  vehicle.vehicleType.displayName,
-                  style: AppTypography.titleSmall.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                SizedBox(height: 4.h),
-                // License plate / details
-                Text(
-                  vehicle.licensePlate ?? vehicle.displayName,
-                  style: AppTypography.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+          );
+        }
+      },
     );
   }
 }
