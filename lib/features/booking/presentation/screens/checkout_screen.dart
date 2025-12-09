@@ -6,16 +6,47 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../../app/theme/colors.dart';
 import '../../../../app/theme/typography.dart';
+import '../../../shop/domain/entities/booking_confirmation.dart';
 import '../../application/providers/booking_provider.dart';
 import '../../domain/entities/booking_data.dart';
 
 /// Checkout screen for reviewing and confirming booking.
-class CheckoutScreen extends ConsumerWidget {
+class CheckoutScreen extends ConsumerStatefulWidget {
   const CheckoutScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CheckoutScreen> createState() => _CheckoutScreenState();
+}
+
+class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Reset booking creation state when entering checkout
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(bookingCreationProvider.notifier).reset();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final bookingData = ref.watch(bookingDataProvider);
+    final bookingCreationState = ref.watch(bookingCreationProvider);
+
+    // Listen for booking creation state changes
+    ref.listen<BookingCreationState>(bookingCreationProvider, (previous, next) {
+      if (next is BookingCreationSuccess) {
+        _showBookingSuccessDialog(context, next.confirmation);
+      } else if (next is BookingCreationError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(next.failure.message ?? 'Booking failed'),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    });
 
     if (bookingData == null) {
       return Scaffold(
@@ -79,7 +110,7 @@ class CheckoutScreen extends ConsumerWidget {
             ),
 
             // Select payment button
-            _buildSelectPaymentButton(context, bookingData),
+            _buildSelectPaymentButton(context, bookingData, bookingCreationState),
           ],
         ),
       ),
@@ -523,7 +554,10 @@ class CheckoutScreen extends ConsumerWidget {
   Widget _buildSelectPaymentButton(
     BuildContext context,
     BookingData bookingData,
+    BookingCreationState bookingCreationState,
   ) {
+    final isLoading = bookingCreationState is BookingCreationLoading;
+
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
@@ -542,23 +576,35 @@ class CheckoutScreen extends ConsumerWidget {
           width: double.infinity,
           height: 48.h,
           child: ElevatedButton(
-            onPressed: () {
-              // Show payment methods or complete booking
-              _showPaymentOptions(context);
-            },
+            onPressed: isLoading
+                ? null
+                : () {
+                    // Show payment methods or complete booking
+                    _showPaymentOptions(context);
+                  },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
+              disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.6),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(24.r),
               ),
             ),
-            child: Text(
-              'Select Payment',
-              style: AppTypography.labelLarge.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            child: isLoading
+                ? SizedBox(
+                    height: 24.h,
+                    width: 24.w,
+                    child: const CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
+                  )
+                : Text(
+                    'Select Payment',
+                    style: AppTypography.labelLarge.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
           ),
         ),
       ),
@@ -570,7 +616,7 @@ class CheckoutScreen extends ConsumerWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => Container(
+      builder: (sheetContext) => Container(
         height: MediaQuery.of(context).size.height * 0.5,
         decoration: BoxDecoration(
           color: AppColors.surface,
@@ -603,7 +649,7 @@ class CheckoutScreen extends ConsumerWidget {
                     ),
                   ),
                   IconButton(
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () => Navigator.pop(sheetContext),
                     icon: const Icon(Icons.close),
                   ),
                 ],
@@ -618,24 +664,27 @@ class CheckoutScreen extends ConsumerWidget {
                 padding: EdgeInsets.all(16.w),
                 children: [
                   _buildPaymentOption(
-                    context,
+                    sheetContext,
                     icon: Icons.credit_card,
                     title: 'Credit/Debit Card',
                     subtitle: 'Pay with Visa, Mastercard, etc.',
+                    paymentMethod: 'credit_card',
                   ),
                   SizedBox(height: 12.h),
                   _buildPaymentOption(
-                    context,
+                    sheetContext,
                     icon: Icons.account_balance_wallet,
                     title: 'Digital Wallet',
                     subtitle: 'Google Pay, Apple Pay',
+                    paymentMethod: 'digital_wallet',
                   ),
                   SizedBox(height: 12.h),
                   _buildPaymentOption(
-                    context,
+                    sheetContext,
                     icon: Icons.money,
                     title: 'Cash on Delivery',
                     subtitle: 'Pay when service is completed',
+                    paymentMethod: 'cash',
                   ),
                 ],
               ),
@@ -647,22 +696,21 @@ class CheckoutScreen extends ConsumerWidget {
   }
 
   Widget _buildPaymentOption(
-    BuildContext context, {
+    BuildContext sheetContext, {
     required IconData icon,
     required String title,
     required String subtitle,
+    required String paymentMethod,
   }) {
     return InkWell(
-      onTap: () {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Booking confirmed with $title!'),
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-        // Navigate to confirmation or home
-        context.go('/home');
+      onTap: () async {
+        // Close the bottom sheet
+        Navigator.pop(sheetContext);
+
+        // Create the booking via API
+        await ref.read(bookingCreationProvider.notifier).createBooking(
+              paymentMethod: paymentMethod,
+            );
       },
       borderRadius: BorderRadius.circular(12.r),
       child: Container(
@@ -703,6 +751,126 @@ class CheckoutScreen extends ConsumerWidget {
               ),
             ),
             const Icon(Icons.chevron_right, color: AppColors.textSecondary),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Show success dialog after booking is created.
+  void _showBookingSuccessDialog(
+    BuildContext context,
+    BookingConfirmation confirmation,
+  ) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                color: AppColors.success.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.check_circle,
+                color: AppColors.success,
+                size: 48.sp,
+              ),
+            ),
+            SizedBox(height: 16.h),
+            Text(
+              'Booking Confirmed!',
+              style: AppTypography.titleLarge.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              'Your booking has been successfully created.',
+              style: AppTypography.bodyMedium.copyWith(
+                color: AppColors.textSecondary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 16.h),
+            Container(
+              padding: EdgeInsets.all(12.w),
+              decoration: BoxDecoration(
+                color: AppColors.grey50,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    'Booking Reference',
+                    style: AppTypography.labelSmall.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    confirmation.bookingReference,
+                    style: AppTypography.titleMedium.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 24.h),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.pop(dialogContext);
+                      context.go('/home');
+                    },
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: AppColors.primary),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                    ),
+                    child: Text(
+                      'Home',
+                      style: AppTypography.labelMedium.copyWith(
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(dialogContext);
+                      context.go('/bookings');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                    ),
+                    child: Text(
+                      'View Bookings',
+                      style: AppTypography.labelMedium.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

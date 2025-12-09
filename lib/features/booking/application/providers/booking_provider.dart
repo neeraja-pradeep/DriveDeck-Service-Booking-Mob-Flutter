@@ -1,4 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/error/failure.dart';
+import '../../../bookings/application/providers/bookings_providers.dart';
+import '../../../shop/application/providers/shop_providers.dart';
+import '../../../shop/domain/entities/booking_confirmation.dart';
+import '../../../shop/domain/entities/booking_request.dart';
+import '../../../shop/domain/entities/vehicle_type.dart';
 import '../../domain/entities/booking_data.dart';
 import '../../domain/entities/time_slot.dart';
 
@@ -197,3 +204,156 @@ String getMonthName(int month) {
   ];
   return months[month - 1];
 }
+
+// ============================================================================
+// Booking Creation State
+// ============================================================================
+
+/// State for booking creation process.
+sealed class BookingCreationState {
+  const BookingCreationState();
+}
+
+/// Initial state - no booking in progress.
+class BookingCreationInitial extends BookingCreationState {
+  const BookingCreationInitial();
+}
+
+/// Loading state - booking is being created.
+class BookingCreationLoading extends BookingCreationState {
+  const BookingCreationLoading();
+}
+
+/// Success state - booking was created successfully.
+class BookingCreationSuccess extends BookingCreationState {
+  final BookingConfirmation confirmation;
+  const BookingCreationSuccess(this.confirmation);
+}
+
+/// Error state - booking creation failed.
+class BookingCreationError extends BookingCreationState {
+  final Failure failure;
+  const BookingCreationError(this.failure);
+}
+
+/// Notifier for booking creation process.
+class BookingCreationNotifier extends StateNotifier<BookingCreationState> {
+  BookingCreationNotifier(this._ref) : super(const BookingCreationInitial());
+
+  final Ref _ref;
+
+  /// Create a booking from the current booking data.
+  Future<bool> createBooking({
+    required String paymentMethod,
+  }) async {
+    final bookingData = _ref.read(bookingDataProvider);
+    if (bookingData == null) {
+      state = const BookingCreationError(
+        Failure.validation(message: 'No booking data available'),
+      );
+      return false;
+    }
+
+    // Validate required fields
+    if (bookingData.selectedDate == null) {
+      state = const BookingCreationError(
+        Failure.validation(message: 'Please select a date'),
+      );
+      return false;
+    }
+
+    if (bookingData.selectedTimeSlotId == null) {
+      state = const BookingCreationError(
+        Failure.validation(message: 'Please select a time slot'),
+      );
+      return false;
+    }
+
+    state = const BookingCreationLoading();
+
+    try {
+      // Parse shopId to int
+      final shopId = int.tryParse(bookingData.shopId);
+      if (shopId == null) {
+        state = const BookingCreationError(
+          Failure.validation(message: 'Invalid shop ID'),
+        );
+        return false;
+      }
+
+      // Parse timeSlotId to int
+      final timeSlotId = int.tryParse(bookingData.selectedTimeSlotId!);
+      if (timeSlotId == null) {
+        state = const BookingCreationError(
+          Failure.validation(message: 'Invalid time slot ID'),
+        );
+        return false;
+      }
+
+      // Parse vehicle type
+      final vehicleType = bookingData.vehicleType != null
+          ? VehicleTypeExtension.fromString(bookingData.vehicleType!)
+          : VehicleType.sedan;
+
+      // Build booking request
+      final request = BookingRequest(
+        shopId: shopId,
+        selectedServiceIds:
+            bookingData.selectedServices.map((s) => s.id).toList(),
+        selectedPackageIds:
+            bookingData.selectedPackages.map((p) => p.id).toList(),
+        selectedAccessoryIds:
+            bookingData.selectedAccessories.map((a) => a.id).toList(),
+        date: bookingData.selectedDate!,
+        timeSlotId: timeSlotId,
+        vehicleType: vehicleType,
+        pickupAndDelivery: bookingData.pickupAndDelivery,
+        promoCode: bookingData.promoCode,
+        paymentMethod: paymentMethod,
+        vehicleId: bookingData.vehicleId,
+      );
+
+      debugPrint('📦 Creating booking with request: ${request.toJson()}');
+
+      // Call the use case
+      final useCase = _ref.read(createBookingUseCaseProvider);
+      final result = await useCase(request);
+
+      return result.fold(
+        (failure) {
+          debugPrint('❌ Booking creation failed: ${failure.message}');
+          state = BookingCreationError(failure);
+          return false;
+        },
+        (confirmation) {
+          debugPrint(
+            '✅ Booking created: ${confirmation.bookingReference}',
+          );
+          state = BookingCreationSuccess(confirmation);
+          // Clear booking data after successful creation
+          _ref.read(bookingDataProvider.notifier).clearBooking();
+          // Invalidate bookings list so it refreshes when user navigates to it
+          _ref.invalidate(bookingsStateProvider);
+          return true;
+        },
+      );
+    } catch (e) {
+      debugPrint('❌ Booking creation exception: $e');
+      state = BookingCreationError(
+        Failure.unknown(message: e.toString()),
+      );
+      return false;
+    }
+  }
+
+  /// Reset state to initial.
+  void reset() {
+    state = const BookingCreationInitial();
+  }
+}
+
+/// Provider for booking creation state.
+final bookingCreationProvider =
+    StateNotifierProvider<BookingCreationNotifier, BookingCreationState>((ref) {
+  return BookingCreationNotifier(ref);
+});
