@@ -290,12 +290,7 @@ class _VehicleSelectionScreenState
   void _onContinue() {
     if (_selectedVehicleType == null) return;
 
-    // Create updated credentials with vehicle type
-    final credentialsWithVehicle = widget.registrationData.copyWith(
-      vehicleType: _selectedVehicleType!.name,
-    );
-
-    // Trigger registration with vehicle type
-    ref.read(registerStateProvider.notifier).register(credentialsWithVehicle);
+    // Trigger registration (vehicle type is handled separately after registration)
+    ref.read(registerStateProvider.notifier).register(widget.registrationData);
   }
 }
