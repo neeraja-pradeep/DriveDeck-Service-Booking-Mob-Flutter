@@ -8,23 +8,23 @@ part of 'auth_request_models.dart';
 
 OtpRequestDto _$OtpRequestDtoFromJson(Map<String, dynamic> json) =>
     OtpRequestDto(
-      phone: json['phone'] as String,
+      phone: json['phone_number'] as String,
     );
 
 Map<String, dynamic> _$OtpRequestDtoToJson(OtpRequestDto instance) =>
     <String, dynamic>{
-      'phone': instance.phone,
+      'phone_number': instance.phone,
     };
 
 OtpVerifyDto _$OtpVerifyDtoFromJson(Map<String, dynamic> json) => OtpVerifyDto(
-      phone: json['phone'] as String,
+      phone: json['phone_number'] as String,
       otpCode: json['otp_code'] as String,
       newPassword: json['new_password'] as String?,
     );
 
 Map<String, dynamic> _$OtpVerifyDtoToJson(OtpVerifyDto instance) {
   final val = <String, dynamic>{
-    'phone': instance.phone,
+    'phone_number': instance.phone,
     'otp_code': instance.otpCode,
   };
 

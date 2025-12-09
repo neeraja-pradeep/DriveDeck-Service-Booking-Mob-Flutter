@@ -10,6 +10,7 @@ class OtpRequestDto {
   factory OtpRequestDto.fromJson(Map<String, dynamic> json) =>
       _$OtpRequestDtoFromJson(json);
 
+  @JsonKey(name: 'phone_number')
   final String phone;
 
   Map<String, dynamic> toJson() => _$OtpRequestDtoToJson(this);
@@ -27,6 +28,7 @@ class OtpVerifyDto {
   factory OtpVerifyDto.fromJson(Map<String, dynamic> json) =>
       _$OtpVerifyDtoFromJson(json);
 
+  @JsonKey(name: 'phone_number')
   final String phone;
   @JsonKey(name: 'otp_code')
   final String otpCode;
