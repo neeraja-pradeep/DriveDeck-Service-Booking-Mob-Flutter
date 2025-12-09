@@ -9,7 +9,7 @@ class AppConfig {
   static const bool useMockData = false;
 
   /// API Base URL
-  static const String apiBaseUrl = 'http://156.67.104.149:8110';
+  static const String apiBaseUrl = 'http://156.67.104.149:8080';
 
   /// Mock user profile for testing
   static const mockUserProfile = {

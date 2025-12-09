@@ -38,24 +38,33 @@ class OtpVerifyDto {
   Map<String, dynamic> toJson() => _$OtpVerifyDtoToJson(this);
 }
 
-/// DTO for user registration.
+/// DTO for user registration/signup.
 @JsonSerializable()
 class RegisterRequestDto {
   const RegisterRequestDto({
-    required this.phone,
     required this.username,
+    required this.email,
     required this.password,
     required this.passwordConfirm,
+    required this.firstName,
+    required this.lastName,
+    required this.phoneNumber,
   });
 
   factory RegisterRequestDto.fromJson(Map<String, dynamic> json) =>
       _$RegisterRequestDtoFromJson(json);
 
-  final String phone;
   final String username;
+  final String email;
   final String password;
   @JsonKey(name: 'password_confirm')
   final String passwordConfirm;
+  @JsonKey(name: 'first_name')
+  final String firstName;
+  @JsonKey(name: 'last_name')
+  final String lastName;
+  @JsonKey(name: 'phone_number')
+  final String phoneNumber;
 
   Map<String, dynamic> toJson() => _$RegisterRequestDtoToJson(this);
 }

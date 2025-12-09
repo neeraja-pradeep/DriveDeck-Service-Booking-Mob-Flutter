@@ -40,16 +40,22 @@ Map<String, dynamic> _$OtpVerifyDtoToJson(OtpVerifyDto instance) {
 
 RegisterRequestDto _$RegisterRequestDtoFromJson(Map<String, dynamic> json) =>
     RegisterRequestDto(
-      phone: json['phone'] as String,
       username: json['username'] as String,
+      email: json['email'] as String,
       password: json['password'] as String,
       passwordConfirm: json['password_confirm'] as String,
+      firstName: json['first_name'] as String,
+      lastName: json['last_name'] as String,
+      phoneNumber: json['phone_number'] as String,
     );
 
 Map<String, dynamic> _$RegisterRequestDtoToJson(RegisterRequestDto instance) =>
     <String, dynamic>{
-      'phone': instance.phone,
       'username': instance.username,
+      'email': instance.email,
       'password': instance.password,
       'password_confirm': instance.passwordConfirm,
+      'first_name': instance.firstName,
+      'last_name': instance.lastName,
+      'phone_number': instance.phoneNumber,
     };

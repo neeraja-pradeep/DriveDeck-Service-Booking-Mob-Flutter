@@ -126,18 +126,16 @@ class AuthRepositoryImpl implements AuthRepository {
         '📝 Repository: Starting registration for phone: ${credentials.phoneNumber}',
       );
       debugPrint('👤 Repository: Username: ${credentials.username}');
-
-      // Format phone number with country code for API request
-      final formattedPhone = _formatPhoneWithCountryCode(
-        credentials.phoneNumber,
-      );
-      debugPrint('📱 Repository: Formatted phone: $formattedPhone');
+      debugPrint('📧 Repository: Email: ${credentials.email}');
 
       final dto = RegisterRequestDto(
-        phone: formattedPhone,
         username: credentials.username,
+        email: credentials.email,
         password: credentials.password,
         passwordConfirm: credentials.confirmPassword,
+        firstName: credentials.firstName,
+        lastName: credentials.lastName,
+        phoneNumber: credentials.phoneNumber,
       );
 
       debugPrint('📦 Repository: Created registration DTO: ${dto.toJson()}');

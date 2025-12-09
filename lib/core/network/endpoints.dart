@@ -5,7 +5,7 @@ class Endpoints {
   Endpoints._();
 
   /// Base URL for the API.
-  static const String baseUrl = 'http://156.67.104.149:8110';
+  static const String baseUrl = 'http://156.67.104.149:8080';
 
   /// API version prefix.
   static const String apiPrefix = '/api';
@@ -15,25 +15,25 @@ class Endpoints {
   // ============================================================================
 
   /// Send OTP endpoint.
-  static String sendOtp() => '$apiPrefix/accounts/send-otp/';
+  static String sendOtp() => '$apiPrefix/auth/send-otp/';
 
   /// Verify OTP endpoint.
-  static String verifyOtp() => '$apiPrefix/accounts/verify-otp/';
+  static String verifyOtp() => '$apiPrefix/auth/verify-otp/';
 
-  /// Register endpoint.
-  static String register() => '$apiPrefix/accounts/register/';
+  /// Register/Signup endpoint.
+  static String register() => '$apiPrefix/auth/signup/';
 
-  /// Login endpoint.
-  static String login() => '$apiPrefix/accounts/login/';
+  /// Login/Signin endpoint.
+  static String login() => '$apiPrefix/auth/signin/';
 
   /// Logout endpoint.
-  static String logout() => '$apiPrefix/accounts/logout/';
+  static String logout() => '$apiPrefix/auth/logout/';
 
   /// Refresh token endpoint.
-  static String refreshToken() => '$apiPrefix/accounts/refresh/';
+  static String refreshToken() => '$apiPrefix/auth/refresh/';
 
   /// User profile endpoint.
-  static String profile() => '$apiPrefix/accounts/profile/';
+  static String profile() => '$apiPrefix/auth/profile/';
 
   // ============================================================================
   // Shop Endpoints (Additional)

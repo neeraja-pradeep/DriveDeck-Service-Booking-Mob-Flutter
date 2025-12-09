@@ -20,14 +20,16 @@ class OtpVerifyCredentials with _$OtpVerifyCredentials {
   }) = _OtpVerifyCredentials;
 }
 
-/// Credentials for user registration.
+/// Credentials for user registration/signup.
 @freezed
 class RegisterCredentials with _$RegisterCredentials {
   const factory RegisterCredentials({
-    required String phoneNumber,
     required String username,
+    required String email,
     required String password,
     required String confirmPassword,
-    String? vehicleType,
+    required String firstName,
+    required String lastName,
+    required String phoneNumber,
   }) = _RegisterCredentials;
 }
