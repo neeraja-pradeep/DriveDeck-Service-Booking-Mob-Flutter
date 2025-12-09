@@ -2,6 +2,8 @@ import 'package:hive/hive.dart';
 
 import '../../../../../core/storage/hive/boxes.dart';
 import '../../../../../core/storage/hive/keys.dart';
+import '../../../domain/entities/day_hours.dart';
+import '../../../domain/entities/opening_hours.dart';
 import '../../../domain/entities/shop.dart';
 import '../../../domain/repositories/shop_repository.dart';
 
@@ -126,7 +128,7 @@ class ShopLocalDataSourceImpl implements ShopLocalDataSource {
   }
 
   /// Converts OpeningHours to a Map.
-  Map<String, dynamic> _openingHoursToMap(dynamic openingHours) {
+  Map<String, dynamic> _openingHoursToMap(OpeningHours openingHours) {
     return {
       'monday': _dayHoursToMap(openingHours.monday),
       'tuesday': _dayHoursToMap(openingHours.tuesday),
@@ -139,7 +141,7 @@ class ShopLocalDataSourceImpl implements ShopLocalDataSource {
   }
 
   /// Converts DayHours to a Map.
-  Map<String, dynamic> _dayHoursToMap(dynamic dayHours) {
+  Map<String, dynamic> _dayHoursToMap(DayHours dayHours) {
     return {
       'openTime': dayHours.openTime,
       'closeTime': dayHours.closeTime,
@@ -166,9 +168,24 @@ class ShopLocalDataSourceImpl implements ShopLocalDataSource {
   }
 
   /// Converts a Map to OpeningHours.
-  dynamic _mapToOpeningHours(Map<dynamic, dynamic> map) {
-    // Import would be needed here, but for simplicity we'll construct inline
-    // This would need proper import of OpeningHours and DayHours
-    throw UnimplementedError('Use proper adapters for production');
+  OpeningHours _mapToOpeningHours(Map<dynamic, dynamic> map) {
+    return OpeningHours(
+      monday: _mapToDayHours(map['monday'] as Map<dynamic, dynamic>),
+      tuesday: _mapToDayHours(map['tuesday'] as Map<dynamic, dynamic>),
+      wednesday: _mapToDayHours(map['wednesday'] as Map<dynamic, dynamic>),
+      thursday: _mapToDayHours(map['thursday'] as Map<dynamic, dynamic>),
+      friday: _mapToDayHours(map['friday'] as Map<dynamic, dynamic>),
+      saturday: _mapToDayHours(map['saturday'] as Map<dynamic, dynamic>),
+      sunday: _mapToDayHours(map['sunday'] as Map<dynamic, dynamic>),
+    );
+  }
+
+  /// Converts a Map to DayHours.
+  DayHours _mapToDayHours(Map<dynamic, dynamic> map) {
+    return DayHours(
+      openTime: map['openTime'] as String,
+      closeTime: map['closeTime'] as String,
+      isClosed: map['isClosed'] as bool? ?? false,
+    );
   }
 }

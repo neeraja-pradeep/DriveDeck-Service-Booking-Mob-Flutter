@@ -45,7 +45,7 @@ class BookingFlowState with _$BookingFlowState {
       selectedServices.fold(0, (sum, s) => sum + s.price);
 
   /// Returns the admin fee (static for now).
-  double get adminFee => 2.50;
+  double get adminFee => 25.0;
 
   /// Calculates the total price.
   double get total => subtotal + adminFee;
