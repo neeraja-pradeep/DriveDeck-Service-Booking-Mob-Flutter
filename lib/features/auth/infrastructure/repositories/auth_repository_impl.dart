@@ -233,17 +233,17 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  /// Formats phone number - returns just the 10 digits without country code.
+  /// Formats phone number - adds +91 country code prefix for API requests.
   String _formatPhoneWithCountryCode(String phoneNumber) {
     // Remove any existing country code or special characters
     final cleanPhone = phoneNumber.replaceAll(RegExp(r'[^\d]'), '');
 
-    // If phone starts with 91 and is longer than 10 digits, remove the country code
+    // If phone already starts with 91 and is longer than 10 digits, use as-is with + prefix
     if (cleanPhone.startsWith('91') && cleanPhone.length > 10) {
-      return cleanPhone.substring(2);
+      return '+$cleanPhone';
     }
 
-    // Return just the clean phone number (10 digits)
-    return cleanPhone;
+    // Add +91 prefix to 10-digit phone number
+    return '+91$cleanPhone';
   }
 }
