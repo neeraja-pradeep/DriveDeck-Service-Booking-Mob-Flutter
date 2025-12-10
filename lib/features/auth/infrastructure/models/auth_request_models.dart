@@ -13,7 +13,7 @@ class OtpRequestDto {
       _$OtpRequestDtoFromJson(json);
 
   /// Phone number field with +91 country code prefix
-  @JsonKey(name: 'phone_number')
+  @JsonKey(name: 'phone')
   final String phone;
 
   Map<String, dynamic> toJson() => _$OtpRequestDtoToJson(this);
@@ -21,7 +21,7 @@ class OtpRequestDto {
 
 /// DTO for OTP verification.
 /// API: POST /api/accounts/verify-otp/
-/// Payload: { "phone_number": "+919876543210", "otp_code": "123456", "new_password": "..." (optional) }
+/// Payload: { "phone": "+919876543210", "otp_code": "123456", "new_password": "..." (optional) }
 @JsonSerializable()
 class OtpVerifyDto {
   const OtpVerifyDto({
@@ -34,7 +34,7 @@ class OtpVerifyDto {
       _$OtpVerifyDtoFromJson(json);
 
   /// Phone number field with +91 country code prefix
-  @JsonKey(name: 'phone_number')
+  @JsonKey(name: 'phone')
   final String phone;
 
   /// OTP code field
@@ -50,7 +50,7 @@ class OtpVerifyDto {
 
 /// DTO for user registration/signup.
 /// API: POST /api/accounts/register/
-/// Required fields: { "phone_number": "+91...", "username": "...", "password": "...", "password_confirm": "..." }
+/// Required fields: { "phone": "+91...", "username": "...", "password": "...", "password_confirm": "..." }
 /// Additional optional fields may be supported by backend
 @JsonSerializable()
 class RegisterRequestDto {
@@ -90,7 +90,7 @@ class RegisterRequestDto {
   final String? lastName;
 
   /// Required: phone number with +91 country code prefix
-  @JsonKey(name: 'phone_number')
+  @JsonKey(name: 'phone')
   final String phone;
 
   Map<String, dynamic> toJson() => _$RegisterRequestDtoToJson(this);
