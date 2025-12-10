@@ -88,13 +88,14 @@ class ProfileRepositoryImpl implements ProfileRepository {
   @override
   Future<Either<Failure, Unit>> logout() async {
     try {
-      await profileApi.logout();
+      // Note: Server has no logout endpoint, so we just clear local data.
+      // Django session-based auth: session becomes invalid when cookies are cleared.
       await _clearAllData();
       return const Right(unit);
     } catch (e) {
       // Clear local data anyway
       await _clearAllData();
-      return Left(Failure.server(message: e.toString()));
+      return Left(Failure.cache(message: e.toString()));
     }
   }
 

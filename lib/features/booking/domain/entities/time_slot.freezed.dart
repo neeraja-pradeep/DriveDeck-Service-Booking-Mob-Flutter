@@ -206,7 +206,9 @@ class _$TimeSlotImpl implements _TimeSlot {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$TimeSlotImplToJson(this);
+    return _$$TimeSlotImplToJson(
+      this,
+    );
   }
 }
 
@@ -357,6 +359,7 @@ class _$BookingDateImpl implements _BookingDate {
   @override
   List<TimeSlot> get timeSlots {
     if (_timeSlots is EqualUnmodifiableListView) return _timeSlots;
+    // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_timeSlots);
   }
 
@@ -394,7 +397,9 @@ class _$BookingDateImpl implements _BookingDate {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$BookingDateImplToJson(this);
+    return _$$BookingDateImplToJson(
+      this,
+    );
   }
 }
 

@@ -322,10 +322,13 @@ abstract class _OtpVerifyCredentials implements OtpVerifyCredentials {
 
 /// @nodoc
 mixin _$RegisterCredentials {
-  String get phoneNumber => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
+  String get email => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
   String get confirmPassword => throw _privateConstructorUsedError;
+  String get firstName => throw _privateConstructorUsedError;
+  String get lastName => throw _privateConstructorUsedError;
+  String get phoneNumber => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RegisterCredentialsCopyWith<RegisterCredentials> get copyWith =>
@@ -339,10 +342,13 @@ abstract class $RegisterCredentialsCopyWith<$Res> {
       _$RegisterCredentialsCopyWithImpl<$Res, RegisterCredentials>;
   @useResult
   $Res call(
-      {String phoneNumber,
-      String username,
+      {String username,
+      String email,
       String password,
-      String confirmPassword});
+      String confirmPassword,
+      String firstName,
+      String lastName,
+      String phoneNumber});
 }
 
 /// @nodoc
@@ -358,19 +364,22 @@ class _$RegisterCredentialsCopyWithImpl<$Res, $Val extends RegisterCredentials>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? phoneNumber = null,
     Object? username = null,
+    Object? email = null,
     Object? password = null,
     Object? confirmPassword = null,
+    Object? firstName = null,
+    Object? lastName = null,
+    Object? phoneNumber = null,
   }) {
     return _then(_value.copyWith(
-      phoneNumber: null == phoneNumber
-          ? _value.phoneNumber
-          : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
       username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String,
       password: null == password
           ? _value.password
@@ -379,6 +388,18 @@ class _$RegisterCredentialsCopyWithImpl<$Res, $Val extends RegisterCredentials>
       confirmPassword: null == confirmPassword
           ? _value.confirmPassword
           : confirmPassword // ignore: cast_nullable_to_non_nullable
+              as String,
+      firstName: null == firstName
+          ? _value.firstName
+          : firstName // ignore: cast_nullable_to_non_nullable
+              as String,
+      lastName: null == lastName
+          ? _value.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
+              as String,
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -393,10 +414,13 @@ abstract class _$$RegisterCredentialsImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String phoneNumber,
-      String username,
+      {String username,
+      String email,
       String password,
-      String confirmPassword});
+      String confirmPassword,
+      String firstName,
+      String lastName,
+      String phoneNumber});
 }
 
 /// @nodoc
@@ -410,19 +434,22 @@ class __$$RegisterCredentialsImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? phoneNumber = null,
     Object? username = null,
+    Object? email = null,
     Object? password = null,
     Object? confirmPassword = null,
+    Object? firstName = null,
+    Object? lastName = null,
+    Object? phoneNumber = null,
   }) {
     return _then(_$RegisterCredentialsImpl(
-      phoneNumber: null == phoneNumber
-          ? _value.phoneNumber
-          : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
       username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String,
       password: null == password
           ? _value.password
@@ -432,6 +459,18 @@ class __$$RegisterCredentialsImplCopyWithImpl<$Res>
           ? _value.confirmPassword
           : confirmPassword // ignore: cast_nullable_to_non_nullable
               as String,
+      firstName: null == firstName
+          ? _value.firstName
+          : firstName // ignore: cast_nullable_to_non_nullable
+              as String,
+      lastName: null == lastName
+          ? _value.lastName
+          : lastName // ignore: cast_nullable_to_non_nullable
+              as String,
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -440,23 +479,32 @@ class __$$RegisterCredentialsImplCopyWithImpl<$Res>
 
 class _$RegisterCredentialsImpl implements _RegisterCredentials {
   const _$RegisterCredentialsImpl(
-      {required this.phoneNumber,
-      required this.username,
+      {required this.username,
+      required this.email,
       required this.password,
-      required this.confirmPassword});
+      required this.confirmPassword,
+      required this.firstName,
+      required this.lastName,
+      required this.phoneNumber});
 
   @override
-  final String phoneNumber;
-  @override
   final String username;
+  @override
+  final String email;
   @override
   final String password;
   @override
   final String confirmPassword;
+  @override
+  final String firstName;
+  @override
+  final String lastName;
+  @override
+  final String phoneNumber;
 
   @override
   String toString() {
-    return 'RegisterCredentials(phoneNumber: $phoneNumber, username: $username, password: $password, confirmPassword: $confirmPassword)';
+    return 'RegisterCredentials(username: $username, email: $email, password: $password, confirmPassword: $confirmPassword, firstName: $firstName, lastName: $lastName, phoneNumber: $phoneNumber)';
   }
 
   @override
@@ -464,19 +512,24 @@ class _$RegisterCredentialsImpl implements _RegisterCredentials {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RegisterCredentialsImpl &&
-            (identical(other.phoneNumber, phoneNumber) ||
-                other.phoneNumber == phoneNumber) &&
             (identical(other.username, username) ||
                 other.username == username) &&
+            (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
             (identical(other.confirmPassword, confirmPassword) ||
-                other.confirmPassword == confirmPassword));
+                other.confirmPassword == confirmPassword) &&
+            (identical(other.firstName, firstName) ||
+                other.firstName == firstName) &&
+            (identical(other.lastName, lastName) ||
+                other.lastName == lastName) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, phoneNumber, username, password, confirmPassword);
+  int get hashCode => Object.hash(runtimeType, username, email, password,
+      confirmPassword, firstName, lastName, phoneNumber);
 
   @JsonKey(ignore: true)
   @override
@@ -488,19 +541,28 @@ class _$RegisterCredentialsImpl implements _RegisterCredentials {
 
 abstract class _RegisterCredentials implements RegisterCredentials {
   const factory _RegisterCredentials(
-      {required final String phoneNumber,
-      required final String username,
+      {required final String username,
+      required final String email,
       required final String password,
-      required final String confirmPassword}) = _$RegisterCredentialsImpl;
+      required final String confirmPassword,
+      required final String firstName,
+      required final String lastName,
+      required final String phoneNumber}) = _$RegisterCredentialsImpl;
 
   @override
-  String get phoneNumber;
-  @override
   String get username;
+  @override
+  String get email;
   @override
   String get password;
   @override
   String get confirmPassword;
+  @override
+  String get firstName;
+  @override
+  String get lastName;
+  @override
+  String get phoneNumber;
   @override
   @JsonKey(ignore: true)
   _$$RegisterCredentialsImplCopyWith<_$RegisterCredentialsImpl> get copyWith =>

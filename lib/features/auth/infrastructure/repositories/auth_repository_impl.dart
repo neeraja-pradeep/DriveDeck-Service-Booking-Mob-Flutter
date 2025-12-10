@@ -126,18 +126,16 @@ class AuthRepositoryImpl implements AuthRepository {
         '📝 Repository: Starting registration for phone: ${credentials.phoneNumber}',
       );
       debugPrint('👤 Repository: Username: ${credentials.username}');
-
-      // Format phone number with country code for API request
-      final formattedPhone = _formatPhoneWithCountryCode(
-        credentials.phoneNumber,
-      );
-      debugPrint('📱 Repository: Formatted phone: $formattedPhone');
+      debugPrint('📧 Repository: Email: ${credentials.email}');
 
       final dto = RegisterRequestDto(
-        phone: formattedPhone,
         username: credentials.username,
+        email: credentials.email,
         password: credentials.password,
         passwordConfirm: credentials.confirmPassword,
+        firstName: credentials.firstName,
+        lastName: credentials.lastName,
+        phone: credentials.phoneNumber,
       );
 
       debugPrint('📦 Repository: Created registration DTO: ${dto.toJson()}');
@@ -186,20 +184,19 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, Unit>> logout() async {
     try {
-      // Call API logout
-      await authApi.logout();
+      debugPrint('🚪 Repository: Starting logout...');
 
-      // Clear local session
+      // Note: Server has no logout endpoint, so we just clear local session.
+      // Django session-based auth: session becomes invalid when cookies are cleared.
       await localDataSource.clearSession();
 
+      debugPrint('✅ Repository: Local session cleared successfully');
       return const Right(unit);
-    } on DioException catch (e) {
-      // Even if API fails, clear local session
-      await localDataSource.clearSession();
-      return Left(NetworkExceptions.handleException(e));
     } catch (e) {
+      debugPrint('❌ Repository: Error during logout: $e');
+      // Ensure session is cleared even on error
       await localDataSource.clearSession();
-      return Left(NetworkExceptions.handleException(e));
+      return Left(Failure.cache(message: e.toString()));
     }
   }
 
@@ -236,18 +233,23 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  /// Formats phone number with +91 country code if not already present.
+  /// Formats phone number - adds +91 country code prefix.
+  /// API expects: { "phone": "+918075621431" }
   String _formatPhoneWithCountryCode(String phoneNumber) {
     // Remove any existing country code or special characters
     final cleanPhone = phoneNumber.replaceAll(RegExp(r'[^\d]'), '');
 
-    // If phone starts with 91, remove it first
-    final phoneWithoutCountryCode =
-        cleanPhone.startsWith('91') && cleanPhone.length > 10
-        ? cleanPhone.substring(2)
-        : cleanPhone;
+    // If phone already starts with 91 and is 12 digits, just add + prefix
+    if (cleanPhone.startsWith('91') && cleanPhone.length == 12) {
+      return '+$cleanPhone';
+    }
 
-    // Add +91 prefix
-    return '+91$phoneWithoutCountryCode';
+    // If phone is 10 digits, add +91 prefix
+    if (cleanPhone.length == 10) {
+      return '+91$cleanPhone';
+    }
+
+    // Return with +91 prefix for any other case
+    return '+91$cleanPhone';
   }
 }

@@ -20,25 +20,30 @@ BookingData _$BookingDataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$BookingData {
+// Shop information
   String get shopId => throw _privateConstructorUsedError;
   String get shopName => throw _privateConstructorUsedError;
   String get shopImageUrl => throw _privateConstructorUsedError;
   String get shopAddress => throw _privateConstructorUsedError;
-  double get shopRating => throw _privateConstructorUsedError;
+  double get shopRating =>
+      throw _privateConstructorUsedError; // Selected services/packages/accessories
   List<SelectedItem> get selectedServices => throw _privateConstructorUsedError;
   List<SelectedItem> get selectedPackages => throw _privateConstructorUsedError;
   List<SelectedItem> get selectedAccessories =>
-      throw _privateConstructorUsedError;
+      throw _privateConstructorUsedError; // Vehicle type
   String? get vehicleType => throw _privateConstructorUsedError;
-  String? get vehicleId => throw _privateConstructorUsedError;
+  String? get vehicleId => throw _privateConstructorUsedError; // Date and time
   DateTime? get selectedDate => throw _privateConstructorUsedError;
   String? get selectedTimeSlot => throw _privateConstructorUsedError;
-  String? get selectedTimeSlotId => throw _privateConstructorUsedError;
-  bool get pickupAndDelivery => throw _privateConstructorUsedError;
-  String? get phoneNumber => throw _privateConstructorUsedError;
+  String? get selectedTimeSlotId =>
+      throw _privateConstructorUsedError; // Pickup and delivery
+  bool get pickupAndDelivery =>
+      throw _privateConstructorUsedError; // Contact info
+  String? get phoneNumber =>
+      throw _privateConstructorUsedError; // Price details
   double get subtotal => throw _privateConstructorUsedError;
   double get adminFee => throw _privateConstructorUsedError;
-  double get discount => throw _privateConstructorUsedError;
+  double get discount => throw _privateConstructorUsedError; // Promo code
   String? get promoCode => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -361,6 +366,7 @@ class _$BookingDataImpl implements _BookingData {
   factory _$BookingDataImpl.fromJson(Map<String, dynamic> json) =>
       _$$BookingDataImplFromJson(json);
 
+// Shop information
   @override
   final String shopId;
   @override
@@ -371,12 +377,15 @@ class _$BookingDataImpl implements _BookingData {
   final String shopAddress;
   @override
   final double shopRating;
+// Selected services/packages/accessories
   final List<SelectedItem> _selectedServices;
+// Selected services/packages/accessories
   @override
   @JsonKey()
   List<SelectedItem> get selectedServices {
     if (_selectedServices is EqualUnmodifiableListView)
       return _selectedServices;
+    // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_selectedServices);
   }
 
@@ -386,6 +395,7 @@ class _$BookingDataImpl implements _BookingData {
   List<SelectedItem> get selectedPackages {
     if (_selectedPackages is EqualUnmodifiableListView)
       return _selectedPackages;
+    // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_selectedPackages);
   }
 
@@ -395,24 +405,30 @@ class _$BookingDataImpl implements _BookingData {
   List<SelectedItem> get selectedAccessories {
     if (_selectedAccessories is EqualUnmodifiableListView)
       return _selectedAccessories;
+    // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_selectedAccessories);
   }
 
+// Vehicle type
   @override
   final String? vehicleType;
   @override
   final String? vehicleId;
+// Date and time
   @override
   final DateTime? selectedDate;
   @override
   final String? selectedTimeSlot;
   @override
   final String? selectedTimeSlotId;
+// Pickup and delivery
   @override
   @JsonKey()
   final bool pickupAndDelivery;
+// Contact info
   @override
   final String? phoneNumber;
+// Price details
   @override
   @JsonKey()
   final double subtotal;
@@ -422,6 +438,7 @@ class _$BookingDataImpl implements _BookingData {
   @override
   @JsonKey()
   final double discount;
+// Promo code
   @override
   final String? promoCode;
 
@@ -476,26 +493,28 @@ class _$BookingDataImpl implements _BookingData {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      shopId,
-      shopName,
-      shopImageUrl,
-      shopAddress,
-      shopRating,
-      const DeepCollectionEquality().hash(_selectedServices),
-      const DeepCollectionEquality().hash(_selectedPackages),
-      const DeepCollectionEquality().hash(_selectedAccessories),
-      vehicleType,
-      vehicleId,
-      selectedDate,
-      selectedTimeSlot,
-      selectedTimeSlotId,
-      pickupAndDelivery,
-      phoneNumber,
-      subtotal,
-      adminFee,
-      discount);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        shopId,
+        shopName,
+        shopImageUrl,
+        shopAddress,
+        shopRating,
+        const DeepCollectionEquality().hash(_selectedServices),
+        const DeepCollectionEquality().hash(_selectedPackages),
+        const DeepCollectionEquality().hash(_selectedAccessories),
+        vehicleType,
+        vehicleId,
+        selectedDate,
+        selectedTimeSlot,
+        selectedTimeSlotId,
+        pickupAndDelivery,
+        phoneNumber,
+        subtotal,
+        adminFee,
+        discount,
+        promoCode
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -505,7 +524,9 @@ class _$BookingDataImpl implements _BookingData {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$BookingDataImplToJson(this);
+    return _$$BookingDataImplToJson(
+      this,
+    );
   }
 }
 
@@ -534,7 +555,7 @@ abstract class _BookingData implements BookingData {
   factory _BookingData.fromJson(Map<String, dynamic> json) =
       _$BookingDataImpl.fromJson;
 
-  @override
+  @override // Shop information
   String get shopId;
   @override
   String get shopName;
@@ -544,33 +565,33 @@ abstract class _BookingData implements BookingData {
   String get shopAddress;
   @override
   double get shopRating;
-  @override
+  @override // Selected services/packages/accessories
   List<SelectedItem> get selectedServices;
   @override
   List<SelectedItem> get selectedPackages;
   @override
   List<SelectedItem> get selectedAccessories;
-  @override
+  @override // Vehicle type
   String? get vehicleType;
   @override
   String? get vehicleId;
-  @override
+  @override // Date and time
   DateTime? get selectedDate;
   @override
   String? get selectedTimeSlot;
   @override
   String? get selectedTimeSlotId;
-  @override
+  @override // Pickup and delivery
   bool get pickupAndDelivery;
-  @override
+  @override // Contact info
   String? get phoneNumber;
-  @override
+  @override // Price details
   double get subtotal;
   @override
   double get adminFee;
   @override
   double get discount;
-  @override
+  @override // Promo code
   String? get promoCode;
   @override
   @JsonKey(ignore: true)
@@ -741,7 +762,9 @@ class _$SelectedItemImpl implements _SelectedItem {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SelectedItemImplToJson(this);
+    return _$$SelectedItemImplToJson(
+      this,
+    );
   }
 }
 

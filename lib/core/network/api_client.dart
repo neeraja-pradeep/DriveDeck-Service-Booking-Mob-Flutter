@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+
 import 'endpoints.dart';
 
 /// HTTP client wrapper for API communication.
@@ -132,14 +134,28 @@ class _AuthInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    // Get session data if available
-    final sessionData = await getSessionData?.call();
-    if (sessionData != null) {
-      // Add session headers
-      options.headers.addAll(sessionData);
-    } else {
-      // Fallback to development headers
-      options.headers['dev'] = '18'; // Development user ID
+    try {
+      // Get session data if available
+      final sessionData = await getSessionData?.call();
+
+      if (sessionData != null) {
+        // Add session headers (Cookie with sessionid/csrftoken, X-CSRFToken, user-id)
+        options.headers.addAll(sessionData);
+
+        // Debug: Log headers being added
+        debugPrint('🔐 Auth Headers Added: ${sessionData.keys.toList()}');
+        if (sessionData['Cookie'] != null) {
+          debugPrint('   - Cookie: ${sessionData['Cookie']?.substring(0, 30)}...');
+        }
+        debugPrint('   - X-CSRFToken: ${sessionData['X-CSRFToken']?.substring(0, 10)}...');
+        debugPrint('   - user-id: ${sessionData['user-id']}');
+      } else {
+        debugPrint(
+          '⚠️  No session data found - making unauthenticated request',
+        );
+      }
+    } catch (e) {
+      debugPrint('❌ Error in AuthInterceptor: $e');
     }
 
     handler.next(options);
@@ -175,3 +191,6 @@ class ConditionalResponse<T> {
   /// The Last-Modified header value from response.
   final String? lastModified;
 }
+
+// Note: apiClientProvider is defined in auth_providers.dart with session cookie support.
+// Always import apiClientProvider from auth_providers.dart to ensure proper authentication.

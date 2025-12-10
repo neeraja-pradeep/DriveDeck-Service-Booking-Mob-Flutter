@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../app/bootstrap/app_bootstrap.dart';
 import '../../../../core/network/api_client.dart';
@@ -95,6 +96,9 @@ final Provider<bool> appBootstrapProvider = Provider<bool>((ref) {
 /// - **Session**: Automatic token attachment and session management
 /// - **Auth**: Development fallback headers for authentication
 ///
+/// **Django Session Auth**: Uses Cookie header for sessionid/csrftoken
+/// as required by Django's session-based authentication.
+///
 /// **Session Expiry Handling**: Uses ref.invalidate() to avoid circular dependencies
 /// When session expires → Invalidates authStateProvider → Triggers re-authentication
 ///
@@ -111,16 +115,25 @@ final Provider<ApiClient> apiClientProvider = Provider<ApiClient>((ref) {
         final xcsrfToken = await secureStore.getXcsrfToken();
         final userId = await secureStore.getUserId();
 
+        debugPrint('🔍 SecureStore Query:');
+        debugPrint('   sessionId: $sessionId');
+        debugPrint('   xcsrfToken: $xcsrfToken');
+        debugPrint('   userId: $userId');
+
         if (sessionId != null && xcsrfToken != null && userId != null) {
-          return {
-            'sessionid': sessionId,
+          // Django session-based auth requires tokens in Cookie header
+          final headers = {
+            'Cookie': 'sessionid=$sessionId; csrftoken=$xcsrfToken',
             'X-CSRFToken': xcsrfToken,
             'user-id': userId,
           };
+          debugPrint('✅ Session data found - returning headers with Cookie');
+          return headers;
         }
+        debugPrint('⚠️  Session data incomplete or missing');
         return null;
       } catch (e) {
-        // Return null if there's an error getting session data
+        debugPrint('❌ Error getting session data: $e');
         return null;
       }
     },

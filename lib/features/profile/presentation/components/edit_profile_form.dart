@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:newapp/app/theme/colors.dart';
 import 'package:newapp/app/theme/typography.dart';
-import 'package:newapp/core/error/failure.dart';
 import 'package:newapp/features/profile/application/providers/profile_providers.dart';
 import 'package:newapp/features/profile/application/states/edit_profile_state.dart';
 import 'package:newapp/features/profile/domain/entities/update_profile_request.dart';
@@ -11,10 +10,7 @@ import 'package:newapp/features/profile/domain/entities/user_profile.dart';
 
 /// Edit profile form widget.
 class EditProfileForm extends ConsumerStatefulWidget {
-  const EditProfileForm({
-    required this.profile,
-    super.key,
-  });
+  const EditProfileForm({required this.profile, super.key});
 
   final UserProfile profile;
 
@@ -32,12 +28,12 @@ class _EditProfileFormState extends ConsumerState<EditProfileForm> {
   @override
   void initState() {
     super.initState();
-    _firstNameController =
-        TextEditingController(text: widget.profile.firstName);
+    _firstNameController = TextEditingController(
+      text: widget.profile.firstName,
+    );
     _lastNameController = TextEditingController(text: widget.profile.lastName);
     _emailController = TextEditingController(text: widget.profile.email ?? '');
-    _phoneController =
-        TextEditingController(text: widget.profile.phoneNumber);
+    _phoneController = TextEditingController(text: widget.profile.phoneNumber);
   }
 
   @override
@@ -60,9 +56,9 @@ class _EditProfileFormState extends ConsumerState<EditProfileForm> {
         );
         Navigator.of(context).pop();
       } else if (next is EditProfileError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.failure.toUserMessage())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.failure.toUserMessage())));
       }
     });
 
@@ -134,9 +130,7 @@ class _EditProfileFormState extends ConsumerState<EditProfileForm> {
           SizedBox(height: 8.h),
           Text(
             'Phone number cannot be changed',
-            style: AppTypography.bodySmall.copyWith(
-              color: AppColors.textHint,
-            ),
+            style: AppTypography.bodySmall.copyWith(color: AppColors.textHint),
           ),
           SizedBox(height: 32.h),
           SizedBox(
@@ -149,8 +143,9 @@ class _EditProfileFormState extends ConsumerState<EditProfileForm> {
                       height: 24.w,
                       child: const CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(AppColors.white),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          AppColors.white,
+                        ),
                       ),
                     )
                   : Text(

@@ -33,7 +33,9 @@ class _AuthWrapperState extends ConsumerState<AuthWrapper> {
         body: Center(child: CircularProgressIndicator()),
       ),
       AuthAuthenticated() => widget.child,
-      AuthUnauthenticated() || AuthError() => const LoginScreen(),
+      AuthUnauthenticated() ||
+      AuthSessionExpired() ||
+      AuthError() => const LoginScreen(),
     };
   }
 }

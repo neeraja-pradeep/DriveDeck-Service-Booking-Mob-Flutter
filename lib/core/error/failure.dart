@@ -10,10 +10,12 @@ enum LocationPermissionStatus {
   serviceDisabled,
 }
 
-/// Base failure class using Freezed sealed class pattern.
-/// All failure types are variants of this sealed class.
 @freezed
 sealed class Failure with _$Failure {
+  // 1. ADD THIS PRIVATE CONSTRUCTOR
+  // This is required by Freezed to allow custom methods/getters inside the class
+  const Failure._();
+
   /// Network-related failure (no internet, timeout, etc.)
   const factory Failure.network({
     @Default('Network error occurred') String message,
@@ -34,118 +36,119 @@ sealed class Failure with _$Failure {
   }) = UnknownFailure;
 
   // Authentication-specific failures
-
-  /// Invalid OTP failure
   const factory Failure.invalidOtp({
     @Default('Invalid OTP code') String message,
     int? attemptsRemaining,
   }) = InvalidOtpFailure;
 
-  /// OTP expired failure
   const factory Failure.otpExpired({
     @Default('OTP has expired. Please request a new one.') String message,
   }) = OtpExpiredFailure;
 
-  /// Phone number already exists failure
   const factory Failure.phoneNumberAlreadyExists({
     @Default('This phone number is already registered') String message,
   }) = PhoneNumberAlreadyExistsFailure;
 
-  /// Invalid credentials failure
   const factory Failure.invalidCredentials({
     @Default('Invalid credentials') String message,
   }) = InvalidCredentialsFailure;
 
-  /// Session expired failure
   const factory Failure.sessionExpired({
     @Default('Your session has expired. Please login again.') String message,
   }) = SessionExpiredFailure;
 
-  /// Account not found failure
   const factory Failure.accountNotFound({
     @Default('Account not found') String message,
   }) = AccountNotFoundFailure;
 
-  /// Validation failure
   const factory Failure.validation({
     required String message,
     Map<String, String>? fieldErrors,
   }) = ValidationFailure;
 
   // Additional failure types
-
-  /// Parsing failure when data parsing fails
   const factory Failure.parsing({
     @Default('Failed to parse data') String message,
   }) = _ParsingFailure;
 
-  /// Unauthorized failure when user is not authenticated
   const factory Failure.unauthorized({
     @Default('Authentication required') String message,
     String? code,
   }) = _UnauthorizedFailure;
 
-  /// Not found failure when resource doesn't exist
   const factory Failure.notFound({
     @Default('Resource not found') String message,
   }) = _NotFoundFailure;
 
-  /// Permission failure when user lacks permission
   const factory Failure.permission({
     @Default('Permission denied') String message,
   }) = _PermissionFailure;
 
-  /// Generic failure for other cases
   const factory Failure.generic({
     @Default('An unexpected error occurred') String message,
     String? code,
   }) = _GenericFailure;
 
   // Location-specific failures
-
-  /// Location permission denied failure
   const factory Failure.locationPermissionDenied({
     required LocationPermissionStatus status,
     @Default('Location permission denied') String message,
     String? code,
   }) = _LocationPermissionDeniedFailure;
 
-  /// Location service disabled failure
   const factory Failure.locationServiceDisabled({
     @Default('Location service disabled') String message,
     String? code,
   }) = _LocationServiceDisabledFailure;
 
-  /// Location fetch failure
   const factory Failure.locationFetch({required String message, String? code}) =
       _LocationFetchFailure;
 
   // Booking-specific failures
-
-  /// Booking not found failure
   const factory Failure.bookingNotFound({
     @Default('Booking not found') String message,
   }) = BookingNotFoundFailure;
 
-  /// Booking already cancelled failure
   const factory Failure.bookingAlreadyCancelled({
     @Default('Booking is already cancelled') String message,
   }) = BookingAlreadyCancelledFailure;
 
-  /// Cancellation not allowed failure
   const factory Failure.cancellationNotAllowed({
     @Default('This booking cannot be cancelled at this time') String message,
     String? reason,
   }) = CancellationNotAllowedFailure;
 
-  /// Booking fetch failure
   const factory Failure.bookingFetch({
     @Default('Failed to fetch bookings') String message,
   }) = BookingFetchFailure;
-}
 
-/// Extension to get user-friendly messages from failures.
-extension FailureMessage on Failure {
+  // Shop-specific failures
+  const factory Failure.shopNotFound({
+    @Default('Shop not found') String message,
+  }) = ShopNotFoundFailure;
+
+  const factory Failure.noSlotsAvailable({
+    @Default('No slots available for the selected date') String message,
+  }) = NoSlotsAvailableFailure;
+
+  const factory Failure.bookingCreationFailed({
+    required String message,
+  }) = BookingCreationFailure;
+
+  const factory Failure.slotNoLongerAvailable({
+    @Default('The selected time slot is no longer available') String message,
+  }) = SlotNoLongerAvailableFailure;
+
+  const factory Failure.invalidPromoCode({
+    @Default('Invalid or expired promo code') String message,
+  }) = InvalidPromoCodeFailure;
+
+  const factory Failure.noConnection({
+    @Default('No internet connection') String message,
+  }) = NoConnectionFailure;
+
+  // 2. MOVE THE GETTER LOGIC HERE (Inside the class body)
+
   /// Returns a user-friendly message for the failure.
   String get userMessage => when(
     network: (message) =>
@@ -205,6 +208,12 @@ extension FailureMessage on Failure {
     bookingAlreadyCancelled: (message) => message,
     cancellationNotAllowed: (message, reason) => reason ?? message,
     bookingFetch: (message) => message,
+    shopNotFound: (message) => message,
+    noSlotsAvailable: (message) => message,
+    bookingCreationFailed: (message) => message,
+    slotNoLongerAvailable: (message) => message,
+    invalidPromoCode: (message) => message,
+    noConnection: (message) => message,
   );
 
   /// Returns the error code if available.
@@ -232,37 +241,37 @@ extension FailureMessage on Failure {
     bookingAlreadyCancelled: (_) => null,
     cancellationNotAllowed: (_, _) => null,
     bookingFetch: (_) => null,
+    shopNotFound: (_) => null,
+    noSlotsAvailable: (_) => null,
+    bookingCreationFailed: (_) => null,
+    slotNoLongerAvailable: (_) => null,
+    invalidPromoCode: (_) => null,
+    noConnection: (_) => null,
   );
 
-  /// Legacy method for backward compatibility.
-  /// Use [userMessage] getter instead.
+  /// Legacy method support
   String toUserMessage() => userMessage;
 }
 
 // ============================================================================
-// Bookings-specific Failures
+// Bookings-specific Failures (Helpers can stay as extensions)
 // ============================================================================
 
-/// Booking-specific failure extensions.
 extension BookingFailureX on Failure {
-  /// Create a booking not found failure.
   static Failure bookingNotFound([String? message]) =>
       Failure.bookingNotFound(message: message ?? 'Booking not found');
 
-  /// Create a booking already cancelled failure.
   static Failure bookingAlreadyCancelled([String? message]) =>
       Failure.bookingAlreadyCancelled(
         message: message ?? 'Booking is already cancelled',
       );
 
-  /// Create a cancellation not allowed failure.
   static Failure cancellationNotAllowed([String? reason]) =>
       Failure.cancellationNotAllowed(
         message: reason ?? 'This booking cannot be cancelled at this time',
         reason: reason,
       );
 
-  /// Create a booking fetch failure.
   static Failure bookingFetch([String? message]) =>
       Failure.bookingFetch(message: message ?? 'Failed to fetch bookings');
 }

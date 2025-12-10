@@ -1,0 +1,207 @@
+import '../../../../../core/network/api_client.dart';
+import '../../../../../core/network/endpoints.dart';
+import '../../../domain/entities/booking_request.dart';
+import '../../models/booking_confirmation_model.dart';
+import '../../models/shop_model.dart';
+
+/// Remote data source for shop API calls.
+abstract class ShopApi {
+  /// Get list of shops.
+  Future<List<ShopModel>> getShops({
+    int page = 1,
+    int pageSize = 10,
+    String? search,
+  });
+
+  /// Get nearby shops based on location.
+  Future<List<ShopModel>> getNearbyShops({
+    required double latitude,
+    required double longitude,
+    double maxKm = 10,
+    int limit = 10,
+  });
+
+  /// Get shop details by ID.
+  Future<ShopModel> getShopDetails(int shopId);
+
+  /// Get services for a shop.
+  Future<List<ShopServiceModel>> getShopServices(int shopId);
+
+  /// Get packages for a shop.
+  Future<List<ShopPackageModel>> getShopPackages(int shopId);
+
+  /// Get accessories for a shop.
+  Future<List<ShopAccessoryModel>> getShopAccessories(int shopId);
+
+  /// Get shop availability for date range.
+  Future<List<ShopDateAvailabilityModel>> getShopAvailability({
+    required int shopId,
+    required DateTime startDate,
+    int days = 7,
+  });
+
+  /// Add shop to favorites.
+  Future<void> addToFavorites(int shopId);
+
+  /// Remove shop from favorites.
+  Future<void> removeFromFavorites(int shopId);
+
+  /// Get user's favorite shops.
+  Future<List<ShopModel>> getFavoriteShops();
+
+  /// Get shops via reviews feed.
+  Future<List<ShopModel>> getShopReviews({int page, int pageSize});
+
+  /// Create a new booking.
+  Future<BookingConfirmationModel> createBooking(BookingRequest request);
+}
+
+/// Implementation of ShopApi using ApiClient.
+class ShopApiImpl implements ShopApi {
+  ShopApiImpl({required this.apiClient});
+
+  final ApiClient apiClient;
+
+  @override
+  Future<List<ShopModel>> getShops({
+    int page = 1,
+    int pageSize = 10,
+    String? search,
+  }) async {
+    final queryParams = <String, dynamic>{
+      'page': page,
+      'page_size': pageSize,
+      if (search != null) 'search': search,
+    };
+
+    final response = await apiClient.get(
+      Endpoints.shops(),
+      queryParameters: queryParams,
+    );
+
+    final List<dynamic> results = response.data['results'] ?? response.data;
+    return results.map((json) => ShopModel.fromJson(json)).toList();
+  }
+
+  @override
+  Future<List<ShopModel>> getNearbyShops({
+    required double latitude,
+    required double longitude,
+    double maxKm = 10,
+    int limit = 10,
+  }) async {
+    final queryParams = <String, dynamic>{
+      'latitude': latitude,
+      'longitude': longitude,
+      'max_km': maxKm,
+      'limit': limit,
+    };
+
+    final response = await apiClient.get(
+      Endpoints.nearbyShops(),
+      queryParameters: queryParams,
+    );
+
+    final List<dynamic> results = response.data['results'] ?? response.data;
+    return results.map((json) => ShopModel.fromJson(json)).toList();
+  }
+
+  @override
+  Future<ShopModel> getShopDetails(int shopId) async {
+    final response = await apiClient.get(Endpoints.shopDetails(shopId));
+    return ShopModel.fromJson(response.data);
+  }
+
+  @override
+  Future<List<ShopServiceModel>> getShopServices(int shopId) async {
+    final response = await apiClient.get(Endpoints.shopServices(shopId));
+    final List<dynamic> results = response.data['results'] ?? response.data;
+    return results.map((json) => ShopServiceModel.fromJson(json)).toList();
+  }
+
+  @override
+  Future<List<ShopPackageModel>> getShopPackages(int shopId) async {
+    final response = await apiClient.get(Endpoints.shopPackages(shopId));
+    final List<dynamic> results = response.data['results'] ?? response.data;
+    return results.map((json) => ShopPackageModel.fromJson(json)).toList();
+  }
+
+  @override
+  Future<List<ShopAccessoryModel>> getShopAccessories(int shopId) async {
+    final response = await apiClient.get(Endpoints.shopAccessories(shopId));
+    final List<dynamic> results = response.data['results'] ?? response.data;
+    return results.map((json) => ShopAccessoryModel.fromJson(json)).toList();
+  }
+
+  @override
+  Future<List<ShopDateAvailabilityModel>> getShopAvailability({
+    required int shopId,
+    required DateTime startDate,
+    int days = 7,
+  }) async {
+    final queryParams = <String, dynamic>{
+      'start_date': startDate.toIso8601String().split('T').first,
+      'days': days,
+    };
+
+    final response = await apiClient.get(
+      Endpoints.shopAvailability(shopId),
+      queryParameters: queryParams,
+    );
+
+    final List<dynamic> results = response.data['results'] ?? response.data;
+    return results
+        .map((json) => ShopDateAvailabilityModel.fromJson(json))
+        .toList();
+  }
+
+  @override
+  Future<void> addToFavorites(int shopId) async {
+    await apiClient.post(
+      Endpoints.shopFavorites(),
+      data: {'shop_id': shopId},
+    );
+  }
+
+  @override
+  Future<void> removeFromFavorites(int shopId) async {
+    await apiClient.delete(Endpoints.shopFavorite(shopId));
+  }
+
+  @override
+  Future<List<ShopModel>> getFavoriteShops() async {
+    final response = await apiClient.get(Endpoints.shopFavorites());
+    final List<dynamic> results = response.data['results'] ?? response.data;
+    return results.map((json) => ShopModel.fromJson(json)).toList();
+  }
+
+  @override
+  Future<List<ShopModel>> getShopReviews({int page = 1, int pageSize = 10}) async {
+    final response = await apiClient.get(
+      Endpoints.shopReviews(),
+      queryParameters: {
+        'page': page,
+        'page_size': pageSize,
+      },
+    );
+
+    final List<dynamic> results = response.data['results'] ?? response.data;
+    final shops = <ShopModel>[];
+    for (final item in results) {
+      final shopJson = (item as Map<String, dynamic>)['shop'] as Map<String, dynamic>?;
+      if (shopJson != null) {
+        shops.add(ShopModel.fromJson(shopJson));
+      }
+    }
+    return shops;
+  }
+
+  @override
+  Future<BookingConfirmationModel> createBooking(BookingRequest request) async {
+    final response = await apiClient.post(
+      Endpoints.bookings(),
+      data: request.toJson(),
+    );
+    return BookingConfirmationModel.fromJson(response.data);
+  }
+}

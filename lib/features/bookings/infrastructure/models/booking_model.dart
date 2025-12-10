@@ -17,6 +17,8 @@ class BookingModel {
     required this.shopImageUrl,
     required this.shopAddress,
     required this.shopCity,
+    this.shopLatitude,
+    this.shopLongitude,
     required this.bookingDate,
     required this.timeSlot,
     required this.services,
@@ -34,44 +36,73 @@ class BookingModel {
     // Handle nested shop object if present
     final shop = json['shop'] as Map<String, dynamic>?;
 
-    // Parse services list
+    // Parse services list; backend may return only service_name + service_id
     final servicesJson = json['services'] as List<dynamic>? ?? [];
-    final services = servicesJson
+    List<BookedServiceModel> services = servicesJson
         .map((s) => BookedServiceModel.fromJson(s as Map<String, dynamic>))
         .toList();
 
-    // Parse time slot
+    if (services.isEmpty && (json['service_name'] != null || json['service_id'] != null)) {
+      services = [
+        BookedServiceModel(
+          id: (json['service_id'] ?? '').toString(),
+          name: (json['service_name'] ?? '') as String,
+          price: _parseDouble(json['amount']),
+          duration: 60, // fallback 1 hour when duration not provided
+        ),
+      ];
+    }
+
+    // Parse time slot; backend returns start_slot_time
     final timeSlotJson = json['time_slot'] as Map<String, dynamic>?;
+    final startSlotTime = json['start_slot_time'] as String? ?? '';
     final timeSlot = timeSlotJson != null
         ? BookingTimeSlotModel.fromJson(timeSlotJson)
         : BookingTimeSlotModel(
-            startTime: json['start_time'] as String? ?? '',
-            endTime: json['end_time'] as String? ?? '',
+            startTime: timeSlotJson?['start_time'] as String? ??
+                startSlotTime,
+            endTime: timeSlotJson?['end_time'] as String? ?? '',
           );
 
     return BookingModel(
       id: (json['id'] ?? json['booking_id'] ?? '').toString(),
-      bookingReference:
-          json['booking_reference'] as String? ?? json['reference'] as String? ?? '',
+      bookingReference: (json['booking_reference'] ??
+              json['reference'] ??
+              json['id'] ??
+              '')
+          .toString(),
       shopId: (shop?['id'] ?? json['shop_id'] ?? '').toString(),
-      shopName: shop?['name'] as String? ?? json['shop_name'] as String? ?? '',
+      shopName: shop?['name'] as String? ??
+          json['shop_name'] as String? ??
+          'Car Wash Center',
       shopImageUrl:
           shop?['image_url'] as String? ?? json['shop_image_url'] as String? ?? '',
       shopAddress:
-          shop?['address'] as String? ?? json['shop_address'] as String? ?? '',
+          shop?['address'] as String? ?? json['shop_address'] as String? ?? 'Address unavailable',
       shopCity: shop?['city'] as String? ?? json['shop_city'] as String? ?? '',
-      bookingDate: _parseDateTime(json['booking_date'] ?? json['date']),
+      shopLatitude: _parseNullableDouble(
+        shop?['latitude'] ?? json['latitude'] ?? json['shop_latitude'],
+      ),
+      shopLongitude: _parseNullableDouble(
+        shop?['longitude'] ?? json['longitude'] ?? json['shop_longitude'],
+      ),
+      bookingDate: _parseDateTime(
+        json['booking_date'] ?? json['date'] ?? json['appointment_date'],
+      ),
       timeSlot: timeSlot,
       services: services,
       status: BookingStatusX.fromString(
         json['status'] as String? ?? 'pending',
       ),
-      totalAmount: _parseDouble(json['total_amount'] ?? json['total']),
+      totalAmount: _parseDouble(
+        json['total_amount'] ?? json['total'] ?? json['amount'],
+      ),
       vehicleType: VehicleTypeX.fromString(
         json['vehicle_type'] as String? ?? 'car',
       ),
-      pickupAndDelivery:
-          json['pickup_delivery'] as bool? ?? json['pickup_and_delivery'] as bool? ?? false,
+      pickupAndDelivery: json['pickup_delivery'] as bool? ??
+          json['pickup_and_delivery'] as bool? ??
+          false,
       createdAt: _parseDateTime(json['created_at']),
       completedAt: _parseNullableDateTime(json['completed_at']),
       cancelledAt: _parseNullableDateTime(json['cancelled_at']),
@@ -88,6 +119,8 @@ class BookingModel {
       shopImageUrl: entity.shopImageUrl,
       shopAddress: entity.shopAddress,
       shopCity: entity.shopCity,
+      shopLatitude: entity.shopLatitude,
+      shopLongitude: entity.shopLongitude,
       bookingDate: entity.bookingDate,
       timeSlot: BookingTimeSlotModel.fromDomain(entity.timeSlot),
       services:
@@ -122,6 +155,12 @@ class BookingModel {
 
   /// Shop city.
   final String shopCity;
+
+  /// Shop latitude.
+  final double? shopLatitude;
+
+  /// Shop longitude.
+  final double? shopLongitude;
 
   /// Booking date.
   final DateTime bookingDate;
@@ -163,6 +202,8 @@ class BookingModel {
       'shop_image_url': shopImageUrl,
       'shop_address': shopAddress,
       'shop_city': shopCity,
+      'shop_latitude': shopLatitude,
+      'shop_longitude': shopLongitude,
       'booking_date': bookingDate.toIso8601String(),
       'time_slot': timeSlot.toJson(),
       'services': services.map((s) => s.toJson()).toList(),
@@ -186,6 +227,8 @@ class BookingModel {
       shopImageUrl: shopImageUrl,
       shopAddress: shopAddress,
       shopCity: shopCity,
+      shopLatitude: shopLatitude,
+      shopLongitude: shopLongitude,
       bookingDate: bookingDate,
       timeSlot: timeSlot.toDomain(),
       services: services.map((s) => s.toDomain()).toList(),
@@ -223,5 +266,13 @@ class BookingModel {
     if (value is int) return value.toDouble();
     if (value is String) return double.tryParse(value) ?? 0.0;
     return 0.0;
+  }
+
+  static double? _parseNullableDouble(dynamic value) {
+    if (value == null) return null;
+    if (value is double) return value;
+    if (value is int) return value.toDouble();
+    if (value is String) return double.tryParse(value);
+    return null;
   }
 }

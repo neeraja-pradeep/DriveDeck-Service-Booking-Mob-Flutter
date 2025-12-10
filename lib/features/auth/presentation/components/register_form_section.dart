@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../app/router/routes.dart';
 import '../../../../app/theme/colors.dart';
 import '../../../../core/utils/validators.dart';
 import '../../application/providers/auth_providers.dart';
@@ -21,6 +23,9 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
   final _formKey = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
   final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
@@ -29,6 +34,9 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
 
   String? _phoneError;
   String? _usernameError;
+  String? _emailError;
+  String? _firstNameError;
+  String? _lastNameError;
   String? _passwordError;
   String? _confirmPasswordError;
 
@@ -36,6 +44,9 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
   void dispose() {
     _phoneController.dispose();
     _usernameController.dispose();
+    _emailController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -79,12 +90,12 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
 
           SizedBox(height: 16.h),
 
-          // Name field with label
+          // Username field with label
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Name',
+                'Username',
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
@@ -96,7 +107,7 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
                 controller: _usernameController,
                 enabled: !isLoading,
                 decoration: InputDecoration(
-                  hintText: 'Name',
+                  hintText: 'Username',
                   errorText: _usernameError,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.r),
@@ -112,12 +123,187 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
                       color: Theme.of(context).primaryColor,
                     ),
                   ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: const BorderSide(color: Colors.red),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: const BorderSide(color: Colors.red),
+                  ),
                 ),
                 onChanged: (_) {
                   if (_usernameError != null) {
                     setState(() => _usernameError = null);
                   }
                 },
+              ),
+            ],
+          ),
+
+          SizedBox(height: 16.h),
+
+          // Email field with label
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Email',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(height: 8.h),
+              TextFormField(
+                controller: _emailController,
+                enabled: !isLoading,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  hintText: 'example@email.com',
+                  errorText: _emailError,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide(color: Colors.grey[300]!),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide(color: Colors.grey[300]!),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: const BorderSide(color: Colors.red),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: const BorderSide(color: Colors.red),
+                  ),
+                ),
+                onChanged: (_) {
+                  if (_emailError != null) {
+                    setState(() => _emailError = null);
+                  }
+                },
+              ),
+            ],
+          ),
+
+          SizedBox(height: 16.h),
+
+          // First name and Last name in a row
+          Row(
+            children: [
+              // First name field
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'First Name',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    TextFormField(
+                      controller: _firstNameController,
+                      enabled: !isLoading,
+                      decoration: InputDecoration(
+                        hintText: 'First name',
+                        errorText: _firstNameError,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide(color: Colors.grey[300]!),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide(color: Colors.grey[300]!),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: const BorderSide(color: Colors.red),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: const BorderSide(color: Colors.red),
+                        ),
+                      ),
+                      onChanged: (_) {
+                        if (_firstNameError != null) {
+                          setState(() => _firstNameError = null);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 12.w),
+              // Last name field
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Last Name',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    TextFormField(
+                      controller: _lastNameController,
+                      enabled: !isLoading,
+                      decoration: InputDecoration(
+                        hintText: 'Last name',
+                        errorText: _lastNameError,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide(color: Colors.grey[300]!),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide(color: Colors.grey[300]!),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: const BorderSide(color: Colors.red),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.r),
+                          borderSide: const BorderSide(color: Colors.red),
+                        ),
+                      ),
+                      onChanged: (_) {
+                        if (_lastNameError != null) {
+                          setState(() => _lastNameError = null);
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -168,6 +354,14 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
                     borderSide: BorderSide(
                       color: Theme.of(context).primaryColor,
                     ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: const BorderSide(color: Colors.red),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: const BorderSide(color: Colors.red),
                   ),
                 ),
                 onChanged: (_) {
@@ -228,6 +422,14 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
                     borderSide: BorderSide(
                       color: Theme.of(context).primaryColor,
                     ),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: const BorderSide(color: Colors.red),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: const BorderSide(color: Colors.red),
                   ),
                 ),
                 onChanged: (_) {
@@ -298,6 +500,9 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
     setState(() {
       _phoneError = null;
       _usernameError = null;
+      _emailError = null;
+      _firstNameError = null;
+      _lastNameError = null;
       _passwordError = null;
       _confirmPasswordError = null;
     });
@@ -319,6 +524,25 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
     );
     if (usernameError != null) {
       setState(() => _usernameError = usernameError);
+      hasError = true;
+    }
+
+    // Validate email
+    final emailError = Validators.validateEmail(_emailController.text.trim());
+    if (emailError != null) {
+      setState(() => _emailError = emailError);
+      hasError = true;
+    }
+
+    // Validate first name
+    if (_firstNameController.text.trim().isEmpty) {
+      setState(() => _firstNameError = 'First name is required');
+      hasError = true;
+    }
+
+    // Validate last name
+    if (_lastNameController.text.trim().isEmpty) {
+      setState(() => _lastNameError = 'Last name is required');
       hasError = true;
     }
 
@@ -344,22 +568,19 @@ class _RegisterFormSectionState extends ConsumerState<RegisterFormSection> {
     // Use only the 10-digit phone number (API expects exactly 10 digits)
     final phoneNumber = _phoneController.text.trim();
 
-    // Register
+    // Create credentials to pass to vehicle selection screen
     final credentials = RegisterCredentials(
-      phoneNumber: phoneNumber,
       username: _usernameController.text.trim(),
+      email: _emailController.text.trim(),
       password: _passwordController.text,
       confirmPassword: _confirmPasswordController.text,
+      firstName: _firstNameController.text.trim(),
+      lastName: _lastNameController.text.trim(),
+      phoneNumber: phoneNumber,
     );
 
-    // debugPrint('🎯 UI: Starting registration with credentials:');
-    // debugPrint('📱 Phone: ${credentials.phoneNumber}');
-    // debugPrint('👤 Username: ${credentials.username}');
-    // debugPrint('🔒 Password length: ${credentials.password.length}');
-    // debugPrint(
-    //   '🔒 Confirm password matches: ${credentials.password == credentials.confirmPassword}',
-    // );
-
-    ref.read(registerStateProvider.notifier).register(credentials);
+    // Navigate to vehicle selection screen
+    // ignore: deprecated_member_use
+    context.push(Routes.vehicleSelection, extra: credentials);
   }
 }

@@ -103,6 +103,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             bookingAlreadyCancelled: (msg) => msg,
             cancellationNotAllowed: (msg, _) => msg,
             bookingFetch: (msg) => msg,
+            shopNotFound: (msg) => msg,
+            noSlotsAvailable: (msg) => msg,
+            bookingCreationFailed: (msg) => msg,
+            slotNoLongerAvailable: (msg) => msg,
+            invalidPromoCode: (msg) => msg,
+            noConnection: (msg) => msg,
           );
 
           // debugPrint(
@@ -122,8 +128,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       next.whenOrNull(
         success: (session) {
           // debugPrint('🎉 UI: Registration successful! Navigating to home...');
-          // Navigate to home using GoRouter
-          const HomeRoute().go(context);
+          // Add a small delay to ensure session is persisted to secure storage
+          // before navigating away
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (context.mounted) {
+              const HomeRoute().go(context);
+            }
+          });
         },
         error: (failure) {
           // debugPrint(
@@ -156,6 +167,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   bookingAlreadyCancelled: (msg) => msg,
                   cancellationNotAllowed: (msg, _) => msg,
                   bookingFetch: (msg) => msg,
+                  shopNotFound: (msg) => msg,
+                  noSlotsAvailable: (msg) => msg,
+                  bookingCreationFailed: (msg) => msg,
+                  slotNoLongerAvailable: (msg) => msg,
+                  invalidPromoCode: (msg) => msg,
+                  noConnection: (msg) => msg,
                 ),
               ),
               backgroundColor: Colors.red,

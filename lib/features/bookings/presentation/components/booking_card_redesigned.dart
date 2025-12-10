@@ -33,14 +33,14 @@ class BookingCardRedesigned extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: EdgeInsets.all(16.w),
+          padding: EdgeInsets.all(12.w),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Shop Image
               Container(
-                width: 80.w,
-                height: 80.h,
+                width: 100.w,
+                height: 100.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12.r),
                   color: Colors.grey.shade200,
@@ -93,13 +93,13 @@ class BookingCardRedesigned extends StatelessWidget {
                           ),
                         ),
                         SizedBox(width: 8.w),
-                        // Rating (mock data for now)
+                        // Rating
                         Row(
                           children: [
                             Icon(Icons.star, color: Colors.amber, size: 16.sp),
                             SizedBox(width: 2.w),
                             Text(
-                              '4.7', // Mock rating
+                              '4.7',
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w600,
@@ -124,7 +124,7 @@ class BookingCardRedesigned extends StatelessWidget {
                         SizedBox(width: 4.w),
                         Expanded(
                           child: Text(
-                            booking.shopCity,
+                            booking.fullLocation,
                             style: TextStyle(
                               fontSize: 12.sp,
                               color: Colors.grey.shade600,
@@ -136,7 +136,7 @@ class BookingCardRedesigned extends StatelessWidget {
                       ],
                     ),
 
-                    SizedBox(height: 8.h),
+                    SizedBox(height: 6.h),
 
                     // Pickup & Delivery Badge
                     if (booking.pickupAndDelivery) ...[
@@ -163,21 +163,21 @@ class BookingCardRedesigned extends StatelessWidget {
 
                     // Booking Details
                     _buildDetailRow(
-                      icon: Icons.calendar_today,
+                      icon: Icons.calendar_today_outlined,
                       label: 'Dates',
                       value: _formatDate(booking.bookingDate),
                     ),
-                    SizedBox(height: 6.h),
+                    SizedBox(height: 4.h),
                     _buildDetailRow(
                       icon: Icons.person_outline,
                       label: 'Service',
                       value: booking.primaryServiceName,
                     ),
-                    SizedBox(height: 6.h),
+                    SizedBox(height: 4.h),
                     _buildDetailRow(
-                      icon: Icons.phone,
+                      icon: Icons.phone_outlined,
                       label: 'Contacts',
-                      value: '+91 6525 65 45 45', // Mock phone number
+                      value: '+91 6525 65 45 45',
                     ),
                   ],
                 ),
@@ -197,7 +197,7 @@ class BookingCardRedesigned extends StatelessWidget {
     return Row(
       children: [
         Icon(icon, color: Colors.grey.shade500, size: 14.sp),
-        SizedBox(width: 8.w),
+        SizedBox(width: 6.w),
         Text(
           label,
           style: TextStyle(
@@ -206,7 +206,7 @@ class BookingCardRedesigned extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
-        SizedBox(width: 16.w),
+        SizedBox(width: 12.w),
         Expanded(
           child: Text(
             value,
@@ -216,6 +216,8 @@ class BookingCardRedesigned extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
             textAlign: TextAlign.right,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ],
@@ -224,20 +226,9 @@ class BookingCardRedesigned extends StatelessWidget {
 
   String _formatDate(DateTime date) {
     const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
     ];
-
     return '${date.day} ${months[date.month - 1]} ${date.year}';
   }
 }
