@@ -5,35 +5,45 @@ class Endpoints {
   Endpoints._();
 
   /// Base URL for the API.
-  static const String baseUrl = 'http://156.67.104.149:8080';
+  /// Per API documentation: http://156.67.104.149:8110/
+  static const String baseUrl = 'http://156.67.104.149:8110';
 
   /// API version prefix.
   static const String apiPrefix = '/api';
 
   // ============================================================================
-  // Auth Endpoints
+  // Auth Endpoints (per API Integration Document and Postman collection)
   // ============================================================================
 
   /// Send OTP endpoint.
-  static String sendOtp() => '$apiPrefix/auth/send-otp/';
+  /// POST /api/accounts/send-otp/
+  /// Payload: { "phone": "1234567890" }
+  static String sendOtp() => '$apiPrefix/accounts/send-otp/';
 
   /// Verify OTP endpoint.
-  static String verifyOtp() => '$apiPrefix/auth/verify-otp/';
+  /// POST /api/accounts/verify-otp/
+  /// Payload: { "phone": "9876543210", "otp_code": "123456", "new_password": "..." (optional) }
+  static String verifyOtp() => '$apiPrefix/accounts/verify-otp/';
 
   /// Register/Signup endpoint.
-  static String register() => '$apiPrefix/auth/signup/';
+  /// POST /api/accounts/register/
+  /// Payload: { "phone": "...", "username": "...", "password": "...", "password_confirm": "..." }
+  static String register() => '$apiPrefix/accounts/register/';
 
   /// Login/Signin endpoint.
-  static String login() => '$apiPrefix/auth/signin/';
+  /// POST /api/accounts/login/
+  /// Payload: { "email": "...", "password": "..." }
+  static String login() => '$apiPrefix/accounts/login/';
 
   /// Logout endpoint.
-  static String logout() => '$apiPrefix/auth/logout/';
+  static String logout() => '$apiPrefix/accounts/logout/';
 
   /// Refresh token endpoint.
-  static String refreshToken() => '$apiPrefix/auth/refresh/';
+  static String refreshToken() => '$apiPrefix/accounts/refresh/';
 
   /// User profile endpoint.
-  static String profile() => '$apiPrefix/auth/profile/';
+  /// GET/PUT /api/accounts/profile/
+  static String profile() => '$apiPrefix/accounts/profile/';
 
   // ============================================================================
   // Shop Endpoints (Additional)

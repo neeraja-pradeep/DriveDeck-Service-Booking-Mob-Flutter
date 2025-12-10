@@ -135,7 +135,7 @@ class AuthRepositoryImpl implements AuthRepository {
         passwordConfirm: credentials.confirmPassword,
         firstName: credentials.firstName,
         lastName: credentials.lastName,
-        phoneNumber: credentials.phoneNumber,
+        phone: credentials.phoneNumber,
       );
 
       debugPrint('📦 Repository: Created registration DTO: ${dto.toJson()}');
