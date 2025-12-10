@@ -76,6 +76,12 @@ abstract class ShopRepository {
   /// Get user's favorite shops.
   Future<Either<Failure, List<Shop>>> getFavoriteShops();
 
+  /// Get shops via reviews endpoint.
+  Future<Either<Failure, List<Shop>>> getShopReviews({
+    int page,
+    int pageSize,
+  });
+
   /// Create a new booking.
   ///
   /// [request] - The booking request containing all booking details

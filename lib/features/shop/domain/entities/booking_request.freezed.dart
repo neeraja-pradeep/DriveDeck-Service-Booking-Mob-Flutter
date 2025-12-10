@@ -20,18 +20,55 @@ BookingRequest _$BookingRequestFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$BookingRequest {
+  /// Shop identifier (snake_case for API).
+  @JsonKey(name: 'shop_id')
   int get shopId => throw _privateConstructorUsedError;
+
+  /// Authenticated user identifier (must be in body, not just header).
+  @JsonKey(name: 'user_id')
+  int get userId => throw _privateConstructorUsedError;
+
+  /// Selected items.
+  @JsonKey(name: 'selected_service_ids')
   List<String> get selectedServiceIds => throw _privateConstructorUsedError;
+  @JsonKey(name: 'selected_package_ids')
   List<String> get selectedPackageIds => throw _privateConstructorUsedError;
+  @JsonKey(name: 'selected_accessory_ids')
   List<String> get selectedAccessoryIds => throw _privateConstructorUsedError;
-  DateTime get date => throw _privateConstructorUsedError;
+
+  /// Date to book (API expects yyyy-MM-dd) under appointment_date.
+  @JsonKey(name: 'appointment_date', toJson: _dateOnly, fromJson: _dateFromJson)
+  DateTime get appointmentDate => throw _privateConstructorUsedError;
+
+  /// Required service reference (backend expects singular service_id).
+  @JsonKey(name: 'service_id')
+  int get serviceId => throw _privateConstructorUsedError;
+
+  /// Slot identifier expected as start_slot by backend.
+  @JsonKey(name: 'start_slot')
   int get timeSlotId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'vehicle_type')
   VehicleType get vehicleType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'pickup_and_delivery')
   bool get pickupAndDelivery => throw _privateConstructorUsedError;
+  @JsonKey(name: 'promo_code')
   String? get promoCode => throw _privateConstructorUsedError;
+  @JsonKey(name: 'payment_method')
   String? get paymentMethod => throw _privateConstructorUsedError;
+  @JsonKey(name: 'vehicle_id')
   String? get vehicleId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'notes')
   String? get notes => throw _privateConstructorUsedError;
+
+  /// Pricing and duration metadata.
+  @JsonKey(name: 'duration_in_blocks')
+  int get durationInBlocks => throw _privateConstructorUsedError;
+  @JsonKey(name: 'amount')
+  double get amount => throw _privateConstructorUsedError;
+
+  /// Booking status (e.g., pending/confirmed).
+  @JsonKey(name: 'status')
+  String get status => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -46,18 +83,26 @@ abstract class $BookingRequestCopyWith<$Res> {
       _$BookingRequestCopyWithImpl<$Res, BookingRequest>;
   @useResult
   $Res call(
-      {int shopId,
-      List<String> selectedServiceIds,
-      List<String> selectedPackageIds,
+      {@JsonKey(name: 'shop_id') int shopId,
+      @JsonKey(name: 'user_id') int userId,
+      @JsonKey(name: 'selected_service_ids') List<String> selectedServiceIds,
+      @JsonKey(name: 'selected_package_ids') List<String> selectedPackageIds,
+      @JsonKey(name: 'selected_accessory_ids')
       List<String> selectedAccessoryIds,
-      DateTime date,
-      int timeSlotId,
-      VehicleType vehicleType,
-      bool pickupAndDelivery,
-      String? promoCode,
-      String? paymentMethod,
-      String? vehicleId,
-      String? notes});
+      @JsonKey(
+          name: 'appointment_date', toJson: _dateOnly, fromJson: _dateFromJson)
+      DateTime appointmentDate,
+      @JsonKey(name: 'service_id') int serviceId,
+      @JsonKey(name: 'start_slot') int timeSlotId,
+      @JsonKey(name: 'vehicle_type') VehicleType vehicleType,
+      @JsonKey(name: 'pickup_and_delivery') bool pickupAndDelivery,
+      @JsonKey(name: 'promo_code') String? promoCode,
+      @JsonKey(name: 'payment_method') String? paymentMethod,
+      @JsonKey(name: 'vehicle_id') String? vehicleId,
+      @JsonKey(name: 'notes') String? notes,
+      @JsonKey(name: 'duration_in_blocks') int durationInBlocks,
+      @JsonKey(name: 'amount') double amount,
+      @JsonKey(name: 'status') String status});
 }
 
 /// @nodoc
@@ -74,10 +119,12 @@ class _$BookingRequestCopyWithImpl<$Res, $Val extends BookingRequest>
   @override
   $Res call({
     Object? shopId = null,
+    Object? userId = null,
     Object? selectedServiceIds = null,
     Object? selectedPackageIds = null,
     Object? selectedAccessoryIds = null,
-    Object? date = null,
+    Object? appointmentDate = null,
+    Object? serviceId = null,
     Object? timeSlotId = null,
     Object? vehicleType = null,
     Object? pickupAndDelivery = null,
@@ -85,11 +132,18 @@ class _$BookingRequestCopyWithImpl<$Res, $Val extends BookingRequest>
     Object? paymentMethod = freezed,
     Object? vehicleId = freezed,
     Object? notes = freezed,
+    Object? durationInBlocks = null,
+    Object? amount = null,
+    Object? status = null,
   }) {
     return _then(_value.copyWith(
       shopId: null == shopId
           ? _value.shopId
           : shopId // ignore: cast_nullable_to_non_nullable
+              as int,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as int,
       selectedServiceIds: null == selectedServiceIds
           ? _value.selectedServiceIds
@@ -103,10 +157,14 @@ class _$BookingRequestCopyWithImpl<$Res, $Val extends BookingRequest>
           ? _value.selectedAccessoryIds
           : selectedAccessoryIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      date: null == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
+      appointmentDate: null == appointmentDate
+          ? _value.appointmentDate
+          : appointmentDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      serviceId: null == serviceId
+          ? _value.serviceId
+          : serviceId // ignore: cast_nullable_to_non_nullable
+              as int,
       timeSlotId: null == timeSlotId
           ? _value.timeSlotId
           : timeSlotId // ignore: cast_nullable_to_non_nullable
@@ -135,6 +193,18 @@ class _$BookingRequestCopyWithImpl<$Res, $Val extends BookingRequest>
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String?,
+      durationInBlocks: null == durationInBlocks
+          ? _value.durationInBlocks
+          : durationInBlocks // ignore: cast_nullable_to_non_nullable
+              as int,
+      amount: null == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as double,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -148,18 +218,26 @@ abstract class _$$BookingRequestImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int shopId,
-      List<String> selectedServiceIds,
-      List<String> selectedPackageIds,
+      {@JsonKey(name: 'shop_id') int shopId,
+      @JsonKey(name: 'user_id') int userId,
+      @JsonKey(name: 'selected_service_ids') List<String> selectedServiceIds,
+      @JsonKey(name: 'selected_package_ids') List<String> selectedPackageIds,
+      @JsonKey(name: 'selected_accessory_ids')
       List<String> selectedAccessoryIds,
-      DateTime date,
-      int timeSlotId,
-      VehicleType vehicleType,
-      bool pickupAndDelivery,
-      String? promoCode,
-      String? paymentMethod,
-      String? vehicleId,
-      String? notes});
+      @JsonKey(
+          name: 'appointment_date', toJson: _dateOnly, fromJson: _dateFromJson)
+      DateTime appointmentDate,
+      @JsonKey(name: 'service_id') int serviceId,
+      @JsonKey(name: 'start_slot') int timeSlotId,
+      @JsonKey(name: 'vehicle_type') VehicleType vehicleType,
+      @JsonKey(name: 'pickup_and_delivery') bool pickupAndDelivery,
+      @JsonKey(name: 'promo_code') String? promoCode,
+      @JsonKey(name: 'payment_method') String? paymentMethod,
+      @JsonKey(name: 'vehicle_id') String? vehicleId,
+      @JsonKey(name: 'notes') String? notes,
+      @JsonKey(name: 'duration_in_blocks') int durationInBlocks,
+      @JsonKey(name: 'amount') double amount,
+      @JsonKey(name: 'status') String status});
 }
 
 /// @nodoc
@@ -174,10 +252,12 @@ class __$$BookingRequestImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? shopId = null,
+    Object? userId = null,
     Object? selectedServiceIds = null,
     Object? selectedPackageIds = null,
     Object? selectedAccessoryIds = null,
-    Object? date = null,
+    Object? appointmentDate = null,
+    Object? serviceId = null,
     Object? timeSlotId = null,
     Object? vehicleType = null,
     Object? pickupAndDelivery = null,
@@ -185,11 +265,18 @@ class __$$BookingRequestImplCopyWithImpl<$Res>
     Object? paymentMethod = freezed,
     Object? vehicleId = freezed,
     Object? notes = freezed,
+    Object? durationInBlocks = null,
+    Object? amount = null,
+    Object? status = null,
   }) {
     return _then(_$BookingRequestImpl(
       shopId: null == shopId
           ? _value.shopId
           : shopId // ignore: cast_nullable_to_non_nullable
+              as int,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as int,
       selectedServiceIds: null == selectedServiceIds
           ? _value._selectedServiceIds
@@ -203,10 +290,14 @@ class __$$BookingRequestImplCopyWithImpl<$Res>
           ? _value._selectedAccessoryIds
           : selectedAccessoryIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      date: null == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
+      appointmentDate: null == appointmentDate
+          ? _value.appointmentDate
+          : appointmentDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      serviceId: null == serviceId
+          ? _value.serviceId
+          : serviceId // ignore: cast_nullable_to_non_nullable
+              as int,
       timeSlotId: null == timeSlotId
           ? _value.timeSlotId
           : timeSlotId // ignore: cast_nullable_to_non_nullable
@@ -235,6 +326,18 @@ class __$$BookingRequestImplCopyWithImpl<$Res>
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String?,
+      durationInBlocks: null == durationInBlocks
+          ? _value.durationInBlocks
+          : durationInBlocks // ignore: cast_nullable_to_non_nullable
+              as int,
+      amount: null == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as double,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -243,18 +346,28 @@ class __$$BookingRequestImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$BookingRequestImpl implements _BookingRequest {
   const _$BookingRequestImpl(
-      {required this.shopId,
+      {@JsonKey(name: 'shop_id') required this.shopId,
+      @JsonKey(name: 'user_id') required this.userId,
+      @JsonKey(name: 'selected_service_ids')
       required final List<String> selectedServiceIds,
+      @JsonKey(name: 'selected_package_ids')
       required final List<String> selectedPackageIds,
+      @JsonKey(name: 'selected_accessory_ids')
       required final List<String> selectedAccessoryIds,
-      required this.date,
-      required this.timeSlotId,
-      required this.vehicleType,
-      this.pickupAndDelivery = false,
-      this.promoCode,
-      this.paymentMethod,
-      this.vehicleId,
-      this.notes})
+      @JsonKey(
+          name: 'appointment_date', toJson: _dateOnly, fromJson: _dateFromJson)
+      required this.appointmentDate,
+      @JsonKey(name: 'service_id') required this.serviceId,
+      @JsonKey(name: 'start_slot') required this.timeSlotId,
+      @JsonKey(name: 'vehicle_type') required this.vehicleType,
+      @JsonKey(name: 'pickup_and_delivery') this.pickupAndDelivery = false,
+      @JsonKey(name: 'promo_code') this.promoCode,
+      @JsonKey(name: 'payment_method') this.paymentMethod,
+      @JsonKey(name: 'vehicle_id') this.vehicleId,
+      @JsonKey(name: 'notes') this.notes,
+      @JsonKey(name: 'duration_in_blocks') required this.durationInBlocks,
+      @JsonKey(name: 'amount') required this.amount,
+      @JsonKey(name: 'status') this.status = 'pending'})
       : _selectedServiceIds = selectedServiceIds,
         _selectedPackageIds = selectedPackageIds,
         _selectedAccessoryIds = selectedAccessoryIds;
@@ -262,10 +375,22 @@ class _$BookingRequestImpl implements _BookingRequest {
   factory _$BookingRequestImpl.fromJson(Map<String, dynamic> json) =>
       _$$BookingRequestImplFromJson(json);
 
+  /// Shop identifier (snake_case for API).
   @override
+  @JsonKey(name: 'shop_id')
   final int shopId;
-  final List<String> _selectedServiceIds;
+
+  /// Authenticated user identifier (must be in body, not just header).
   @override
+  @JsonKey(name: 'user_id')
+  final int userId;
+
+  /// Selected items.
+  final List<String> _selectedServiceIds;
+
+  /// Selected items.
+  @override
+  @JsonKey(name: 'selected_service_ids')
   List<String> get selectedServiceIds {
     if (_selectedServiceIds is EqualUnmodifiableListView)
       return _selectedServiceIds;
@@ -275,6 +400,7 @@ class _$BookingRequestImpl implements _BookingRequest {
 
   final List<String> _selectedPackageIds;
   @override
+  @JsonKey(name: 'selected_package_ids')
   List<String> get selectedPackageIds {
     if (_selectedPackageIds is EqualUnmodifiableListView)
       return _selectedPackageIds;
@@ -284,6 +410,7 @@ class _$BookingRequestImpl implements _BookingRequest {
 
   final List<String> _selectedAccessoryIds;
   @override
+  @JsonKey(name: 'selected_accessory_ids')
   List<String> get selectedAccessoryIds {
     if (_selectedAccessoryIds is EqualUnmodifiableListView)
       return _selectedAccessoryIds;
@@ -291,27 +418,55 @@ class _$BookingRequestImpl implements _BookingRequest {
     return EqualUnmodifiableListView(_selectedAccessoryIds);
   }
 
+  /// Date to book (API expects yyyy-MM-dd) under appointment_date.
   @override
-  final DateTime date;
+  @JsonKey(name: 'appointment_date', toJson: _dateOnly, fromJson: _dateFromJson)
+  final DateTime appointmentDate;
+
+  /// Required service reference (backend expects singular service_id).
   @override
+  @JsonKey(name: 'service_id')
+  final int serviceId;
+
+  /// Slot identifier expected as start_slot by backend.
+  @override
+  @JsonKey(name: 'start_slot')
   final int timeSlotId;
   @override
+  @JsonKey(name: 'vehicle_type')
   final VehicleType vehicleType;
   @override
-  @JsonKey()
+  @JsonKey(name: 'pickup_and_delivery')
   final bool pickupAndDelivery;
   @override
+  @JsonKey(name: 'promo_code')
   final String? promoCode;
   @override
+  @JsonKey(name: 'payment_method')
   final String? paymentMethod;
   @override
+  @JsonKey(name: 'vehicle_id')
   final String? vehicleId;
   @override
+  @JsonKey(name: 'notes')
   final String? notes;
+
+  /// Pricing and duration metadata.
+  @override
+  @JsonKey(name: 'duration_in_blocks')
+  final int durationInBlocks;
+  @override
+  @JsonKey(name: 'amount')
+  final double amount;
+
+  /// Booking status (e.g., pending/confirmed).
+  @override
+  @JsonKey(name: 'status')
+  final String status;
 
   @override
   String toString() {
-    return 'BookingRequest(shopId: $shopId, selectedServiceIds: $selectedServiceIds, selectedPackageIds: $selectedPackageIds, selectedAccessoryIds: $selectedAccessoryIds, date: $date, timeSlotId: $timeSlotId, vehicleType: $vehicleType, pickupAndDelivery: $pickupAndDelivery, promoCode: $promoCode, paymentMethod: $paymentMethod, vehicleId: $vehicleId, notes: $notes)';
+    return 'BookingRequest(shopId: $shopId, userId: $userId, selectedServiceIds: $selectedServiceIds, selectedPackageIds: $selectedPackageIds, selectedAccessoryIds: $selectedAccessoryIds, appointmentDate: $appointmentDate, serviceId: $serviceId, timeSlotId: $timeSlotId, vehicleType: $vehicleType, pickupAndDelivery: $pickupAndDelivery, promoCode: $promoCode, paymentMethod: $paymentMethod, vehicleId: $vehicleId, notes: $notes, durationInBlocks: $durationInBlocks, amount: $amount, status: $status)';
   }
 
   @override
@@ -320,13 +475,17 @@ class _$BookingRequestImpl implements _BookingRequest {
         (other.runtimeType == runtimeType &&
             other is _$BookingRequestImpl &&
             (identical(other.shopId, shopId) || other.shopId == shopId) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
             const DeepCollectionEquality()
                 .equals(other._selectedServiceIds, _selectedServiceIds) &&
             const DeepCollectionEquality()
                 .equals(other._selectedPackageIds, _selectedPackageIds) &&
             const DeepCollectionEquality()
                 .equals(other._selectedAccessoryIds, _selectedAccessoryIds) &&
-            (identical(other.date, date) || other.date == date) &&
+            (identical(other.appointmentDate, appointmentDate) ||
+                other.appointmentDate == appointmentDate) &&
+            (identical(other.serviceId, serviceId) ||
+                other.serviceId == serviceId) &&
             (identical(other.timeSlotId, timeSlotId) ||
                 other.timeSlotId == timeSlotId) &&
             (identical(other.vehicleType, vehicleType) ||
@@ -339,7 +498,11 @@ class _$BookingRequestImpl implements _BookingRequest {
                 other.paymentMethod == paymentMethod) &&
             (identical(other.vehicleId, vehicleId) ||
                 other.vehicleId == vehicleId) &&
-            (identical(other.notes, notes) || other.notes == notes));
+            (identical(other.notes, notes) || other.notes == notes) &&
+            (identical(other.durationInBlocks, durationInBlocks) ||
+                other.durationInBlocks == durationInBlocks) &&
+            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.status, status) || other.status == status));
   }
 
   @JsonKey(ignore: true)
@@ -347,17 +510,22 @@ class _$BookingRequestImpl implements _BookingRequest {
   int get hashCode => Object.hash(
       runtimeType,
       shopId,
+      userId,
       const DeepCollectionEquality().hash(_selectedServiceIds),
       const DeepCollectionEquality().hash(_selectedPackageIds),
       const DeepCollectionEquality().hash(_selectedAccessoryIds),
-      date,
+      appointmentDate,
+      serviceId,
       timeSlotId,
       vehicleType,
       pickupAndDelivery,
       promoCode,
       paymentMethod,
       vehicleId,
-      notes);
+      notes,
+      durationInBlocks,
+      amount,
+      status);
 
   @JsonKey(ignore: true)
   @override
@@ -376,46 +544,99 @@ class _$BookingRequestImpl implements _BookingRequest {
 
 abstract class _BookingRequest implements BookingRequest {
   const factory _BookingRequest(
-      {required final int shopId,
+      {@JsonKey(name: 'shop_id') required final int shopId,
+      @JsonKey(name: 'user_id') required final int userId,
+      @JsonKey(name: 'selected_service_ids')
       required final List<String> selectedServiceIds,
+      @JsonKey(name: 'selected_package_ids')
       required final List<String> selectedPackageIds,
+      @JsonKey(name: 'selected_accessory_ids')
       required final List<String> selectedAccessoryIds,
-      required final DateTime date,
-      required final int timeSlotId,
-      required final VehicleType vehicleType,
-      final bool pickupAndDelivery,
-      final String? promoCode,
-      final String? paymentMethod,
-      final String? vehicleId,
-      final String? notes}) = _$BookingRequestImpl;
+      @JsonKey(
+          name: 'appointment_date', toJson: _dateOnly, fromJson: _dateFromJson)
+      required final DateTime appointmentDate,
+      @JsonKey(name: 'service_id') required final int serviceId,
+      @JsonKey(name: 'start_slot') required final int timeSlotId,
+      @JsonKey(name: 'vehicle_type') required final VehicleType vehicleType,
+      @JsonKey(name: 'pickup_and_delivery') final bool pickupAndDelivery,
+      @JsonKey(name: 'promo_code') final String? promoCode,
+      @JsonKey(name: 'payment_method') final String? paymentMethod,
+      @JsonKey(name: 'vehicle_id') final String? vehicleId,
+      @JsonKey(name: 'notes') final String? notes,
+      @JsonKey(name: 'duration_in_blocks') required final int durationInBlocks,
+      @JsonKey(name: 'amount') required final double amount,
+      @JsonKey(name: 'status') final String status}) = _$BookingRequestImpl;
 
   factory _BookingRequest.fromJson(Map<String, dynamic> json) =
       _$BookingRequestImpl.fromJson;
 
   @override
+
+  /// Shop identifier (snake_case for API).
+  @JsonKey(name: 'shop_id')
   int get shopId;
   @override
+
+  /// Authenticated user identifier (must be in body, not just header).
+  @JsonKey(name: 'user_id')
+  int get userId;
+  @override
+
+  /// Selected items.
+  @JsonKey(name: 'selected_service_ids')
   List<String> get selectedServiceIds;
   @override
+  @JsonKey(name: 'selected_package_ids')
   List<String> get selectedPackageIds;
   @override
+  @JsonKey(name: 'selected_accessory_ids')
   List<String> get selectedAccessoryIds;
   @override
-  DateTime get date;
+
+  /// Date to book (API expects yyyy-MM-dd) under appointment_date.
+  @JsonKey(name: 'appointment_date', toJson: _dateOnly, fromJson: _dateFromJson)
+  DateTime get appointmentDate;
   @override
+
+  /// Required service reference (backend expects singular service_id).
+  @JsonKey(name: 'service_id')
+  int get serviceId;
+  @override
+
+  /// Slot identifier expected as start_slot by backend.
+  @JsonKey(name: 'start_slot')
   int get timeSlotId;
   @override
+  @JsonKey(name: 'vehicle_type')
   VehicleType get vehicleType;
   @override
+  @JsonKey(name: 'pickup_and_delivery')
   bool get pickupAndDelivery;
   @override
+  @JsonKey(name: 'promo_code')
   String? get promoCode;
   @override
+  @JsonKey(name: 'payment_method')
   String? get paymentMethod;
   @override
+  @JsonKey(name: 'vehicle_id')
   String? get vehicleId;
   @override
+  @JsonKey(name: 'notes')
   String? get notes;
+  @override
+
+  /// Pricing and duration metadata.
+  @JsonKey(name: 'duration_in_blocks')
+  int get durationInBlocks;
+  @override
+  @JsonKey(name: 'amount')
+  double get amount;
+  @override
+
+  /// Booking status (e.g., pending/confirmed).
+  @JsonKey(name: 'status')
+  String get status;
   @override
   @JsonKey(ignore: true)
   _$$BookingRequestImplCopyWith<_$BookingRequestImpl> get copyWith =>

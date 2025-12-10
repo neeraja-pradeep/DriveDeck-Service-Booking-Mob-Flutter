@@ -6,6 +6,7 @@ import '../../../shop/application/providers/shop_providers.dart';
 import '../../../shop/domain/entities/booking_confirmation.dart';
 import '../../../shop/domain/entities/booking_request.dart';
 import '../../../shop/domain/entities/vehicle_type.dart';
+import '../../../home/application/providers/home_provider.dart';
 import '../../domain/entities/booking_data.dart';
 import '../../domain/entities/time_slot.dart';
 
@@ -290,6 +291,23 @@ class BookingCreationNotifier extends StateNotifier<BookingCreationState> {
         return false;
       }
 
+      // Resolve authenticated user id (required in body).
+      final userIdStr = _ref.read(currentUserIdProvider);
+      if (userIdStr == null || userIdStr.isEmpty) {
+        state = const BookingCreationError(
+          Failure.validation(message: 'Missing user ID'),
+        );
+        return false;
+      }
+
+      final userId = int.tryParse(userIdStr);
+      if (userId == null) {
+        state = const BookingCreationError(
+          Failure.validation(message: 'Invalid user ID'),
+        );
+        return false;
+      }
+
       // Parse vehicle type
       final vehicleType = bookingData.vehicleType != null
           ? VehicleTypeExtension.fromString(bookingData.vehicleType!)
@@ -298,19 +316,24 @@ class BookingCreationNotifier extends StateNotifier<BookingCreationState> {
       // Build booking request
       final request = BookingRequest(
         shopId: shopId,
+        userId: userId,
         selectedServiceIds:
             bookingData.selectedServices.map((s) => s.id).toList(),
         selectedPackageIds:
             bookingData.selectedPackages.map((p) => p.id).toList(),
         selectedAccessoryIds:
             bookingData.selectedAccessories.map((a) => a.id).toList(),
-        date: bookingData.selectedDate!,
+        appointmentDate: bookingData.selectedDate!,
+        serviceId: _resolveServiceId(bookingData),
         timeSlotId: timeSlotId,
         vehicleType: vehicleType,
         pickupAndDelivery: bookingData.pickupAndDelivery,
         promoCode: bookingData.promoCode,
         paymentMethod: paymentMethod,
         vehicleId: bookingData.vehicleId,
+        durationInBlocks: _calculateDurationInBlocks(bookingData),
+        amount: bookingData.totalPrice,
+        status: 'pending',
       );
 
       debugPrint('📦 Creating booking with request: ${request.toJson()}');
@@ -344,6 +367,32 @@ class BookingCreationNotifier extends StateNotifier<BookingCreationState> {
       );
       return false;
     }
+  }
+
+  /// Estimate duration in blocks; fallback to 1 when unknown.
+  int _calculateDurationInBlocks(BookingData bookingData) {
+    final itemCount = bookingData.selectedServices.length +
+        bookingData.selectedPackages.length +
+        bookingData.selectedAccessories.length;
+    return itemCount > 0 ? itemCount : 1;
+  }
+
+  /// Resolve primary service id for API (backend expects single service_id).
+  int _resolveServiceId(BookingData bookingData) {
+    // Prefer first selected service; fallback to first package or accessory id.
+    final candidate = bookingData.selectedServices.isNotEmpty
+        ? bookingData.selectedServices.first.id
+        : bookingData.selectedPackages.isNotEmpty
+            ? bookingData.selectedPackages.first.id
+            : bookingData.selectedAccessories.isNotEmpty
+                ? bookingData.selectedAccessories.first.id
+                : null;
+
+    final parsed = candidate != null ? int.tryParse(candidate) : null;
+    if (parsed == null) {
+      throw Exception('Missing or invalid service_id');
+    }
+    return parsed;
   }
 
   /// Reset state to initial.

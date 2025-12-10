@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../app/theme/colors.dart';
 import '../../../../app/theme/typography.dart';
@@ -270,6 +272,12 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
   }
 
   Widget _buildLocationSection(Booking booking) {
+    final hasCoords =
+        booking.shopLatitude != null && booking.shopLongitude != null;
+    final target = hasCoords
+        ? LatLng(booking.shopLatitude!, booking.shopLongitude!)
+        : const LatLng(0, 0);
+
     return Container(
       color: Colors.white,
       padding: EdgeInsets.all(16.w),
@@ -288,15 +296,16 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  // Open map
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Open Map coming soon'),
-                      duration: Duration(seconds: 1),
-                    ),
-                  );
-                },
+                onTap: hasCoords
+                    ? () => _openInMaps(target)
+                    : () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('No location available'),
+                            duration: Duration(seconds: 1),
+                          ),
+                        );
+                      },
                 child: Text(
                   'Open Map',
                   style: TextStyle(
@@ -310,53 +319,49 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
           ),
           SizedBox(height: 12.h),
           // Map Preview
-          Container(
-            height: 120.h,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: AppColors.grey100,
-              borderRadius: BorderRadius.circular(12.r),
-              border: Border.all(color: AppColors.grey200),
-            ),
+          SizedBox(
+            height: 160.h,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12.r),
-              child: Stack(
-                children: [
-                  // Map placeholder with grid pattern
-                  CustomPaint(
-                    size: Size(double.infinity, 120.h),
-                    painter: _MapPlaceholderPainter(),
-                  ),
-                  // Location pin
-                  Center(
-                    child: Container(
-                      width: 36.w,
-                      height: 36.h,
-                      decoration: BoxDecoration(
-                        color: AppColors.primary,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.primary.withValues(alpha: 0.3),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
+              child: hasCoords
+                  ? GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: target,
+                        zoom: 15,
                       ),
-                      child: Icon(
-                        Icons.location_on,
-                        color: Colors.white,
-                        size: 18.sp,
-                      ),
+                      markers: {
+                        Marker(
+                          markerId: const MarkerId('shop'),
+                          position: target,
+                          infoWindow: InfoWindow(title: booking.shopName),
+                        ),
+                      },
+                      zoomControlsEnabled: false,
+                      myLocationButtonEnabled: false,
+                      liteModeEnabled: true,
+                      compassEnabled: false,
+                      scrollGesturesEnabled: false,
+                      tiltGesturesEnabled: false,
+                      rotateGesturesEnabled: false,
+                    )
+                  : CustomPaint(
+                      size: Size(double.infinity, 160.h),
+                      painter: _MapPlaceholderPainter(),
                     ),
-                  ),
-                ],
-              ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _openInMaps(LatLng target) async {
+    final uri = Uri.parse(
+      'https://www.google.com/maps/search/?api=1&query=${target.latitude},${target.longitude}',
+    );
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 
   Widget _buildYourBookingSection(Booking booking) {

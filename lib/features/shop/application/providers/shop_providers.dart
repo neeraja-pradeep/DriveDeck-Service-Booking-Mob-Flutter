@@ -14,6 +14,7 @@ import '../usecases/create_booking_usecase.dart';
 import '../usecases/get_available_slots_usecase.dart';
 import '../usecases/get_shop_details_usecase.dart';
 import '../usecases/get_shop_services_usecase.dart';
+import '../usecases/get_shop_reviews_usecase.dart';
 
 // ============================================================================
 // Data Source Providers
@@ -71,10 +72,27 @@ final getAvailableSlotsUseCaseProvider = Provider<GetAvailableSlotsUseCase>((
   return GetAvailableSlotsUseCase(repository: repository);
 });
 
+/// Provider for GetShopReviewsUseCase.
+final getShopReviewsUseCaseProvider = Provider<GetShopReviewsUseCase>((ref) {
+  final repository = ref.watch(shopRepositoryProvider);
+  return GetShopReviewsUseCase(repository: repository);
+});
+
 /// Provider for CreateBookingUseCase.
 final createBookingUseCaseProvider = Provider<CreateBookingUseCase>((ref) {
   final repository = ref.watch(shopRepositoryProvider);
   return CreateBookingUseCase(repository: repository);
+});
+
+/// Provider for shop reviews list (for browsing services).
+final shopReviewsProvider =
+    FutureProvider.autoDispose<List<Shop>>((ref) async {
+  final usecase = ref.watch(getShopReviewsUseCaseProvider);
+  final result = await usecase(page: 1, pageSize: 20);
+  return result.fold(
+    (failure) => throw Exception(failure.userMessage),
+    (shops) => shops,
+  );
 });
 
 // ============================================================================

@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'vehicle_type.dart';
@@ -9,23 +11,58 @@ part 'booking_request.g.dart';
 @freezed
 class BookingRequest with _$BookingRequest {
   const factory BookingRequest({
-    required int shopId,
+    /// Shop identifier (snake_case for API).
+    @JsonKey(name: 'shop_id') required int shopId,
+
+    /// Authenticated user identifier (must be in body, not just header).
+    @JsonKey(name: 'user_id') required int userId,
+
+    /// Selected items.
+    @JsonKey(name: 'selected_service_ids')
     required List<String> selectedServiceIds,
+    @JsonKey(name: 'selected_package_ids')
     required List<String> selectedPackageIds,
+    @JsonKey(name: 'selected_accessory_ids')
     required List<String> selectedAccessoryIds,
-    required DateTime date,
-    required int timeSlotId,
-    required VehicleType vehicleType,
-    @Default(false) bool pickupAndDelivery,
-    String? promoCode,
-    String? paymentMethod,
-    String? vehicleId,
-    String? notes,
+
+    /// Date to book (API expects yyyy-MM-dd) under appointment_date.
+    @JsonKey(
+      name: 'appointment_date',
+      toJson: _dateOnly,
+      fromJson: _dateFromJson,
+    )
+    required DateTime appointmentDate,
+
+    /// Required service reference (backend expects singular service_id).
+    @JsonKey(name: 'service_id') required int serviceId,
+
+    /// Slot identifier expected as start_slot by backend.
+    @JsonKey(name: 'start_slot') required int timeSlotId,
+
+    @JsonKey(name: 'vehicle_type') required VehicleType vehicleType,
+    @JsonKey(name: 'pickup_and_delivery') @Default(false) bool pickupAndDelivery,
+    @JsonKey(name: 'promo_code') String? promoCode,
+    @JsonKey(name: 'payment_method') String? paymentMethod,
+    @JsonKey(name: 'vehicle_id') String? vehicleId,
+    @JsonKey(name: 'notes') String? notes,
+
+    /// Pricing and duration metadata.
+    @JsonKey(name: 'duration_in_blocks') required int durationInBlocks,
+    @JsonKey(name: 'amount') required double amount,
+
+    /// Booking status (e.g., pending/confirmed).
+    @JsonKey(name: 'status') @Default('pending') String status,
   }) = _BookingRequest;
 
   factory BookingRequest.fromJson(Map<String, dynamic> json) =>
       _$BookingRequestFromJson(json);
 }
+
+/// Convert ISO string back to DateTime.
+DateTime _dateFromJson(String value) => DateTime.parse(value);
+
+/// API wants only the date portion (yyyy-MM-dd).
+String _dateOnly(DateTime date) => date.toIso8601String().split('T').first;
 
 /// Booking date with available time slots.
 @freezed

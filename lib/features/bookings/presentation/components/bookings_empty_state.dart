@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../domain/entities/bookings_tab.dart';
+import 'shop_reviews_sheet.dart';
 
 /// Empty state widget for when there are no bookings.
 ///
@@ -66,7 +67,10 @@ class BookingsEmptyState extends StatelessWidget {
               SizedBox(height: 24.h),
               // Action button
               ElevatedButton(
-                onPressed: onAction ?? () => _navigateToHome(context),
+                onPressed: onAction ??
+                    () async {
+                      await ShopReviewsSheet.show(context);
+                    },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFFB74D),
                   foregroundColor: Colors.white,
@@ -91,18 +95,4 @@ class BookingsEmptyState extends StatelessWidget {
     );
   }
 
-  void _navigateToHome(BuildContext context) {
-    // Navigate to home/shop listing
-    // This would typically use the router to navigate
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Navigate to services',
-          style: TextStyle(fontSize: 14.sp),
-        ),
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
 }

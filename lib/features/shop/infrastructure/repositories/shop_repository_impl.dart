@@ -266,6 +266,26 @@ class ShopRepositoryImpl implements ShopRepository {
   }
 
   @override
+  Future<Either<Failure, List<Shop>>> getShopReviews({
+    int page = 1,
+    int pageSize = 10,
+  }) async {
+    try {
+      if (await networkInfo.isConnected) {
+        final shops =
+            await remoteDataSource.getShopReviews(page: page, pageSize: pageSize);
+        return Right(shops.map((s) => s.toDomain()).toList());
+      } else {
+        return const Left(
+          Failure.noConnection(message: 'No internet connection'),
+        );
+      }
+    } catch (e) {
+      return Left(Failure.server(message: e.toString()));
+    }
+  }
+
+  @override
   Future<Either<Failure, BookingConfirmation>> createBooking(
     BookingRequest request,
   ) async {

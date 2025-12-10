@@ -49,6 +49,9 @@ abstract class ShopApi {
   /// Get user's favorite shops.
   Future<List<ShopModel>> getFavoriteShops();
 
+  /// Get shops via reviews feed.
+  Future<List<ShopModel>> getShopReviews({int page, int pageSize});
+
   /// Create a new booking.
   Future<BookingConfirmationModel> createBooking(BookingRequest request);
 }
@@ -170,6 +173,27 @@ class ShopApiImpl implements ShopApi {
     final response = await apiClient.get(Endpoints.shopFavorites());
     final List<dynamic> results = response.data['results'] ?? response.data;
     return results.map((json) => ShopModel.fromJson(json)).toList();
+  }
+
+  @override
+  Future<List<ShopModel>> getShopReviews({int page = 1, int pageSize = 10}) async {
+    final response = await apiClient.get(
+      Endpoints.shopReviews(),
+      queryParameters: {
+        'page': page,
+        'page_size': pageSize,
+      },
+    );
+
+    final List<dynamic> results = response.data['results'] ?? response.data;
+    final shops = <ShopModel>[];
+    for (final item in results) {
+      final shopJson = (item as Map<String, dynamic>)['shop'] as Map<String, dynamic>?;
+      if (shopJson != null) {
+        shops.add(ShopModel.fromJson(shopJson));
+      }
+    }
+    return shops;
   }
 
   @override

@@ -36,7 +36,9 @@ class GarageApiImpl implements GarageApi {
     debugPrint('🚗 GarageApi: Fetching vehicles...');
     final response = await _apiClient.get(Endpoints.userVehicles());
 
-    final List<dynamic> data = response.data is List ? response.data : [];
+    final List<dynamic> data = response.data is List
+        ? response.data
+        : (response.data['results'] as List<dynamic>? ?? []);
     debugPrint('🚗 GarageApi: Received ${data.length} vehicles');
 
     return data

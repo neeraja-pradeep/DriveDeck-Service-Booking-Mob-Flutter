@@ -19,6 +19,8 @@ class Booking extends Equatable {
     required this.shopImageUrl,
     required this.shopAddress,
     required this.shopCity,
+    this.shopLatitude,
+    this.shopLongitude,
     required this.bookingDate,
     required this.timeSlot,
     required this.services,
@@ -51,6 +53,12 @@ class Booking extends Equatable {
 
   /// City where the shop is located.
   final String shopCity;
+
+  /// Latitude of the shop (optional).
+  final double? shopLatitude;
+
+  /// Longitude of the shop (optional).
+  final double? shopLongitude;
 
   /// Date of the scheduled booking.
   final DateTime bookingDate;
@@ -128,6 +136,8 @@ class Booking extends Equatable {
     String? shopImageUrl,
     String? shopAddress,
     String? shopCity,
+    double? shopLatitude,
+    double? shopLongitude,
     DateTime? bookingDate,
     BookingTimeSlot? timeSlot,
     List<BookedService>? services,
@@ -147,6 +157,8 @@ class Booking extends Equatable {
       shopImageUrl: shopImageUrl ?? this.shopImageUrl,
       shopAddress: shopAddress ?? this.shopAddress,
       shopCity: shopCity ?? this.shopCity,
+      shopLatitude: shopLatitude ?? this.shopLatitude,
+      shopLongitude: shopLongitude ?? this.shopLongitude,
       bookingDate: bookingDate ?? this.bookingDate,
       timeSlot: timeSlot ?? this.timeSlot,
       services: services ?? this.services,
@@ -169,6 +181,8 @@ class Booking extends Equatable {
         shopImageUrl,
         shopAddress,
         shopCity,
+        shopLatitude,
+        shopLongitude,
         bookingDate,
         timeSlot,
         services,

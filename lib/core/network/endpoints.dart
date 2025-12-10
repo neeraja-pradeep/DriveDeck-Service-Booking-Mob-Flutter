@@ -52,6 +52,9 @@ class Endpoints {
   /// Get shop categories.
   static String shopCategories() => '$apiPrefix/shop/shop-categories/';
 
+  /// Get shop reviews (includes shop info).
+  static String shopReviews() => '$apiPrefix/shop/shop-reviews/';
+
   /// Get shops near you.
   static String shopsNearYou() => '$apiPrefix/shop/shops/near-you/';
 
