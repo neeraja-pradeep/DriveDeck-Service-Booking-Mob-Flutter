@@ -233,18 +233,23 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  /// Formats phone number - returns clean 10-digit number without country code.
-  /// API expects: { "phone": "9876543210" } (no +91 prefix per Swagger docs)
+  /// Formats phone number - adds +91 country code prefix.
+  /// API expects: { "phone": "+918075621431" }
   String _formatPhoneWithCountryCode(String phoneNumber) {
     // Remove any existing country code or special characters
     final cleanPhone = phoneNumber.replaceAll(RegExp(r'[^\d]'), '');
 
-    // If phone starts with 91 and is longer than 10 digits, remove the country code
-    if (cleanPhone.startsWith('91') && cleanPhone.length > 10) {
-      return cleanPhone.substring(2);
+    // If phone already starts with 91 and is 12 digits, just add + prefix
+    if (cleanPhone.startsWith('91') && cleanPhone.length == 12) {
+      return '+$cleanPhone';
     }
 
-    // Return just the clean 10-digit phone number
-    return cleanPhone;
+    // If phone is 10 digits, add +91 prefix
+    if (cleanPhone.length == 10) {
+      return '+91$cleanPhone';
+    }
+
+    // Return with +91 prefix for any other case
+    return '+91$cleanPhone';
   }
 }
