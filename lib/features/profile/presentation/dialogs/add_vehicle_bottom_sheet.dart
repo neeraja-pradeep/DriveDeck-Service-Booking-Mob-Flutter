@@ -28,22 +28,14 @@ class AddVehicleBottomSheet extends ConsumerStatefulWidget {
 
 class _AddVehicleBottomSheetState extends ConsumerState<AddVehicleBottomSheet> {
   final _formKey = GlobalKey<FormState>();
-  final _makeController = TextEditingController();
-  final _modelController = TextEditingController();
-  final _yearController = TextEditingController();
-  final _licensePlateController = TextEditingController();
-  final _colorController = TextEditingController();
+  final _registrationController = TextEditingController();
 
-  GarageVehicleType _selectedVehicleType = GarageVehicleType.sedan;
-  bool _isDefault = false;
+  GarageVehicleType _selectedCarType = GarageVehicleType.sedan;
+  bool _isFavourite = false;
 
   @override
   void dispose() {
-    _makeController.dispose();
-    _modelController.dispose();
-    _yearController.dispose();
-    _licensePlateController.dispose();
-    _colorController.dispose();
+    _registrationController.dispose();
     super.dispose();
   }
 
@@ -81,9 +73,9 @@ class _AddVehicleBottomSheetState extends ConsumerState<AddVehicleBottomSheet> {
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: DraggableScrollableSheet(
-        initialChildSize: 0.85,
-        minChildSize: 0.5,
-        maxChildSize: 0.95,
+        initialChildSize: 0.6,
+        minChildSize: 0.4,
+        maxChildSize: 0.8,
         expand: false,
         builder: (context, scrollController) {
           return SingleChildScrollView(
@@ -117,111 +109,12 @@ class _AddVehicleBottomSheetState extends ConsumerState<AddVehicleBottomSheet> {
                   ),
                   SizedBox(height: 24.h),
 
-                  // Make field
-                  _buildLabel('Make *'),
-                  SizedBox(height: 8.h),
-                  TextFormField(
-                    controller: _makeController,
-                    enabled: !isLoading,
-                    decoration: _buildInputDecoration('e.g., Toyota, Honda'),
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Make is required';
-                      }
-                      if (value.trim().length < 2) {
-                        return 'Make must be at least 2 characters';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.h),
-
-                  // Model field
-                  _buildLabel('Model *'),
-                  SizedBox(height: 8.h),
-                  TextFormField(
-                    controller: _modelController,
-                    enabled: !isLoading,
-                    decoration: _buildInputDecoration('e.g., Camry, Civic'),
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Model is required';
-                      }
-                      if (value.trim().length < 2) {
-                        return 'Model must be at least 2 characters';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.h),
-
-                  // Year and License Plate in a row
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildLabel('Year'),
-                            SizedBox(height: 8.h),
-                            TextFormField(
-                              controller: _yearController,
-                              enabled: !isLoading,
-                              keyboardType: TextInputType.number,
-                              decoration: _buildInputDecoration('e.g., 2022'),
-                              validator: (value) {
-                                if (value != null && value.isNotEmpty) {
-                                  final year = int.tryParse(value);
-                                  if (year == null) {
-                                    return 'Invalid year';
-                                  }
-                                  if (year < 1990 ||
-                                      year > DateTime.now().year + 1) {
-                                    return 'Invalid year';
-                                  }
-                                }
-                                return null;
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildLabel('License Plate'),
-                            SizedBox(height: 8.h),
-                            TextFormField(
-                              controller: _licensePlateController,
-                              enabled: !isLoading,
-                              textCapitalization: TextCapitalization.characters,
-                              decoration: _buildInputDecoration('e.g., ABC 1234'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16.h),
-
-                  // Color field
-                  _buildLabel('Color'),
-                  SizedBox(height: 8.h),
-                  TextFormField(
-                    controller: _colorController,
-                    enabled: !isLoading,
-                    decoration: _buildInputDecoration('e.g., White, Black'),
-                  ),
-                  SizedBox(height: 16.h),
-
-                  // Vehicle Type dropdown
-                  _buildLabel('Vehicle Type *'),
+                  // Car Type dropdown
+                  _buildLabel('Car Type *'),
                   SizedBox(height: 8.h),
                   DropdownButtonFormField<GarageVehicleType>(
-                    value: _selectedVehicleType,
-                    decoration: _buildInputDecoration('Select vehicle type'),
+                    value: _selectedCarType,
+                    decoration: _buildInputDecoration('Select car type'),
                     items: GarageVehicleType.values.map((type) {
                       return DropdownMenuItem(
                         value: type,
@@ -232,16 +125,27 @@ class _AddVehicleBottomSheetState extends ConsumerState<AddVehicleBottomSheet> {
                         ? null
                         : (value) {
                             if (value != null) {
-                              setState(() => _selectedVehicleType = value);
+                              setState(() => _selectedCarType = value);
                             }
                           },
                   ),
                   SizedBox(height: 16.h),
 
-                  // Set as default switch
+                  // Registration field
+                  _buildLabel('Registration'),
+                  SizedBox(height: 8.h),
+                  TextFormField(
+                    controller: _registrationController,
+                    enabled: !isLoading,
+                    textCapitalization: TextCapitalization.characters,
+                    decoration: _buildInputDecoration('e.g., KA 01 AB 1234'),
+                  ),
+                  SizedBox(height: 16.h),
+
+                  // Set as favourite switch
                   SwitchListTile(
                     title: Text(
-                      'Set as default vehicle',
+                      'Set as favourite vehicle',
                       style: TextStyle(fontSize: 14.sp),
                     ),
                     subtitle: Text(
@@ -251,11 +155,11 @@ class _AddVehicleBottomSheetState extends ConsumerState<AddVehicleBottomSheet> {
                         color: Colors.grey[600],
                       ),
                     ),
-                    value: _isDefault,
+                    value: _isFavourite,
                     onChanged: isLoading
                         ? null
                         : (value) {
-                            setState(() => _isDefault = value);
+                            setState(() => _isFavourite = value);
                           },
                     activeColor: AppColors.primary,
                     contentPadding: EdgeInsets.zero,
@@ -341,19 +245,11 @@ class _AddVehicleBottomSheetState extends ConsumerState<AddVehicleBottomSheet> {
     if (_formKey.currentState?.validate() != true) return;
 
     final request = AddVehicleRequest(
-      make: _makeController.text.trim(),
-      model: _modelController.text.trim(),
-      year: _yearController.text.isNotEmpty
-          ? int.tryParse(_yearController.text)
+      carType: _selectedCarType,
+      registration: _registrationController.text.trim().isNotEmpty
+          ? _registrationController.text.trim()
           : null,
-      licensePlate: _licensePlateController.text.trim().isNotEmpty
-          ? _licensePlateController.text.trim()
-          : null,
-      color: _colorController.text.trim().isNotEmpty
-          ? _colorController.text.trim()
-          : null,
-      vehicleType: _selectedVehicleType.name,
-      isDefault: _isDefault,
+      isFavourite: _isFavourite,
     );
 
     ref.read(addVehicleStateProvider.notifier).addVehicle(request);

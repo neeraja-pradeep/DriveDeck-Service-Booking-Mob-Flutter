@@ -230,30 +230,30 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
             // TODO: Navigate to vehicle detail or edit
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Selected: ${vehicle.make} ${vehicle.model}'),
+                content: Text('Selected: ${vehicle.displayName}'),
                 duration: const Duration(seconds: 1),
               ),
             );
           },
-          onSetDefault: () => _onSetDefaultVehicle(vehicle),
+          onSetDefault: () => _onSetFavouriteVehicle(vehicle),
           onDelete: () => _onDeleteVehicle(vehicle),
         );
       },
     );
   }
 
-  Future<void> _onSetDefaultVehicle(Vehicle vehicle) async {
+  Future<void> _onSetFavouriteVehicle(Vehicle vehicle) async {
     final success = await ref
         .read(garageStateProvider.notifier)
-        .setDefaultVehicle(vehicle.id);
+        .setFavouriteVehicle(vehicle.id);
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             success
-                ? '${vehicle.make} ${vehicle.model} set as default'
-                : 'Failed to set default vehicle',
+                ? '${vehicle.displayName} set as favourite'
+                : 'Failed to set favourite vehicle',
           ),
           backgroundColor: success ? Colors.green : Colors.red,
         ),
