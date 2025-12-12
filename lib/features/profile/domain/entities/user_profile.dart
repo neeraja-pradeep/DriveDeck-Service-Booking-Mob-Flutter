@@ -57,6 +57,14 @@ class UserProfile extends Equatable {
     return name.isNotEmpty ? name : username;
   }
 
+  /// Get display name for greeting (first name or username).
+  String get displayName {
+    if (firstName.isNotEmpty) {
+      return firstName;
+    }
+    return username.isNotEmpty ? username : 'Guest';
+  }
+
   /// Get initials from first and last name.
   String get initials {
     final first = firstName.isNotEmpty ? firstName[0].toUpperCase() : '';

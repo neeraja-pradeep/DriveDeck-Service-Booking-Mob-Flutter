@@ -10,7 +10,7 @@ import '../../../../core/utils/logger.dart';
 import '../../domain/entities/car_wash_shop.dart';
 import '../../domain/entities/service_category.dart';
 import '../../domain/entities/user_location.dart';
-import '../../domain/entities/user_profile.dart';
+import '../../../profile/domain/entities/user_profile.dart';
 import '../../domain/repositories/home_repository.dart';
 import '../data_sources/local/home_local_ds.dart';
 import '../data_sources/remote/home_api.dart';
