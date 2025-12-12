@@ -4,30 +4,24 @@ part 'vehicle.freezed.dart';
 part 'vehicle.g.dart';
 
 /// Vehicle type enum.
-enum GarageVehicleType {
-  sedan,
-  suv,
-  hatchback,
-  muv,
-  luxury,
-}
+enum GarageVehicleType { sedan, suv, hatchback, muv, luxury }
 
 /// Extension for VehicleType display properties.
 extension GarageVehicleTypeX on GarageVehicleType {
   String get displayName => switch (this) {
-        GarageVehicleType.sedan => 'SEDAN',
-        GarageVehicleType.suv => 'SUV',
-        GarageVehicleType.hatchback => 'HATCHBACK',
-        GarageVehicleType.muv => 'MUV',
-        GarageVehicleType.luxury => 'LUXURY',
-      };
+    GarageVehicleType.sedan => 'SEDAN',
+    GarageVehicleType.suv => 'SUV',
+    GarageVehicleType.hatchback => 'HATCHBACK',
+    GarageVehicleType.muv => 'MUV',
+    GarageVehicleType.luxury => 'LUXURY',
+  };
 }
 
 /// Vehicle entity representing a user's vehicle in their garage.
 @freezed
 class Vehicle with _$Vehicle {
   const factory Vehicle({
-    required String id,
+    required int id,
     required String make,
     required String model,
     int? year,
@@ -39,7 +33,8 @@ class Vehicle with _$Vehicle {
     DateTime? createdAt,
   }) = _Vehicle;
 
-  factory Vehicle.fromJson(Map<String, dynamic> json) => _$VehicleFromJson(json);
+  factory Vehicle.fromJson(Map<String, dynamic> json) =>
+      _$VehicleFromJson(json);
 }
 
 /// Extension for Vehicle helper methods.

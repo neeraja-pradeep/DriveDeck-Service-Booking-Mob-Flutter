@@ -20,7 +20,7 @@ Vehicle _$VehicleFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Vehicle {
-  String get id => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
   String get make => throw _privateConstructorUsedError;
   String get model => throw _privateConstructorUsedError;
   int? get year => throw _privateConstructorUsedError;
@@ -42,7 +42,7 @@ abstract class $VehicleCopyWith<$Res> {
       _$VehicleCopyWithImpl<$Res, Vehicle>;
   @useResult
   $Res call(
-      {String id,
+      {int id,
       String make,
       String model,
       int? year,
@@ -82,7 +82,7 @@ class _$VehicleCopyWithImpl<$Res, $Val extends Vehicle>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       make: null == make
           ? _value.make
           : make // ignore: cast_nullable_to_non_nullable
@@ -131,7 +131,7 @@ abstract class _$$VehicleImplCopyWith<$Res> implements $VehicleCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String id,
+      {int id,
       String make,
       String model,
       int? year,
@@ -169,7 +169,7 @@ class __$$VehicleImplCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       make: null == make
           ? _value.make
           : make // ignore: cast_nullable_to_non_nullable
@@ -229,7 +229,7 @@ class _$VehicleImpl implements _Vehicle {
       _$$VehicleImplFromJson(json);
 
   @override
-  final String id;
+  final int id;
   @override
   final String make;
   @override
@@ -298,7 +298,7 @@ class _$VehicleImpl implements _Vehicle {
 
 abstract class _Vehicle implements Vehicle {
   const factory _Vehicle(
-      {required final String id,
+      {required final int id,
       required final String make,
       required final String model,
       final int? year,
@@ -312,7 +312,7 @@ abstract class _Vehicle implements Vehicle {
   factory _Vehicle.fromJson(Map<String, dynamic> json) = _$VehicleImpl.fromJson;
 
   @override
-  String get id;
+  int get id;
   @override
   String get make;
   @override

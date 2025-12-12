@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../auth/application/providers/auth_providers.dart';
@@ -51,7 +53,9 @@ final deleteVehicleUsecaseProvider = Provider<DeleteVehicleUsecase>((ref) {
 });
 
 /// Provider for set default vehicle use case.
-final setDefaultVehicleUsecaseProvider = Provider<SetDefaultVehicleUsecase>((ref) {
+final setDefaultVehicleUsecaseProvider = Provider<SetDefaultVehicleUsecase>((
+  ref,
+) {
   final repository = ref.watch(garageRepositoryProvider);
   return SetDefaultVehicleUsecase(repository);
 });
@@ -130,7 +134,9 @@ class GarageNotifier extends StateNotifier<GarageState> {
 
   /// Delete a vehicle.
   Future<bool> deleteVehicle(String vehicleId) async {
-    final result = await _ref.read(deleteVehicleUsecaseProvider).call(vehicleId);
+    final result = await _ref
+        .read(deleteVehicleUsecaseProvider)
+        .call(vehicleId);
     return result.fold(
       (failure) {
         return false;
@@ -150,8 +156,10 @@ class GarageNotifier extends StateNotifier<GarageState> {
   }
 
   /// Set a vehicle as default.
-  Future<bool> setDefaultVehicle(String vehicleId) async {
-    final result = await _ref.read(setDefaultVehicleUsecaseProvider).call(vehicleId);
+  Future<bool> setDefaultVehicle(int vehicleId) async {
+    final result = await _ref
+        .read(setDefaultVehicleUsecaseProvider)
+        .call(vehicleId);
     return result.fold(
       (failure) {
         return false;
@@ -232,11 +240,10 @@ final garageStateProvider = StateNotifierProvider<GarageNotifier, GarageState>((
 });
 
 /// Provider for add vehicle state.
-final addVehicleStateProvider = StateNotifierProvider<AddVehicleNotifier, AddVehicleState>((
-  ref,
-) {
-  return AddVehicleNotifier(ref);
-});
+final addVehicleStateProvider =
+    StateNotifierProvider<AddVehicleNotifier, AddVehicleState>((ref) {
+      return AddVehicleNotifier(ref);
+    });
 
 /// Provider for search query in garage.
 final garageSearchQueryProvider = StateProvider<String>((ref) => '');

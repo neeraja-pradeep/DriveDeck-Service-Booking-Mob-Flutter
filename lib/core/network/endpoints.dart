@@ -18,22 +18,22 @@ class Endpoints {
   /// Send OTP endpoint.
   /// POST /api/accounts/send-otp/
   /// Payload: { "phone": "1234567890" }
-  static String sendOtp() => '$apiPrefix/accounts/send-otp/';
+  static String sendOtp() => '$apiPrefix/accounts/v1/send-otp/';
 
   /// Verify OTP endpoint.
   /// POST /api/accounts/verify-otp/
   /// Payload: { "phone": "9876543210", "otp_code": "123456", "new_password": "..." (optional) }
-  static String verifyOtp() => '$apiPrefix/accounts/verify-otp/';
+  static String verifyOtp() => '$apiPrefix/accounts/v1/verify-otp/';
 
   /// Register/Signup endpoint.
   /// POST /api/accounts/register/
   /// Payload: { "phone": "...", "username": "...", "password": "...", "password_confirm": "..." }
-  static String register() => '$apiPrefix/accounts/register/';
+  static String register() => '$apiPrefix/accounts/v1/register/';
 
   /// Login/Signin endpoint.
   /// POST /api/accounts/login/
   /// Payload: { "email": "...", "password": "..." }
-  static String login() => '$apiPrefix/accounts/login/';
+  static String login() => '$apiPrefix/accounts/v1/login/';
 
   /// Logout endpoint.
   static String logout() => '$apiPrefix/accounts/logout/';
@@ -43,20 +43,20 @@ class Endpoints {
 
   /// User profile endpoint.
   /// GET/PUT /api/accounts/profile/
-  static String profile() => '$apiPrefix/accounts/profile/';
+  static String profile() => '$apiPrefix/accounts/v1/profile/';
 
   // ============================================================================
   // Shop Endpoints (Additional)
   // ============================================================================
 
   /// Get shop categories.
-  static String shopCategories() => '$apiPrefix/shop/shop-categories/';
+  static String shopCategories() => '$apiPrefix/shop/v1/shop-categories/';
 
   /// Get shop reviews (includes shop info).
-  static String shopReviews() => '$apiPrefix/shop/shop-reviews/';
+  static String shopReviews() => '$apiPrefix/shop/v1/shop-reviews/';
 
   /// Get shops near you.
-  static String shopsNearYou() => '$apiPrefix/shop/shops/near-you/';
+  static String shopsNearYou() => '$apiPrefix/shop/v1/shops/near-you/';
 
   // ============================================================================
   // Bookings Endpoints
@@ -67,53 +67,53 @@ class Endpoints {
   /// Query params:
   /// - status: 'booked' for upcoming (pending/confirmed)
   /// - status: 'history' for past (cancelled/completed)
-  static String bookings() => '$apiPrefix/booking/bookings/';
+  static String bookings() => '$apiPrefix/booking/v1/bookings/';
 
   /// Get booking details by ID.
   static String bookingDetails(String bookingId) =>
-      '$apiPrefix/booking/bookings/$bookingId/';
+      '$apiPrefix/booking/v1/bookings/$bookingId/';
 
   /// Cancel a booking.
   static String cancelBooking(String bookingId) =>
-      '$apiPrefix/booking/bookings/$bookingId/cancel/';
+      '$apiPrefix/booking/bookings/v1/$bookingId/cancel/';
 
   /// Reschedule a booking.
   static String rescheduleBooking(String bookingId) =>
-      '$apiPrefix/booking/bookings/$bookingId/reschedule/';
+      '$apiPrefix/booking/v1/bookings/$bookingId/reschedule/';
 
   // ============================================================================
   // Shop Endpoints
   // ============================================================================
 
   /// Get all shops.
-  static String shops() => '$apiPrefix/shop/shops/';
+  static String shops() => '$apiPrefix/shop/v1/shops/';
 
   /// Get nearby shops.
-  static String nearbyShops() => '$apiPrefix/shop/shops/near-you/';
+  static String nearbyShops() => '$apiPrefix/shop/v1/shops/near-you/';
 
   /// Get shop details.
-  static String shopDetails(int shopId) => '$apiPrefix/shop/shops/$shopId/';
+  static String shopDetails(int shopId) => '$apiPrefix/shop/v1/shops/$shopId/';
 
   /// Get shop services.
   /// GET /api/shop/shop-services/?shop={shopId}
   static String shopServices(int shopId) =>
-      '$apiPrefix/shop/shop-services/?shop=$shopId';
+      '$apiPrefix/shop/v1/shop-services/?shop=$shopId';
 
   /// Get shop packages.
   static String shopPackages(int shopId) =>
-      '$apiPrefix/shop/shops/$shopId/packages/';
+      '$apiPrefix/shop/v1/shops/$shopId/packages/';
 
   /// Get shop accessories.
   static String shopAccessories(int shopId) =>
-      '$apiPrefix/shop/shops/$shopId/accessories/';
+      '$apiPrefix/shop/v1/shops/$shopId/accessories/';
 
   /// Get shop availability for date range.
   static String shopAvailability(int shopId) =>
-      '$apiPrefix/shop/shops/$shopId/date-day/';
+      '$apiPrefix/shop/v1/shops/$shopId/date-day/';
 
   /// Get shop time slots (legacy).
   static String shopTimeSlots(String shopId) =>
-      '$apiPrefix/shop/shops/$shopId/slots/';
+      '$apiPrefix/shop/v1/shops/$shopId/slots/';
 
   /// Shop favorites.
   static String shopFavorites() => '$apiPrefix/shop/favorites/';
@@ -127,22 +127,22 @@ class Endpoints {
   // ============================================================================
 
   /// Get user profile.
-  static String userProfile() => '$apiPrefix/accounts/profile/';
+  static String userProfile() => '$apiPrefix/accounts/v1/profile/';
 
   /// Update user profile.
-  static String updateProfile() => '$apiPrefix/accounts/profile/';
+  static String updateProfile() => '$apiPrefix/accounts/v1/profile/';
 
   // ============================================================================
   // Vehicle Endpoints
   // ============================================================================
 
   /// Get all user vehicles.
-  static String userVehicles() => '$apiPrefix/vehicles/';
+  static String userVehicles() => '$apiPrefix/accounts/v1/cars/';
 
   /// Create a new vehicle.
-  static String createVehicle() => '$apiPrefix/vehicles/';
+  static String createVehicle() => '$apiPrefix/accounts/v1/cars/';
 
   /// Delete a vehicle.
   static String deleteVehicle(String vehicleId) =>
-      '$apiPrefix/vehicles/$vehicleId/';
+      '$apiPrefix/v1/cars/$vehicleId/';
 }

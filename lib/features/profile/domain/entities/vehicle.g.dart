@@ -8,7 +8,7 @@ part of 'vehicle.dart';
 
 _$VehicleImpl _$$VehicleImplFromJson(Map<String, dynamic> json) =>
     _$VehicleImpl(
-      id: json['id'] as String,
+      id: (json['id'] as num).toInt(),
       make: json['make'] as String,
       model: json['model'] as String,
       year: (json['year'] as num?)?.toInt(),

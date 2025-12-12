@@ -26,7 +26,7 @@ class VehicleCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.r),
         side: vehicle.isDefault
-            ? BorderSide(color: AppColors.primary, width: 2)
+            ? const BorderSide(color: AppColors.primary, width: 2)
             : BorderSide.none,
       ),
       elevation: 2,
@@ -139,10 +139,7 @@ class VehicleCard extends StatelessWidget {
 
               // Actions menu
               PopupMenuButton<String>(
-                icon: Icon(
-                  Icons.more_vert,
-                  color: Colors.grey[600],
-                ),
+                icon: Icon(Icons.more_vert, color: Colors.grey[600]),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.r),
                 ),

@@ -24,14 +24,14 @@ class AddVehicleRequest {
   final bool isDefault;
 
   Map<String, dynamic> toJson() => {
-        'make': make,
-        'model': model,
-        if (year != null) 'year': year,
-        if (licensePlate != null) 'license_plate': licensePlate,
-        if (color != null) 'color': color,
-        'vehicle_type': vehicleType,
-        'is_default': isDefault,
-      };
+    'make': make,
+    'model': model,
+    if (year != null) 'year': year,
+    if (licensePlate != null) 'license_plate': licensePlate,
+    if (color != null) 'color': color,
+    'car_type': vehicleType,
+    'is_default': isDefault,
+  };
 }
 
 /// Abstract repository for garage/vehicle management.

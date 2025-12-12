@@ -23,7 +23,7 @@ class VehicleModel {
   factory VehicleModel.fromJson(Map<String, dynamic> json) =>
       _$VehicleModelFromJson(json);
 
-  final String id;
+  final int id;
   final String make;
   final String model;
   final int? year;

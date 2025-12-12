@@ -7,7 +7,7 @@ part of 'vehicle_model.dart';
 // **************************************************************************
 
 VehicleModel _$VehicleModelFromJson(Map<String, dynamic> json) => VehicleModel(
-      id: json['id'] as String,
+      id: (json['id'] as num).toInt(),
       make: json['make'] as String,
       model: json['model'] as String,
       year: (json['year'] as num?)?.toInt(),

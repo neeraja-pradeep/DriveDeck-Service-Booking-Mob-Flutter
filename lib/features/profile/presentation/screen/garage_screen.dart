@@ -55,11 +55,7 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
         actions: [
           IconButton(
             onPressed: () => AddVehicleBottomSheet.show(context),
-            icon: Icon(
-              Icons.add,
-              color: AppColors.primary,
-              size: 28.sp,
-            ),
+            icon: Icon(Icons.add, color: AppColors.primary, size: 28.sp),
             tooltip: 'Add Vehicle',
           ),
           SizedBox(width: 8.w),
@@ -79,8 +75,8 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
           ),
         ],
       ),
-      floatingActionButton: garageState is GarageLoaded &&
-              (garageState).vehicles.isNotEmpty
+      floatingActionButton:
+          garageState is GarageLoaded && (garageState).vehicles.isNotEmpty
           ? FloatingActionButton.extended(
               onPressed: () => AddVehicleBottomSheet.show(context),
               backgroundColor: AppColors.primary,
@@ -179,11 +175,12 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
     return switch (state) {
       GarageInitial() || GarageLoading() => _buildLoadingState(),
       GarageError(message: final message) => _buildErrorState(message),
-      GarageLoaded() => vehicles.isEmpty
-          ? GarageEmptyState(
-              onAddVehicle: () => AddVehicleBottomSheet.show(context),
-            )
-          : _buildVehicleList(vehicles),
+      GarageLoaded() =>
+        vehicles.isEmpty
+            ? GarageEmptyState(
+                onAddVehicle: () => AddVehicleBottomSheet.show(context),
+              )
+            : _buildVehicleList(vehicles),
     };
   }
 
@@ -211,10 +208,9 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
           ),
           SizedBox(height: 16.h),
           ElevatedButton(
-            onPressed: () => ref.read(garageStateProvider.notifier).initialize(),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-            ),
+            onPressed: () =>
+                ref.read(garageStateProvider.notifier).initialize(),
+            style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
             child: const Text('Retry', style: TextStyle(color: Colors.white)),
           ),
         ],

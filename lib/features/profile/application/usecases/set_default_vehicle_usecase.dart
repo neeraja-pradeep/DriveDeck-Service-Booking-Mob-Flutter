@@ -11,7 +11,7 @@ class SetDefaultVehicleUsecase {
   final GarageRepository _repository;
 
   /// Set a vehicle as default by ID.
-  Future<Either<Failure, Vehicle>> call(String vehicleId) {
+  Future<Either<Failure, Vehicle>> call(int vehicleId) {
     return _repository.setDefaultVehicle(vehicleId);
   }
 }
