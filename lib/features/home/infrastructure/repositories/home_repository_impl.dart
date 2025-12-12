@@ -39,7 +39,7 @@ class HomeRepositoryImpl implements HomeRepository {
   Future<Either<Failure, UserProfile>> getUserProfile() async {
     try {
       final model = await _homeApi.getUserProfile();
-      return Right(model.toEntity());
+      return Right(model.toDomain());
     } on DioException catch (e) {
       AppLogger.e('Failed to get user profile', e);
       return Left(NetworkExceptions.handleException(e));
@@ -69,7 +69,7 @@ class HomeRepositoryImpl implements HomeRepository {
         latitude: latitude,
         longitude: longitude,
       );
-      return Right(model.toEntity());
+      return Right(model.toDomain());
     } on DioException catch (e) {
       AppLogger.e('Failed to update user profile', e);
       return Left(NetworkExceptions.handleException(e));
