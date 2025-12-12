@@ -133,16 +133,19 @@ class Endpoints {
   static String updateProfile() => '$apiPrefix/accounts/v1/profile/';
 
   // ============================================================================
-  // Vehicle Endpoints
+  // Vehicle/Cars Endpoints
   // ============================================================================
 
-  /// Get all user vehicles.
+  /// Get all user cars.
+  /// GET /api/accounts/v1/cars/
   static String userVehicles() => '$apiPrefix/accounts/v1/cars/';
 
-  /// Create a new vehicle.
+  /// Create a new car.
+  /// POST /api/accounts/v1/cars/
   static String createVehicle() => '$apiPrefix/accounts/v1/cars/';
 
-  /// Delete a vehicle.
-  static String deleteVehicle(String vehicleId) =>
-      '$apiPrefix/v1/cars/$vehicleId/';
+  /// Get/Update/Delete a car.
+  /// GET/PUT/PATCH/DELETE /api/accounts/v1/cars/{id}/
+  static String vehicleById(int vehicleId) =>
+      '$apiPrefix/accounts/v1/cars/$vehicleId/';
 }

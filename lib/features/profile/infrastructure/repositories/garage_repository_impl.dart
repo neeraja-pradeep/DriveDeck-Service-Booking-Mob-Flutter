@@ -79,7 +79,7 @@ class GarageRepositoryImpl implements GarageRepository {
 
   @override
   Future<Either<Failure, Vehicle>> updateVehicle(
-    String vehicleId,
+    int vehicleId,
     AddVehicleRequest request,
   ) async {
     try {
@@ -106,7 +106,7 @@ class GarageRepositoryImpl implements GarageRepository {
   }
 
   @override
-  Future<Either<Failure, Unit>> deleteVehicle(String vehicleId) async {
+  Future<Either<Failure, Unit>> deleteVehicle(int vehicleId) async {
     try {
       debugPrint('🚗 GarageRepository: Deleting vehicle $vehicleId...');
       await garageApi.deleteVehicle(vehicleId);
@@ -127,25 +127,25 @@ class GarageRepositoryImpl implements GarageRepository {
   }
 
   @override
-  Future<Either<Failure, Vehicle>> setDefaultVehicle(String vehicleId) async {
+  Future<Either<Failure, Vehicle>> setFavouriteVehicle(int vehicleId) async {
     try {
-      debugPrint('🚗 GarageRepository: Setting default vehicle $vehicleId...');
-      final vehicleModel = await garageApi.setDefaultVehicle(vehicleId);
+      debugPrint('🚗 GarageRepository: Setting favourite vehicle $vehicleId...');
+      final vehicleModel = await garageApi.setFavouriteVehicle(vehicleId);
       final vehicle = vehicleModel.toDomain();
 
-      // Update cache - set this one as default, others as not default
+      // Update cache - set this one as favourite, others as not favourite
       final cachedVehicles = await localDataSource.getVehicles();
       if (cachedVehicles != null) {
         final updatedVehicles = cachedVehicles.map((v) {
           if (v.id == vehicleId) {
             return vehicle;
           }
-          return v.copyWith(isDefault: false);
+          return v.copyWith(isFavourite: false);
         }).toList();
         await localDataSource.saveVehicles(updatedVehicles);
       }
 
-      debugPrint('🚗 GarageRepository: Default vehicle set successfully');
+      debugPrint('🚗 GarageRepository: Favourite vehicle set successfully');
       return Right(vehicle);
     } on DioException catch (e) {
       debugPrint('🚗 GarageRepository: DioException: ${e.message}');

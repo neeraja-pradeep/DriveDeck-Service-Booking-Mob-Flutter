@@ -10,7 +10,7 @@ class DeleteVehicleUsecase {
   final GarageRepository _repository;
 
   /// Delete a vehicle by ID.
-  Future<Either<Failure, Unit>> call(String vehicleId) {
+  Future<Either<Failure, Unit>> call(int vehicleId) {
     return _repository.deleteVehicle(vehicleId);
   }
 }

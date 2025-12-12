@@ -5,39 +5,46 @@ import '../../domain/entities/vehicle.dart';
 part 'vehicle_model.g.dart';
 
 /// Vehicle model for API serialization.
+/// API Response format:
+/// {
+///   "id": 0,
+///   "user": "string",
+///   "car_type": "sedan",
+///   "registration": "string",
+///   "image_url": "string",
+///   "is_favourite": true,
+///   "created_at": "2025-12-12T18:59:21.218Z",
+///   "updated_at": "2025-12-12T18:59:21.218Z"
+/// }
 @JsonSerializable()
 class VehicleModel {
   const VehicleModel({
     required this.id,
-    required this.make,
-    required this.model,
-    this.year,
-    this.licensePlate,
-    this.color,
-    required this.vehicleType,
+    this.user,
+    required this.carType,
+    this.registration,
     this.imageUrl,
-    this.isDefault = false,
+    this.isFavourite = false,
     this.createdAt,
+    this.updatedAt,
   });
 
   factory VehicleModel.fromJson(Map<String, dynamic> json) =>
       _$VehicleModelFromJson(json);
 
   final int id;
-  final String make;
-  final String model;
-  final int? year;
-  @JsonKey(name: 'license_plate')
-  final String? licensePlate;
-  final String? color;
-  @JsonKey(name: 'vehicle_type')
-  final String vehicleType;
+  final String? user;
+  @JsonKey(name: 'car_type')
+  final String carType;
+  final String? registration;
   @JsonKey(name: 'image_url')
   final String? imageUrl;
-  @JsonKey(name: 'is_default')
-  final bool isDefault;
+  @JsonKey(name: 'is_favourite')
+  final bool isFavourite;
   @JsonKey(name: 'created_at')
   final String? createdAt;
+  @JsonKey(name: 'updated_at')
+  final String? updatedAt;
 
   Map<String, dynamic> toJson() => _$VehicleModelToJson(this);
 
@@ -45,15 +52,12 @@ class VehicleModel {
   Vehicle toDomain() {
     return Vehicle(
       id: id,
-      make: make,
-      model: model,
-      year: year,
-      licensePlate: licensePlate,
-      color: color,
-      vehicleType: _parseVehicleType(vehicleType),
+      carType: _parseVehicleType(carType),
+      registration: registration,
       imageUrl: imageUrl,
-      isDefault: isDefault,
+      isFavourite: isFavourite,
       createdAt: createdAt != null ? DateTime.tryParse(createdAt!) : null,
+      updatedAt: updatedAt != null ? DateTime.tryParse(updatedAt!) : null,
     );
   }
 

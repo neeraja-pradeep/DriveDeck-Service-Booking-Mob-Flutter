@@ -9,31 +9,27 @@ part of 'vehicle.dart';
 _$VehicleImpl _$$VehicleImplFromJson(Map<String, dynamic> json) =>
     _$VehicleImpl(
       id: (json['id'] as num).toInt(),
-      make: json['make'] as String,
-      model: json['model'] as String,
-      year: (json['year'] as num?)?.toInt(),
-      licensePlate: json['licensePlate'] as String?,
-      color: json['color'] as String?,
-      vehicleType: $enumDecode(_$GarageVehicleTypeEnumMap, json['vehicleType']),
+      carType: $enumDecode(_$GarageVehicleTypeEnumMap, json['carType']),
+      registration: json['registration'] as String?,
       imageUrl: json['imageUrl'] as String?,
-      isDefault: json['isDefault'] as bool? ?? false,
+      isFavourite: json['isFavourite'] as bool? ?? false,
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
+      updatedAt: json['updatedAt'] == null
+          ? null
+          : DateTime.parse(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$$VehicleImplToJson(_$VehicleImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'make': instance.make,
-      'model': instance.model,
-      'year': instance.year,
-      'licensePlate': instance.licensePlate,
-      'color': instance.color,
-      'vehicleType': _$GarageVehicleTypeEnumMap[instance.vehicleType]!,
+      'carType': _$GarageVehicleTypeEnumMap[instance.carType]!,
+      'registration': instance.registration,
       'imageUrl': instance.imageUrl,
-      'isDefault': instance.isDefault,
+      'isFavourite': instance.isFavourite,
       'createdAt': instance.createdAt?.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
     };
 
 const _$GarageVehicleTypeEnumMap = {
