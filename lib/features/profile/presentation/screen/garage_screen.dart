@@ -119,6 +119,8 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
                   SizedBox(width: 8.w),
                   Expanded(
                     child: TextField(
+                      // Centers text/cursor vertically to prevent clipping
+                      textAlignVertical: TextAlignVertical.center,
                       onChanged: (value) {
                         ref.read(garageSearchQueryProvider.notifier).state =
                             value;
@@ -128,7 +130,15 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
                         hintStyle: AppTypography.bodyMedium.copyWith(
                           color: AppColors.textHint,
                         ),
+                        // 1. Explicitly remove base border
                         border: InputBorder.none,
+                        // 2. Remove border when text field is clicked (focused)
+                        focusedBorder: InputBorder.none,
+                        // 3. Remove border when text field is idle (enabled)
+                        enabledBorder: InputBorder.none,
+                        // 4. Remove other potential borders just in case
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
                         contentPadding: EdgeInsets.zero,
                         isDense: true,
                       ),
