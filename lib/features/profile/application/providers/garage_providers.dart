@@ -50,10 +50,10 @@ final deleteVehicleUsecaseProvider = Provider<DeleteVehicleUsecase>((ref) {
   return DeleteVehicleUsecase(repository);
 });
 
-/// Provider for set default vehicle use case.
-final setDefaultVehicleUsecaseProvider = Provider<SetDefaultVehicleUsecase>((ref) {
+/// Provider for set favourite vehicle use case.
+final setFavouriteVehicleUsecaseProvider = Provider<SetFavouriteVehicleUsecase>((ref) {
   final repository = ref.watch(garageRepositoryProvider);
-  return SetDefaultVehicleUsecase(repository);
+  return SetFavouriteVehicleUsecase(repository);
 });
 
 /// State for garage screen.
@@ -129,7 +129,7 @@ class GarageNotifier extends StateNotifier<GarageState> {
   }
 
   /// Delete a vehicle.
-  Future<bool> deleteVehicle(String vehicleId) async {
+  Future<bool> deleteVehicle(int vehicleId) async {
     final result = await _ref.read(deleteVehicleUsecaseProvider).call(vehicleId);
     return result.fold(
       (failure) {
@@ -149,9 +149,9 @@ class GarageNotifier extends StateNotifier<GarageState> {
     );
   }
 
-  /// Set a vehicle as default.
-  Future<bool> setDefaultVehicle(String vehicleId) async {
-    final result = await _ref.read(setDefaultVehicleUsecaseProvider).call(vehicleId);
+  /// Set a vehicle as favourite.
+  Future<bool> setFavouriteVehicle(int vehicleId) async {
+    final result = await _ref.read(setFavouriteVehicleUsecaseProvider).call(vehicleId);
     return result.fold(
       (failure) {
         return false;
@@ -164,7 +164,7 @@ class GarageNotifier extends StateNotifier<GarageState> {
             if (v.id == vehicleId) {
               return updatedVehicle;
             }
-            return v.copyWith(isDefault: false);
+            return v.copyWith(isFavourite: false);
           }).toList();
           state = GarageLoaded(updatedVehicles);
         }
@@ -178,9 +178,9 @@ class GarageNotifier extends StateNotifier<GarageState> {
     final currentState = state;
     if (currentState is GarageLoaded) {
       List<Vehicle> updatedVehicles;
-      if (vehicle.isDefault) {
+      if (vehicle.isFavourite) {
         updatedVehicles = currentState.vehicles
-            .map((v) => v.copyWith(isDefault: false))
+            .map((v) => v.copyWith(isFavourite: false))
             .toList();
       } else {
         updatedVehicles = List.from(currentState.vehicles);
@@ -252,15 +252,14 @@ final filteredVehiclesProvider = Provider<List<Vehicle>>((ref) {
 
   final query = searchQuery.toLowerCase();
   return garageState.vehicles.where((vehicle) {
-    return vehicle.make.toLowerCase().contains(query) ||
-        vehicle.model.toLowerCase().contains(query) ||
-        (vehicle.licensePlate?.toLowerCase().contains(query) ?? false);
+    return vehicle.carType.displayName.toLowerCase().contains(query) ||
+        (vehicle.registration?.toLowerCase().contains(query) ?? false);
   }).toList();
 });
 
-/// Provider for default vehicle.
-final defaultVehicleProvider = Provider<Vehicle?>((ref) {
+/// Provider for favourite vehicle.
+final favouriteVehicleProvider = Provider<Vehicle?>((ref) {
   final garageState = ref.watch(garageStateProvider);
   if (garageState is! GarageLoaded) return null;
-  return garageState.vehicles.where((v) => v.isDefault).firstOrNull;
+  return garageState.vehicles.where((v) => v.isFavourite).firstOrNull;
 });

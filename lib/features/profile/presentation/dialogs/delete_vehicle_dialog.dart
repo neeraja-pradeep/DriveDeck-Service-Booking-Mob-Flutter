@@ -84,16 +84,16 @@ class DeleteVehicleDialog extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _getDisplayName(vehicle),
+                        vehicle.displayName,
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      if (vehicle.licensePlate != null &&
-                          vehicle.licensePlate!.isNotEmpty)
+                      if (vehicle.registration != null &&
+                          vehicle.registration!.isNotEmpty)
                         Text(
-                          vehicle.licensePlate!,
+                          vehicle.registration!,
                           style: TextStyle(
                             fontSize: 12.sp,
                             color: Colors.grey[600],
@@ -105,7 +105,7 @@ class DeleteVehicleDialog extends StatelessWidget {
               ],
             ),
           ),
-          if (vehicle.isDefault) ...[
+          if (vehicle.isFavourite) ...[
             SizedBox(height: 12.h),
             Container(
               padding: EdgeInsets.all(8.w),
@@ -124,7 +124,7 @@ class DeleteVehicleDialog extends StatelessWidget {
                   SizedBox(width: 8.w),
                   Expanded(
                     child: Text(
-                      'This is your default vehicle',
+                      'This is your favourite vehicle',
                       style: TextStyle(
                         fontSize: 12.sp,
                         color: Colors.orange[700],
@@ -171,10 +171,4 @@ class DeleteVehicleDialog extends StatelessWidget {
     );
   }
 
-  String _getDisplayName(Vehicle vehicle) {
-    if (vehicle.year != null) {
-      return '${vehicle.year} ${vehicle.make} ${vehicle.model}';
-    }
-    return '${vehicle.make} ${vehicle.model}';
-  }
 }

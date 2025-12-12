@@ -4,7 +4,7 @@ import '../../../../core/error/failure.dart';
 import '../entities/car_wash_shop.dart';
 import '../entities/service_category.dart';
 import '../entities/user_location.dart';
-import '../entities/user_profile.dart';
+import '../../../profile/domain/entities/user_profile.dart';
 
 /// Abstract repository interface for home screen data.
 abstract class HomeRepository {

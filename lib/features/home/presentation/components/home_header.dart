@@ -22,7 +22,7 @@ class HomeHeader extends ConsumerWidget {
       children: [
         // Profile image
         profileState.when(
-          data: (profile) => _buildProfileImage(profile?.profileImage),
+          data: (profile) => _buildProfileImage(profile?.profilePicture),
           loading: () => _buildProfileImageShimmer(),
           error: (_, _) => _buildProfileImage(null),
         ),

@@ -10,7 +10,7 @@ import '../../../../core/utils/logger.dart';
 import '../../domain/entities/car_wash_shop.dart';
 import '../../domain/entities/service_category.dart';
 import '../../domain/entities/user_location.dart';
-import '../../domain/entities/user_profile.dart';
+import '../../../profile/domain/entities/user_profile.dart';
 import '../../domain/repositories/home_repository.dart';
 import '../data_sources/local/home_local_ds.dart';
 import '../data_sources/remote/home_api.dart';
@@ -39,7 +39,7 @@ class HomeRepositoryImpl implements HomeRepository {
   Future<Either<Failure, UserProfile>> getUserProfile() async {
     try {
       final model = await _homeApi.getUserProfile();
-      return Right(model.toEntity());
+      return Right(model.toDomain());
     } on DioException catch (e) {
       AppLogger.e('Failed to get user profile', e);
       return Left(NetworkExceptions.handleException(e));
@@ -69,7 +69,7 @@ class HomeRepositoryImpl implements HomeRepository {
         latitude: latitude,
         longitude: longitude,
       );
-      return Right(model.toEntity());
+      return Right(model.toDomain());
     } on DioException catch (e) {
       AppLogger.e('Failed to update user profile', e);
       return Left(NetworkExceptions.handleException(e));

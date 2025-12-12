@@ -5,7 +5,7 @@ import '../../../../../core/network/endpoints.dart';
 import '../../../../auth/application/providers/auth_providers.dart';
 import '../../models/car_wash_shop_model.dart';
 import '../../models/service_category_model.dart';
-import '../../models/user_profile_model.dart';
+import '../../../../profile/infrastructure/models/user_profile_model.dart';
 
 /// Provider for the Home API data source.
 /// Uses the shared apiClientProvider to ensure session cookies are attached.

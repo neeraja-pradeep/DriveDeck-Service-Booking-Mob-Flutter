@@ -55,11 +55,7 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
         actions: [
           IconButton(
             onPressed: () => AddVehicleBottomSheet.show(context),
-            icon: Icon(
-              Icons.add,
-              color: AppColors.primary,
-              size: 28.sp,
-            ),
+            icon: Icon(Icons.add, color: AppColors.primary, size: 28.sp),
             tooltip: 'Add Vehicle',
           ),
           SizedBox(width: 8.w),
@@ -79,8 +75,8 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
           ),
         ],
       ),
-      floatingActionButton: garageState is GarageLoaded &&
-              (garageState).vehicles.isNotEmpty
+      floatingActionButton:
+          garageState is GarageLoaded && (garageState).vehicles.isNotEmpty
           ? FloatingActionButton.extended(
               onPressed: () => AddVehicleBottomSheet.show(context),
               backgroundColor: AppColors.primary,
@@ -123,6 +119,8 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
                   SizedBox(width: 8.w),
                   Expanded(
                     child: TextField(
+                      // Centers text/cursor vertically to prevent clipping
+                      textAlignVertical: TextAlignVertical.center,
                       onChanged: (value) {
                         ref.read(garageSearchQueryProvider.notifier).state =
                             value;
@@ -132,7 +130,15 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
                         hintStyle: AppTypography.bodyMedium.copyWith(
                           color: AppColors.textHint,
                         ),
+                        // 1. Explicitly remove base border
                         border: InputBorder.none,
+                        // 2. Remove border when text field is clicked (focused)
+                        focusedBorder: InputBorder.none,
+                        // 3. Remove border when text field is idle (enabled)
+                        enabledBorder: InputBorder.none,
+                        // 4. Remove other potential borders just in case
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
                         contentPadding: EdgeInsets.zero,
                         isDense: true,
                       ),
@@ -179,11 +185,12 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
     return switch (state) {
       GarageInitial() || GarageLoading() => _buildLoadingState(),
       GarageError(message: final message) => _buildErrorState(message),
-      GarageLoaded() => vehicles.isEmpty
-          ? GarageEmptyState(
-              onAddVehicle: () => AddVehicleBottomSheet.show(context),
-            )
-          : _buildVehicleList(vehicles),
+      GarageLoaded() =>
+        vehicles.isEmpty
+            ? GarageEmptyState(
+                onAddVehicle: () => AddVehicleBottomSheet.show(context),
+              )
+            : _buildVehicleList(vehicles),
     };
   }
 
@@ -211,10 +218,9 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
           ),
           SizedBox(height: 16.h),
           ElevatedButton(
-            onPressed: () => ref.read(garageStateProvider.notifier).initialize(),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-            ),
+            onPressed: () =>
+                ref.read(garageStateProvider.notifier).initialize(),
+            style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
             child: const Text('Retry', style: TextStyle(color: Colors.white)),
           ),
         ],
@@ -234,30 +240,30 @@ class _GarageScreenState extends ConsumerState<GarageScreen> {
             // TODO: Navigate to vehicle detail or edit
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Selected: ${vehicle.make} ${vehicle.model}'),
+                content: Text('Selected: ${vehicle.displayName}'),
                 duration: const Duration(seconds: 1),
               ),
             );
           },
-          onSetDefault: () => _onSetDefaultVehicle(vehicle),
+          onSetDefault: () => _onSetFavouriteVehicle(vehicle),
           onDelete: () => _onDeleteVehicle(vehicle),
         );
       },
     );
   }
 
-  Future<void> _onSetDefaultVehicle(Vehicle vehicle) async {
+  Future<void> _onSetFavouriteVehicle(Vehicle vehicle) async {
     final success = await ref
         .read(garageStateProvider.notifier)
-        .setDefaultVehicle(vehicle.id);
+        .setFavouriteVehicle(vehicle.id);
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             success
-                ? '${vehicle.make} ${vehicle.model} set as default'
-                : 'Failed to set default vehicle',
+                ? '${vehicle.displayName} set as favourite'
+                : 'Failed to set favourite vehicle',
           ),
           backgroundColor: success ? Colors.green : Colors.red,
         ),

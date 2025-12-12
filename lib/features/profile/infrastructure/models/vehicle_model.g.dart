@@ -7,28 +7,24 @@ part of 'vehicle_model.dart';
 // **************************************************************************
 
 VehicleModel _$VehicleModelFromJson(Map<String, dynamic> json) => VehicleModel(
-      id: json['id'] as String,
-      make: json['make'] as String,
-      model: json['model'] as String,
-      year: (json['year'] as num?)?.toInt(),
-      licensePlate: json['license_plate'] as String?,
-      color: json['color'] as String?,
-      vehicleType: json['vehicle_type'] as String,
+      id: (json['id'] as num).toInt(),
+      user: json['user'] as String?,
+      carType: json['car_type'] as String,
+      registration: json['registration'] as String?,
       imageUrl: json['image_url'] as String?,
-      isDefault: json['is_default'] as bool? ?? false,
+      isFavourite: json['is_favourite'] as bool? ?? false,
       createdAt: json['created_at'] as String?,
+      updatedAt: json['updated_at'] as String?,
     );
 
 Map<String, dynamic> _$VehicleModelToJson(VehicleModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'make': instance.make,
-      'model': instance.model,
-      'year': instance.year,
-      'license_plate': instance.licensePlate,
-      'color': instance.color,
-      'vehicle_type': instance.vehicleType,
+      'user': instance.user,
+      'car_type': instance.carType,
+      'registration': instance.registration,
       'image_url': instance.imageUrl,
-      'is_default': instance.isDefault,
+      'is_favourite': instance.isFavourite,
       'created_at': instance.createdAt,
+      'updated_at': instance.updatedAt,
     };

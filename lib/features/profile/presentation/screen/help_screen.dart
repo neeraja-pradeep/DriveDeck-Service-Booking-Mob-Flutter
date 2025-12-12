@@ -15,7 +15,7 @@ class HelpScreen extends StatefulWidget {
 
 class _HelpScreenState extends State<HelpScreen> {
   final List<_FaqItem> _faqItems = [
-    _FaqItem(
+    const _FaqItem(
       question: 'How do I book a service?',
       answer:
           'To book a service, go to the Home screen and select a service center. Choose your preferred services, pick a date and time, and confirm your booking.',
@@ -176,11 +176,7 @@ class _HelpScreenState extends State<HelpScreen> {
                 color: AppColors.primary.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                icon,
-                size: 24.sp,
-                color: AppColors.primary,
-              ),
+              child: Icon(icon, size: 24.sp, color: AppColors.primary),
             ),
             SizedBox(height: 12.h),
             Text(
@@ -207,9 +203,7 @@ class _HelpScreenState extends State<HelpScreen> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.w),
       child: Column(
-        children: _faqItems
-            .map((item) => _buildFaqTile(item))
-            .toList(),
+        children: _faqItems.map((item) => _buildFaqTile(item)).toList(),
       ),
     );
   }
@@ -228,9 +222,7 @@ class _HelpScreenState extends State<HelpScreen> {
         shape: const RoundedRectangleBorder(side: BorderSide.none),
         title: Text(
           item.question,
-          style: AppTypography.bodyMedium.copyWith(
-            fontWeight: FontWeight.w500,
-          ),
+          style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.w500),
         ),
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -301,11 +293,7 @@ class _HelpScreenState extends State<HelpScreen> {
                 color: AppColors.grey100,
                 borderRadius: BorderRadius.circular(10.r),
               ),
-              child: Icon(
-                icon,
-                size: 22.sp,
-                color: AppColors.textPrimary,
-              ),
+              child: Icon(icon, size: 22.sp, color: AppColors.textPrimary),
             ),
             SizedBox(width: 16.w),
             Expanded(
@@ -350,10 +338,7 @@ class _HelpScreenState extends State<HelpScreen> {
 }
 
 class _FaqItem {
-  const _FaqItem({
-    required this.question,
-    required this.answer,
-  });
+  const _FaqItem({required this.question, required this.answer});
 
   final String question;
   final String answer;

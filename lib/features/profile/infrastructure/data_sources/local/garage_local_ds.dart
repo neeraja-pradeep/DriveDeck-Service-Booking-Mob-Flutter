@@ -15,7 +15,7 @@ abstract class GarageLocalDataSource {
   Future<void> updateVehicleInCache(Vehicle vehicle);
 
   /// Remove vehicle from cache.
-  Future<void> removeVehicleFromCache(String vehicleId);
+  Future<void> removeVehicleFromCache(int vehicleId);
 
   /// Clear cache.
   Future<void> clearCache();
@@ -41,10 +41,10 @@ class GarageLocalDataSourceImpl implements GarageLocalDataSource {
   Future<void> addVehicleToCache(Vehicle vehicle) async {
     _cachedVehicles ??= [];
 
-    // If this is a default vehicle, update others
-    if (vehicle.isDefault) {
+    // If this is a favourite vehicle, update others
+    if (vehicle.isFavourite) {
       _cachedVehicles = _cachedVehicles!
-          .map((v) => v.isDefault ? v.copyWith(isDefault: false) : v)
+          .map((v) => v.isFavourite ? v.copyWith(isFavourite: false) : v)
           .toList();
     }
 
@@ -62,7 +62,7 @@ class GarageLocalDataSourceImpl implements GarageLocalDataSource {
   }
 
   @override
-  Future<void> removeVehicleFromCache(String vehicleId) async {
+  Future<void> removeVehicleFromCache(int vehicleId) async {
     _cachedVehicles?.removeWhere((v) => v.id == vehicleId);
   }
 

@@ -25,8 +25,8 @@ class VehicleCard extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 12.h),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.r),
-        side: vehicle.isDefault
-            ? BorderSide(color: AppColors.primary, width: 2)
+        side: vehicle.isFavourite
+            ? const BorderSide(color: AppColors.primary, width: 2)
             : BorderSide.none,
       ),
       elevation: 2,
@@ -46,7 +46,7 @@ class VehicleCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Icon(
-                  _getVehicleIcon(vehicle.vehicleType),
+                  _getVehicleIcon(vehicle.carType),
                   color: AppColors.primary,
                   size: 28.sp,
                 ),
@@ -62,7 +62,7 @@ class VehicleCard extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            _getDisplayName(vehicle),
+                            vehicle.displayName,
                             style: TextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w600,
@@ -71,7 +71,7 @@ class VehicleCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        if (vehicle.isDefault)
+                        if (vehicle.isFavourite)
                           Container(
                             padding: EdgeInsets.symmetric(
                               horizontal: 8.w,
@@ -82,7 +82,7 @@ class VehicleCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(12.r),
                             ),
                             child: Text(
-                              'Default',
+                              'Favourite',
                               style: TextStyle(
                                 fontSize: 10.sp,
                                 fontWeight: FontWeight.w600,
@@ -93,44 +93,14 @@ class VehicleCard extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 4.h),
-                    Row(
-                      children: [
-                        Text(
-                          vehicle.vehicleType.displayName,
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                        if (vehicle.licensePlate != null &&
-                            vehicle.licensePlate!.isNotEmpty) ...[
-                          Text(
-                            ' • ',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: Colors.grey[400],
-                            ),
-                          ),
-                          Text(
-                            vehicle.licensePlate!,
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: Colors.grey[600],
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                    if (vehicle.color != null && vehicle.color!.isNotEmpty)
-                      Padding(
-                        padding: EdgeInsets.only(top: 2.h),
-                        child: Text(
-                          vehicle.color!,
-                          style: TextStyle(
-                            fontSize: 11.sp,
-                            color: Colors.grey[500],
-                          ),
+                    if (vehicle.registration != null &&
+                        vehicle.registration!.isNotEmpty)
+                      Text(
+                        vehicle.registration!,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: Colors.grey[600],
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                   ],
@@ -139,17 +109,14 @@ class VehicleCard extends StatelessWidget {
 
               // Actions menu
               PopupMenuButton<String>(
-                icon: Icon(
-                  Icons.more_vert,
-                  color: Colors.grey[600],
-                ),
+                icon: Icon(Icons.more_vert, color: Colors.grey[600]),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 itemBuilder: (context) => [
-                  if (!vehicle.isDefault)
+                  if (!vehicle.isFavourite)
                     PopupMenuItem<String>(
-                      value: 'default',
+                      value: 'favourite',
                       child: Row(
                         children: [
                           Icon(
@@ -159,7 +126,7 @@ class VehicleCard extends StatelessWidget {
                           ),
                           SizedBox(width: 12.w),
                           Text(
-                            'Set as Default',
+                            'Set as Favourite',
                             style: TextStyle(fontSize: 14.sp),
                           ),
                         ],
@@ -188,7 +155,7 @@ class VehicleCard extends StatelessWidget {
                 ],
                 onSelected: (value) {
                   switch (value) {
-                    case 'default':
+                    case 'favourite':
                       onSetDefault?.call();
                       break;
                     case 'delete':
@@ -202,13 +169,6 @@ class VehicleCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _getDisplayName(Vehicle vehicle) {
-    if (vehicle.year != null) {
-      return '${vehicle.year} ${vehicle.make} ${vehicle.model}';
-    }
-    return '${vehicle.make} ${vehicle.model}';
   }
 
   IconData _getVehicleIcon(GarageVehicleType type) {

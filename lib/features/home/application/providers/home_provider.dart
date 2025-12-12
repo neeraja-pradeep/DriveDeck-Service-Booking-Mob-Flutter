@@ -6,7 +6,7 @@ import '../../../auth/application/states/auth_state.dart';
 import '../../domain/entities/car_wash_shop.dart';
 import '../../domain/entities/service_category.dart';
 import '../../domain/entities/user_location.dart';
-import '../../domain/entities/user_profile.dart';
+import '../../../profile/domain/entities/user_profile.dart';
 import '../../infrastructure/repositories/home_repository_impl.dart';
 import '../states/home_state.dart';
 

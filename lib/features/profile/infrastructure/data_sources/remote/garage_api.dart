@@ -14,15 +14,15 @@ abstract class GarageApi {
 
   /// Update an existing vehicle.
   Future<VehicleModel> updateVehicle(
-    String vehicleId,
+    int vehicleId,
     Map<String, dynamic> request,
   );
 
   /// Delete a vehicle.
-  Future<void> deleteVehicle(String vehicleId);
+  Future<void> deleteVehicle(int vehicleId);
 
-  /// Set a vehicle as default.
-  Future<VehicleModel> setDefaultVehicle(String vehicleId);
+  /// Set a vehicle as favourite.
+  Future<VehicleModel> setFavouriteVehicle(int vehicleId);
 }
 
 /// Implementation of garage API.
@@ -60,12 +60,12 @@ class GarageApiImpl implements GarageApi {
 
   @override
   Future<VehicleModel> updateVehicle(
-    String vehicleId,
+    int vehicleId,
     Map<String, dynamic> request,
   ) async {
     debugPrint('🚗 GarageApi: Updating vehicle $vehicleId: $request');
     final response = await _apiClient.put(
-      Endpoints.deleteVehicle(vehicleId),
+      Endpoints.vehicleById(vehicleId),
       data: request,
     );
 
@@ -74,20 +74,20 @@ class GarageApiImpl implements GarageApi {
   }
 
   @override
-  Future<void> deleteVehicle(String vehicleId) async {
+  Future<void> deleteVehicle(int vehicleId) async {
     debugPrint('🚗 GarageApi: Deleting vehicle $vehicleId');
-    await _apiClient.delete(Endpoints.deleteVehicle(vehicleId));
+    await _apiClient.delete(Endpoints.vehicleById(vehicleId));
     debugPrint('🚗 GarageApi: Vehicle deleted successfully');
   }
 
   @override
-  Future<VehicleModel> setDefaultVehicle(String vehicleId) async {
-    debugPrint('🚗 GarageApi: Setting vehicle $vehicleId as default');
+  Future<VehicleModel> setFavouriteVehicle(int vehicleId) async {
+    debugPrint('🚗 GarageApi: Setting vehicle $vehicleId as favourite');
     final response = await _apiClient.patch(
-      '${Endpoints.deleteVehicle(vehicleId)}set-default/',
+      '${Endpoints.vehicleById(vehicleId)}set-favourite/',
     );
 
-    debugPrint('🚗 GarageApi: Default vehicle set successfully');
+    debugPrint('🚗 GarageApi: Favourite vehicle set successfully');
     return VehicleModel.fromJson(response.data as Map<String, dynamic>);
   }
 }
