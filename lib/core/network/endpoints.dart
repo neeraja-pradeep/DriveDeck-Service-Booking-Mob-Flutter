@@ -95,8 +95,9 @@ class Endpoints {
   static String shopDetails(int shopId) => '$apiPrefix/shop/shops/$shopId/';
 
   /// Get shop services.
+  /// GET /api/shop/shop-services/?shop={shopId}
   static String shopServices(int shopId) =>
-      '$apiPrefix/shop/shops/$shopId/services/';
+      '$apiPrefix/shop/shop-services/?shop=$shopId';
 
   /// Get shop packages.
   static String shopPackages(int shopId) =>
