@@ -113,6 +113,8 @@ class _TimeSelectionScreenState extends ConsumerState<TimeSelectionScreen> {
 
   Widget _buildCalendarSection(DateTime currentMonth, DateTime? selectedDate) {
     final dates = getDatesForMonth(currentMonth);
+    // Get available weekdays from API (0=Monday to 6=Sunday)
+    final availableWeekdays = ref.watch(availableWeekdaysProvider);
 
     return Container(
       padding: EdgeInsets.all(16.w),
@@ -213,6 +215,10 @@ class _TimeSelectionScreenState extends ConsumerState<TimeSelectionScreen> {
               final date = dates[index];
               final isCurrentMonth = date.month == currentMonth.month;
               final isPast = isDateInPast(date);
+              // Convert Dart weekday (1=Monday) to API weekday (0=Monday)
+              final apiWeekday = date.weekday - 1;
+              final isShopOpen = availableWeekdays.contains(apiWeekday);
+              final isDisabled = isPast || !isCurrentMonth || !isShopOpen;
               final isSelected =
                   selectedDate != null &&
                   date.year == selectedDate.year &&
@@ -221,17 +227,19 @@ class _TimeSelectionScreenState extends ConsumerState<TimeSelectionScreen> {
               final isTodayDate = isToday(date);
 
               return GestureDetector(
-                onTap: isPast || !isCurrentMonth
+                onTap: isDisabled
                     ? null
                     : () {
                         ref.read(selectedDateProvider.notifier).state = date;
                         ref.read(bookingDataProvider.notifier).selectDate(date);
+                        // Clear previously selected time slot when date changes
+                        ref.read(selectedTimeSlotProvider.notifier).state = null;
                       },
                 child: Container(
                   decoration: BoxDecoration(
                     color: isSelected
                         ? AppColors.primary
-                        : isTodayDate
+                        : isTodayDate && !isDisabled
                         ? AppColors.primary.withValues(alpha: 0.1)
                         : Colors.transparent,
                     borderRadius: BorderRadius.circular(8.r),
@@ -242,11 +250,14 @@ class _TimeSelectionScreenState extends ConsumerState<TimeSelectionScreen> {
                       style: AppTypography.bodyMedium.copyWith(
                         color: isSelected
                             ? Colors.white
-                            : !isCurrentMonth || isPast
+                            : isDisabled
                             ? AppColors.textHint
                             : AppColors.textPrimary,
                         fontWeight: isSelected || isTodayDate
                             ? FontWeight.w600
+                            : null,
+                        decoration: !isShopOpen && isCurrentMonth && !isPast
+                            ? TextDecoration.lineThrough
                             : null,
                       ),
                     ),
@@ -264,6 +275,9 @@ class _TimeSelectionScreenState extends ConsumerState<TimeSelectionScreen> {
     List<TimeSlot> slots,
     TimeSlot? selectedSlot,
   ) {
+    final isLoading = ref.watch(timeSlotsLoadingProvider);
+    final selectedDate = ref.watch(selectedDateProvider);
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
@@ -276,58 +290,115 @@ class _TimeSelectionScreenState extends ConsumerState<TimeSelectionScreen> {
             ),
           ),
           SizedBox(height: 12.h),
-          Wrap(
-            spacing: 12.w,
-            runSpacing: 12.h,
-            children: slots.map((slot) {
-              final isSelected = selectedSlot?.id == slot.id;
-              final isAvailable = slot.isAvailable;
-
-              return GestureDetector(
-                onTap: isAvailable
-                    ? () {
-                        ref.read(selectedTimeSlotProvider.notifier).state =
-                            slot;
-                        ref
-                            .read(bookingDataProvider.notifier)
-                            .selectTimeSlot(slot.id, slot.displayTime);
-                      }
-                    : null,
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 10.h,
+          if (selectedDate == null)
+            Container(
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                color: AppColors.grey50,
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.calendar_today,
+                       size: 20.sp,
+                       color: AppColors.textSecondary),
+                  SizedBox(width: 12.w),
+                  Text(
+                    'Please select a date first',
+                    style: AppTypography.bodyMedium.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
                   ),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? AppColors.primary
-                        : isAvailable
-                        ? Colors.transparent
-                        : AppColors.grey100,
-                    border: Border.all(
+                ],
+              ),
+            )
+          else if (isLoading)
+            Center(
+              child: Padding(
+                padding: EdgeInsets.all(24.h),
+                child: const CircularProgressIndicator(),
+              ),
+            )
+          else if (slots.isEmpty)
+            Container(
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                color: AppColors.warning.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(
+                  color: AppColors.warning.withValues(alpha: 0.3),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.info_outline,
+                       size: 20.sp,
+                       color: AppColors.warning),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: Text(
+                      'No available slots for this day. Please select another date.',
+                      style: AppTypography.bodyMedium.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          else
+            Wrap(
+              spacing: 12.w,
+              runSpacing: 12.h,
+              children: slots.map((slot) {
+                final isSelected = selectedSlot?.id == slot.id;
+                final isAvailable = slot.isAvailable;
+
+                return GestureDetector(
+                  onTap: isAvailable
+                      ? () {
+                          ref.read(selectedTimeSlotProvider.notifier).state =
+                              slot;
+                          ref
+                              .read(bookingDataProvider.notifier)
+                              .selectTimeSlot(slot.id, slot.displayTime);
+                        }
+                      : null,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 10.h,
+                    ),
+                    decoration: BoxDecoration(
                       color: isSelected
                           ? AppColors.primary
                           : isAvailable
-                          ? AppColors.grey300
-                          : AppColors.grey200,
+                          ? Colors.transparent
+                          : AppColors.grey100,
+                      border: Border.all(
+                        color: isSelected
+                            ? AppColors.primary
+                            : isAvailable
+                            ? AppColors.grey300
+                            : AppColors.grey200,
+                      ),
+                      borderRadius: BorderRadius.circular(20.r),
                     ),
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  child: Text(
-                    slot.displayTime,
-                    style: AppTypography.labelMedium.copyWith(
-                      color: isSelected
-                          ? Colors.white
-                          : isAvailable
-                          ? AppColors.textPrimary
-                          : AppColors.textHint,
-                      fontWeight: isSelected ? FontWeight.w600 : null,
+                    child: Text(
+                      slot.displayTime,
+                      style: AppTypography.labelMedium.copyWith(
+                        color: isSelected
+                            ? Colors.white
+                            : isAvailable
+                            ? AppColors.textPrimary
+                            : AppColors.textHint,
+                        fontWeight: isSelected ? FontWeight.w600 : null,
+                      ),
                     ),
                   ),
-                ),
-              );
-            }).toList(),
-          ),
+                );
+              }).toList(),
+            ),
         ],
       ),
     );

@@ -5,7 +5,9 @@ import '../../../bookings/application/providers/bookings_providers.dart';
 import '../../../shop/application/providers/shop_providers.dart';
 import '../../../shop/domain/entities/booking_confirmation.dart';
 import '../../../shop/domain/entities/booking_request.dart';
+import '../../../shop/domain/entities/shop.dart';
 import '../../../shop/domain/entities/vehicle_type.dart';
+import '../../../shop/infrastructure/models/shop_model.dart';
 import '../../../home/application/providers/home_provider.dart';
 import '../../domain/entities/booking_data.dart';
 import '../../domain/entities/time_slot.dart';
@@ -133,15 +135,118 @@ final selectedTimeSlotProvider = StateProvider<TimeSlot?>((ref) => null);
 /// Provider for pickup and delivery toggle.
 final pickupDeliveryProvider = StateProvider<bool>((ref) => false);
 
-/// Provider for available time slots.
+/// Provider for available time slots from API.
+/// Fetches slots from /api/shop/schedule/ based on selected date and shop.
+final availableTimeSlotsAsyncProvider =
+    FutureProvider.autoDispose<List<TimeSlot>>((ref) async {
+  final bookingData = ref.watch(bookingDataProvider);
+  final selectedDate = ref.watch(selectedDateProvider);
+
+  // If no shop or date selected, return empty list
+  if (bookingData == null || selectedDate == null) {
+    return [];
+  }
+
+  final shopId = int.tryParse(bookingData.shopId);
+  if (shopId == null) {
+    return [];
+  }
+
+  try {
+    final shopApi = ref.watch(shopApiProvider);
+    final scheduleSlots = await shopApi.getShopSchedule(
+      shopId: shopId,
+      date: selectedDate,
+    );
+
+    debugPrint('📅 Fetched ${scheduleSlots.length} slots for $selectedDate');
+
+    // Convert API slots to TimeSlot entities
+    return scheduleSlots.map((slot) {
+      final domainSlot = slot.toDomain();
+      return TimeSlot(
+        id: domainSlot.slotNumber.toString(),
+        time: domainSlot.startTime,
+        displayTime: _formatTimeDisplay(domainSlot.startTime),
+        isAvailable: domainSlot.isAvailable,
+      );
+    }).toList();
+  } catch (e) {
+    debugPrint('❌ Failed to fetch slots: $e');
+    return [];
+  }
+});
+
+/// Format time for display (e.g., "09:00" -> "9:00 AM")
+String _formatTimeDisplay(String time) {
+  try {
+    final parts = time.split(':');
+    final hour = int.parse(parts[0]);
+    final minute = parts.length > 1 ? parts[1] : '00';
+    final isPM = hour >= 12;
+    final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
+    return '$displayHour:$minute ${isPM ? 'PM' : 'AM'}';
+  } catch (e) {
+    return time;
+  }
+}
+
+/// Sync provider that reads from async provider (for backwards compatibility).
 final availableTimeSlotsProvider = Provider<List<TimeSlot>>((ref) {
-  // Mock time slots - in real app, this would come from API
-  return [
-    const TimeSlot(id: '1', time: '10:00', displayTime: '10:00 AM'),
-    const TimeSlot(id: '2', time: '11:00', displayTime: '11:00 AM'),
-    const TimeSlot(id: '3', time: '13:00', displayTime: '1:00 PM', isAvailable: false),
-    const TimeSlot(id: '4', time: '15:00', displayTime: '3:00 PM'),
-  ];
+  final asyncSlots = ref.watch(availableTimeSlotsAsyncProvider);
+  return asyncSlots.when(
+    data: (slots) => slots,
+    loading: () => [],
+    error: (_, __) => [],
+  );
+});
+
+/// Provider for weekly business hours (to disable unavailable weekdays in calendar).
+final weeklyBusinessHoursProvider =
+    FutureProvider.autoDispose<List<WeeklyBusinessHours>>((ref) async {
+  final bookingData = ref.watch(bookingDataProvider);
+
+  if (bookingData == null) {
+    return [];
+  }
+
+  final shopId = int.tryParse(bookingData.shopId);
+  if (shopId == null) {
+    return [];
+  }
+
+  try {
+    final shopApi = ref.watch(shopApiProvider);
+    final hoursModels = await shopApi.getWeeklyBusinessHours(shopId);
+    debugPrint('📆 Fetched ${hoursModels.length} business hours for shop $shopId');
+    return hoursModels.map((m) => m.toDomain()).toList();
+  } catch (e) {
+    debugPrint('❌ Failed to fetch weekly business hours: $e');
+    return [];
+  }
+});
+
+/// Provider that returns a set of valid weekdays (0=Monday to 6=Sunday).
+/// Use this to enable/disable dates in the calendar.
+final availableWeekdaysProvider = Provider<Set<int>>((ref) {
+  final hoursAsync = ref.watch(weeklyBusinessHoursProvider);
+  return hoursAsync.when(
+    data: (hours) {
+      // Only include weekdays that have hours defined and are not marked as closed
+      return hours
+          .where((h) => !h.isClosed)
+          .map((h) => h.weekday)
+          .toSet();
+    },
+    loading: () => {0, 1, 2, 3, 4, 5, 6}, // Allow all while loading
+    error: (_, __) => {0, 1, 2, 3, 4, 5, 6}, // Allow all on error
+  );
+});
+
+/// Loading state for time slots.
+final timeSlotsLoadingProvider = Provider<bool>((ref) {
+  final asyncSlots = ref.watch(availableTimeSlotsAsyncProvider);
+  return asyncSlots.isLoading;
 });
 
 /// Provider for current month being displayed in calendar.
