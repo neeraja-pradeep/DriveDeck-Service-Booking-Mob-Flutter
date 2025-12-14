@@ -133,10 +133,10 @@ class Endpoints {
   static String shopSchedule() => '$apiPrefix/shop/schedule/';
 
   /// Get weekly business hours for a shop.
-  /// GET /api/shop/v1/weekly_businesses/
+  /// GET /api/shop/v1/shop_weekly_businesses/
   /// Query params: shop (shop ID)
   /// Returns which weekdays (0=Monday, 6=Sunday) have business hours
-  static String weeklyBusinessHours() => '$apiPrefix/shop/v1/weekly_businesses/';
+  static String weeklyBusinessHours() => '$apiPrefix/shop/v1/shop_weekly_businesses/';
 
   /// Get shop time slots (legacy).
   static String shopTimeSlots(String shopId) =>
