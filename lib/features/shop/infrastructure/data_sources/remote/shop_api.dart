@@ -151,49 +151,42 @@ class ShopApiImpl implements ShopApi {
     required DateTime startDate,
     int days = 7,
   }) async {
-    // Legacy method - now uses date-day endpoint for single day
-    // For multi-day availability, loop through days
-    final availabilityList = <ShopDateAvailabilityModel>[];
+    // Fetch date-day data which returns multiple dates at once
+    try {
+      final response = await apiClient.get(
+        Endpoints.shopDateDay(shopId),
+        queryParameters: {
+          'date': startDate.toIso8601String().split('T').first,
+        },
+      );
 
-    for (int i = 0; i < days; i++) {
-      final date = startDate.add(Duration(days: i));
-      try {
-        final response = await apiClient.get(
-          Endpoints.shopDateDay(shopId),
-          queryParameters: {
-            'date': date.toIso8601String().split('T').first,
-          },
-        );
+      // API returns { "shop": 2, "start_date": "...", "dates": [...] }
+      final List<dynamic> datesJson = response.data['dates'] ?? [];
+      final availabilityList = <ShopDateAvailabilityModel>[];
 
-        // API returns { "shop": 2, "start_date": "...", "dates": [...] }
-        final List<dynamic> slotsJson = response.data['dates'] ?? [];
-        // Convert ScheduleSlotModel format to ShopTimeSlotModel format
-        final slots = slotsJson.map((json) {
-          final scheduleSlot = ScheduleSlotModel.fromJson(json as Map<String, dynamic>);
-          return ShopTimeSlotModel(
-            slotNumber: scheduleSlot.slotNumber,
-            startTime: scheduleSlot.startTime,
-            endTime: scheduleSlot.endTime,
-            isAvailable: !(scheduleSlot.isBooked ?? false),
-          );
-        }).toList();
+      for (final dateJson in datesJson) {
+        final dateDayModel = DateDayModel.fromJson(dateJson as Map<String, dynamic>);
+        final timeSlots = dateDayModel.toTimeSlots();
+
+        // Convert to ShopTimeSlotModel
+        final slots = timeSlots.map((slot) => ShopTimeSlotModel(
+          slotNumber: slot.slotNumber,
+          startTime: slot.startTime,
+          endTime: slot.endTime,
+          isAvailable: slot.isAvailable,
+        )).toList();
 
         availabilityList.add(ShopDateAvailabilityModel(
-          date: date.toIso8601String().split('T').first,
+          date: dateDayModel.date,
           slots: slots,
-          isOpen: slots.isNotEmpty,
-        ));
-      } catch (_) {
-        // If fetching fails for a date, mark as unavailable
-        availabilityList.add(ShopDateAvailabilityModel(
-          date: date.toIso8601String().split('T').first,
-          slots: [],
-          isOpen: false,
+          isOpen: !dateDayModel.closed,
         ));
       }
-    }
 
-    return availabilityList;
+      return availabilityList;
+    } catch (_) {
+      return [];
+    }
   }
 
   @override
@@ -222,10 +215,26 @@ class ShopApiImpl implements ShopApi {
     );
 
     // API returns { "shop": 2, "start_date": "...", "dates": [...] }
+    // Each date has: { "date": "...", "day": "MON", "closed": false, "window": {...} }
     final List<dynamic> dates = response.data['dates'] ?? [];
-    return dates
-        .map((json) => ScheduleSlotModel.fromJson(json as Map<String, dynamic>))
-        .toList();
+    final dateStr = date.toIso8601String().split('T').first;
+
+    // Find the matching date entry
+    for (final dateJson in dates) {
+      final dateDayModel = DateDayModel.fromJson(dateJson as Map<String, dynamic>);
+      if (dateDayModel.date == dateStr) {
+        // Convert business window to time slots
+        final timeSlots = dateDayModel.toTimeSlots();
+        return timeSlots.map((slot) => ScheduleSlotModel(
+          slotNumber: slot.slotNumber,
+          startTime: slot.startTime,
+          endTime: slot.endTime,
+          isBooked: !slot.isAvailable,
+        )).toList();
+      }
+    }
+
+    return [];
   }
 
   @override

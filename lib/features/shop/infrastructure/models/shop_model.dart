@@ -431,3 +431,90 @@ class ScheduleSlotModel {
         isAvailable: !(isBooked ?? false),
       );
 }
+
+/// Business hours window model.
+/// Represents opening and closing times for a day.
+class BusinessWindowModel {
+  const BusinessWindowModel({
+    required this.opening,
+    required this.closing,
+  });
+
+  final String opening;
+  final String closing;
+
+  factory BusinessWindowModel.fromJson(Map<String, dynamic> json) =>
+      BusinessWindowModel(
+        opening: json['opening'] as String,
+        closing: json['closing'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'opening': opening,
+        'closing': closing,
+      };
+}
+
+/// Date day model from /api/shop/v1/shops/{id}/date-day/ endpoint.
+/// Represents availability for a specific date.
+class DateDayModel {
+  const DateDayModel({
+    required this.date,
+    required this.day,
+    required this.closed,
+    this.window,
+  });
+
+  final String date;
+  final String day;
+  final bool closed;
+  final BusinessWindowModel? window;
+
+  factory DateDayModel.fromJson(Map<String, dynamic> json) => DateDayModel(
+        date: json['date'] as String,
+        day: json['day'] as String,
+        closed: json['closed'] as bool,
+        window: json['window'] != null
+            ? BusinessWindowModel.fromJson(json['window'] as Map<String, dynamic>)
+            : null,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'date': date,
+        'day': day,
+        'closed': closed,
+        'window': window?.toJson(),
+      };
+
+  /// Generate time slots from the business window.
+  /// Creates hourly slots from opening to closing time.
+  List<ShopTimeSlot> toTimeSlots() {
+    if (closed || window == null) {
+      return [];
+    }
+
+    final slots = <ShopTimeSlot>[];
+    try {
+      final openParts = window!.opening.split(':');
+      final closeParts = window!.closing.split(':');
+      final openHour = int.parse(openParts[0]);
+      final closeHour = int.parse(closeParts[0]);
+
+      // Generate hourly slots
+      int slotNumber = 1;
+      for (int hour = openHour; hour < closeHour; hour++) {
+        final startTime = '${hour.toString().padLeft(2, '0')}:00:00';
+        final endTime = '${(hour + 1).toString().padLeft(2, '0')}:00:00';
+        slots.add(ShopTimeSlot(
+          slotNumber: slotNumber++,
+          startTime: startTime,
+          endTime: endTime,
+          isAvailable: true,
+        ));
+      }
+    } catch (_) {
+      // Return empty if parsing fails
+    }
+    return slots;
+  }
+}
