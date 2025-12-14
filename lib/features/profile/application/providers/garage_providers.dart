@@ -252,8 +252,9 @@ final filteredVehiclesProvider = Provider<List<Vehicle>>((ref) {
 
   final query = searchQuery.toLowerCase();
   return garageState.vehicles.where((vehicle) {
-    return vehicle.carType.displayName.toLowerCase().contains(query) ||
-        (vehicle.registration?.toLowerCase().contains(query) ?? false);
+    return vehicle.make.toLowerCase().contains(query) ||
+        vehicle.model.toLowerCase().contains(query) ||
+        (vehicle.licensePlate?.toLowerCase().contains(query) ?? false);
   }).toList();
 });
 

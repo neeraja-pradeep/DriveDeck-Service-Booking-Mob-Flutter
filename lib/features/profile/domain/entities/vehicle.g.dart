@@ -9,8 +9,10 @@ part of 'vehicle.dart';
 _$VehicleImpl _$$VehicleImplFromJson(Map<String, dynamic> json) =>
     _$VehicleImpl(
       id: (json['id'] as num).toInt(),
-      carType: $enumDecode(_$GarageVehicleTypeEnumMap, json['carType']),
-      registration: json['registration'] as String?,
+      make: json['make'] as String,
+      model: json['model'] as String,
+      year: (json['year'] as num?)?.toInt(),
+      licensePlate: json['licensePlate'] as String?,
       imageUrl: json['imageUrl'] as String?,
       isFavourite: json['isFavourite'] as bool? ?? false,
       createdAt: json['createdAt'] == null
@@ -24,18 +26,12 @@ _$VehicleImpl _$$VehicleImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$VehicleImplToJson(_$VehicleImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'carType': _$GarageVehicleTypeEnumMap[instance.carType]!,
-      'registration': instance.registration,
+      'make': instance.make,
+      'model': instance.model,
+      'year': instance.year,
+      'licensePlate': instance.licensePlate,
       'imageUrl': instance.imageUrl,
       'isFavourite': instance.isFavourite,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
     };
-
-const _$GarageVehicleTypeEnumMap = {
-  GarageVehicleType.sedan: 'sedan',
-  GarageVehicleType.suv: 'suv',
-  GarageVehicleType.hatchback: 'hatchback',
-  GarageVehicleType.muv: 'muv',
-  GarageVehicleType.luxury: 'luxury',
-};

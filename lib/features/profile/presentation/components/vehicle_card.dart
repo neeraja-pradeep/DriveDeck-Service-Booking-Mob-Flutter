@@ -46,7 +46,7 @@ class VehicleCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.r),
                 ),
                 child: Icon(
-                  _getVehicleIcon(vehicle.carType),
+                  Icons.directions_car,
                   color: AppColors.primary,
                   size: 28.sp,
                 ),
@@ -93,10 +93,10 @@ class VehicleCard extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 4.h),
-                    if (vehicle.registration != null &&
-                        vehicle.registration!.isNotEmpty)
+                    if (vehicle.licensePlate != null &&
+                        vehicle.licensePlate!.isNotEmpty)
                       Text(
-                        vehicle.registration!,
+                        vehicle.licensePlate!,
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: Colors.grey[600],
@@ -169,20 +169,5 @@ class VehicleCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  IconData _getVehicleIcon(GarageVehicleType type) {
-    switch (type) {
-      case GarageVehicleType.hatchback:
-        return Icons.directions_car;
-      case GarageVehicleType.sedan:
-        return Icons.directions_car;
-      case GarageVehicleType.suv:
-        return Icons.directions_car_filled;
-      case GarageVehicleType.muv:
-        return Icons.airport_shuttle;
-      case GarageVehicleType.luxury:
-        return Icons.local_taxi;
-    }
   }
 }

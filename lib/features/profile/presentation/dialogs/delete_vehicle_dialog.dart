@@ -90,10 +90,10 @@ class DeleteVehicleDialog extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      if (vehicle.registration != null &&
-                          vehicle.registration!.isNotEmpty)
+                      if (vehicle.licensePlate != null &&
+                          vehicle.licensePlate!.isNotEmpty)
                         Text(
-                          vehicle.registration!,
+                          vehicle.licensePlate!,
                           style: TextStyle(
                             fontSize: 12.sp,
                             color: Colors.grey[600],

@@ -140,6 +140,7 @@ class ShopApiImpl implements ShopApi {
     int days = 7,
   }) async {
     final queryParams = <String, dynamic>{
+      'shop': shopId,
       'start_date': startDate.toIso8601String().split('T').first,
       'days': days,
     };

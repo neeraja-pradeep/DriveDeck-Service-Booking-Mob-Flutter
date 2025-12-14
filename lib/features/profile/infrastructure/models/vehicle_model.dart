@@ -9,8 +9,10 @@ part 'vehicle_model.g.dart';
 /// {
 ///   "id": 0,
 ///   "user": "string",
-///   "car_type": "sedan",
-///   "registration": "string",
+///   "make": "string",
+///   "model": "string",
+///   "year": 2024,
+///   "license_plate": "string",
 ///   "image_url": "string",
 ///   "is_favourite": true,
 ///   "created_at": "2025-12-12T18:59:21.218Z",
@@ -21,8 +23,10 @@ class VehicleModel {
   const VehicleModel({
     required this.id,
     this.user,
-    required this.carType,
-    this.registration,
+    required this.make,
+    required this.model,
+    this.year,
+    this.licensePlate,
     this.imageUrl,
     this.isFavourite = false,
     this.createdAt,
@@ -34,9 +38,11 @@ class VehicleModel {
 
   final int id;
   final String? user;
-  @JsonKey(name: 'car_type')
-  final String carType;
-  final String? registration;
+  final String make;
+  final String model;
+  final int? year;
+  @JsonKey(name: 'license_plate')
+  final String? licensePlate;
   @JsonKey(name: 'image_url')
   final String? imageUrl;
   @JsonKey(name: 'is_favourite')
@@ -52,29 +58,14 @@ class VehicleModel {
   Vehicle toDomain() {
     return Vehicle(
       id: id,
-      carType: _parseVehicleType(carType),
-      registration: registration,
+      make: make,
+      model: model,
+      year: year,
+      licensePlate: licensePlate,
       imageUrl: imageUrl,
       isFavourite: isFavourite,
       createdAt: createdAt != null ? DateTime.tryParse(createdAt!) : null,
       updatedAt: updatedAt != null ? DateTime.tryParse(updatedAt!) : null,
     );
-  }
-
-  GarageVehicleType _parseVehicleType(String type) {
-    switch (type.toLowerCase()) {
-      case 'sedan':
-        return GarageVehicleType.sedan;
-      case 'suv':
-        return GarageVehicleType.suv;
-      case 'hatchback':
-        return GarageVehicleType.hatchback;
-      case 'muv':
-        return GarageVehicleType.muv;
-      case 'luxury':
-        return GarageVehicleType.luxury;
-      default:
-        return GarageVehicleType.sedan;
-    }
   }
 }

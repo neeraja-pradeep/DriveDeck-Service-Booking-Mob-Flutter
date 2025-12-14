@@ -21,8 +21,10 @@ Vehicle _$VehicleFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Vehicle {
   int get id => throw _privateConstructorUsedError;
-  GarageVehicleType get carType => throw _privateConstructorUsedError;
-  String? get registration => throw _privateConstructorUsedError;
+  String get make => throw _privateConstructorUsedError;
+  String get model => throw _privateConstructorUsedError;
+  int? get year => throw _privateConstructorUsedError;
+  String? get licensePlate => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
   bool get isFavourite => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
@@ -40,8 +42,10 @@ abstract class $VehicleCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      GarageVehicleType carType,
-      String? registration,
+      String make,
+      String model,
+      int? year,
+      String? licensePlate,
       String? imageUrl,
       bool isFavourite,
       DateTime? createdAt,
@@ -62,8 +66,10 @@ class _$VehicleCopyWithImpl<$Res, $Val extends Vehicle>
   @override
   $Res call({
     Object? id = null,
-    Object? carType = null,
-    Object? registration = freezed,
+    Object? make = null,
+    Object? model = null,
+    Object? year = freezed,
+    Object? licensePlate = freezed,
     Object? imageUrl = freezed,
     Object? isFavourite = null,
     Object? createdAt = freezed,
@@ -74,13 +80,21 @@ class _$VehicleCopyWithImpl<$Res, $Val extends Vehicle>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      carType: null == carType
-          ? _value.carType
-          : carType // ignore: cast_nullable_to_non_nullable
-              as GarageVehicleType,
-      registration: freezed == registration
-          ? _value.registration
-          : registration // ignore: cast_nullable_to_non_nullable
+      make: null == make
+          ? _value.make
+          : make // ignore: cast_nullable_to_non_nullable
+              as String,
+      model: null == model
+          ? _value.model
+          : model // ignore: cast_nullable_to_non_nullable
+              as String,
+      year: freezed == year
+          ? _value.year
+          : year // ignore: cast_nullable_to_non_nullable
+              as int?,
+      licensePlate: freezed == licensePlate
+          ? _value.licensePlate
+          : licensePlate // ignore: cast_nullable_to_non_nullable
               as String?,
       imageUrl: freezed == imageUrl
           ? _value.imageUrl
@@ -111,8 +125,10 @@ abstract class _$$VehicleImplCopyWith<$Res> implements $VehicleCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      GarageVehicleType carType,
-      String? registration,
+      String make,
+      String model,
+      int? year,
+      String? licensePlate,
       String? imageUrl,
       bool isFavourite,
       DateTime? createdAt,
@@ -131,8 +147,10 @@ class __$$VehicleImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? carType = null,
-    Object? registration = freezed,
+    Object? make = null,
+    Object? model = null,
+    Object? year = freezed,
+    Object? licensePlate = freezed,
     Object? imageUrl = freezed,
     Object? isFavourite = null,
     Object? createdAt = freezed,
@@ -143,13 +161,21 @@ class __$$VehicleImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      carType: null == carType
-          ? _value.carType
-          : carType // ignore: cast_nullable_to_non_nullable
-              as GarageVehicleType,
-      registration: freezed == registration
-          ? _value.registration
-          : registration // ignore: cast_nullable_to_non_nullable
+      make: null == make
+          ? _value.make
+          : make // ignore: cast_nullable_to_non_nullable
+              as String,
+      model: null == model
+          ? _value.model
+          : model // ignore: cast_nullable_to_non_nullable
+              as String,
+      year: freezed == year
+          ? _value.year
+          : year // ignore: cast_nullable_to_non_nullable
+              as int?,
+      licensePlate: freezed == licensePlate
+          ? _value.licensePlate
+          : licensePlate // ignore: cast_nullable_to_non_nullable
               as String?,
       imageUrl: freezed == imageUrl
           ? _value.imageUrl
@@ -176,8 +202,10 @@ class __$$VehicleImplCopyWithImpl<$Res>
 class _$VehicleImpl implements _Vehicle {
   const _$VehicleImpl(
       {required this.id,
-      required this.carType,
-      this.registration,
+      required this.make,
+      required this.model,
+      this.year,
+      this.licensePlate,
       this.imageUrl,
       this.isFavourite = false,
       this.createdAt,
@@ -189,9 +217,13 @@ class _$VehicleImpl implements _Vehicle {
   @override
   final int id;
   @override
-  final GarageVehicleType carType;
+  final String make;
   @override
-  final String? registration;
+  final String model;
+  @override
+  final int? year;
+  @override
+  final String? licensePlate;
   @override
   final String? imageUrl;
   @override
@@ -204,7 +236,7 @@ class _$VehicleImpl implements _Vehicle {
 
   @override
   String toString() {
-    return 'Vehicle(id: $id, carType: $carType, registration: $registration, imageUrl: $imageUrl, isFavourite: $isFavourite, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Vehicle(id: $id, make: $make, model: $model, year: $year, licensePlate: $licensePlate, imageUrl: $imageUrl, isFavourite: $isFavourite, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -213,9 +245,11 @@ class _$VehicleImpl implements _Vehicle {
         (other.runtimeType == runtimeType &&
             other is _$VehicleImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.carType, carType) || other.carType == carType) &&
-            (identical(other.registration, registration) ||
-                other.registration == registration) &&
+            (identical(other.make, make) || other.make == make) &&
+            (identical(other.model, model) || other.model == model) &&
+            (identical(other.year, year) || other.year == year) &&
+            (identical(other.licensePlate, licensePlate) ||
+                other.licensePlate == licensePlate) &&
             (identical(other.imageUrl, imageUrl) ||
                 other.imageUrl == imageUrl) &&
             (identical(other.isFavourite, isFavourite) ||
@@ -228,8 +262,8 @@ class _$VehicleImpl implements _Vehicle {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, carType, registration,
-      imageUrl, isFavourite, createdAt, updatedAt);
+  int get hashCode => Object.hash(runtimeType, id, make, model, year,
+      licensePlate, imageUrl, isFavourite, createdAt, updatedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -248,8 +282,10 @@ class _$VehicleImpl implements _Vehicle {
 abstract class _Vehicle implements Vehicle {
   const factory _Vehicle(
       {required final int id,
-      required final GarageVehicleType carType,
-      final String? registration,
+      required final String make,
+      required final String model,
+      final int? year,
+      final String? licensePlate,
       final String? imageUrl,
       final bool isFavourite,
       final DateTime? createdAt,
@@ -260,9 +296,13 @@ abstract class _Vehicle implements Vehicle {
   @override
   int get id;
   @override
-  GarageVehicleType get carType;
+  String get make;
   @override
-  String? get registration;
+  String get model;
+  @override
+  int? get year;
+  @override
+  String? get licensePlate;
   @override
   String? get imageUrl;
   @override

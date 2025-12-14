@@ -107,20 +107,23 @@ class Endpoints {
   static String shopAccessories(int shopId) =>
       '$apiPrefix/shop/v1/shops/$shopId/accessories/';
 
-  /// Get shop availability for date range.
+  /// Get shop availability/schedule.
+  /// GET /api/shop/shop_schedule
   static String shopAvailability(int shopId) =>
-      '$apiPrefix/shop/v1/shops/$shopId/date-day/';
+      '$apiPrefix/shop/shop_schedule/';
 
   /// Get shop time slots (legacy).
   static String shopTimeSlots(String shopId) =>
       '$apiPrefix/shop/v1/shops/$shopId/slots/';
 
   /// Shop favorites.
-  static String shopFavorites() => '$apiPrefix/shop/favorites/';
+  /// GET/POST /api/shop/v1/favorites/
+  static String shopFavorites() => '$apiPrefix/shop/v1/favorites/';
 
   /// Shop favorite by ID.
+  /// DELETE /api/shop/v1/favorites/{id}/
   static String shopFavorite(int shopId) =>
-      '$apiPrefix/shop/favorites/$shopId/';
+      '$apiPrefix/shop/v1/favorites/$shopId/';
 
   // ============================================================================
   // User Endpoints
