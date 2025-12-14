@@ -33,11 +33,23 @@ abstract class ShopApi {
   /// Get accessories for a shop.
   Future<List<ShopAccessoryModel>> getShopAccessories(int shopId);
 
-  /// Get shop availability for date range.
+  /// Get shop availability for date range (legacy).
   Future<List<ShopDateAvailabilityModel>> getShopAvailability({
     required int shopId,
     required DateTime startDate,
     int days = 7,
+  });
+
+  /// Get weekly business hours for a shop.
+  /// Returns which weekdays (0=Monday to 6=Sunday) have business hours defined.
+  /// Use this to disable unavailable days in the calendar.
+  Future<List<WeeklyBusinessHoursModel>> getWeeklyBusinessHours(int shopId);
+
+  /// Get available time slots for a specific date.
+  /// Use this to show available booking slots after user selects a date.
+  Future<List<ScheduleSlotModel>> getShopSchedule({
+    required int shopId,
+    required DateTime date,
   });
 
   /// Add shop to favorites.
@@ -146,13 +158,45 @@ class ShopApiImpl implements ShopApi {
     };
 
     final response = await apiClient.get(
-      Endpoints.shopAvailability(shopId),
+      Endpoints.shopSchedule(),
       queryParameters: queryParams,
     );
 
     final List<dynamic> results = response.data['results'] ?? response.data;
     return results
         .map((json) => ShopDateAvailabilityModel.fromJson(json))
+        .toList();
+  }
+
+  @override
+  Future<List<WeeklyBusinessHoursModel>> getWeeklyBusinessHours(int shopId) async {
+    final response = await apiClient.get(
+      Endpoints.weeklyBusinessHours(),
+      queryParameters: {'shop': shopId},
+    );
+
+    final List<dynamic> results = response.data['results'] ?? response.data;
+    return results
+        .map((json) => WeeklyBusinessHoursModel.fromJson(json as Map<String, dynamic>))
+        .toList();
+  }
+
+  @override
+  Future<List<ScheduleSlotModel>> getShopSchedule({
+    required int shopId,
+    required DateTime date,
+  }) async {
+    final response = await apiClient.get(
+      Endpoints.shopSchedule(),
+      queryParameters: {
+        'shop_id': shopId,
+        'date': date.toIso8601String().split('T').first,
+      },
+    );
+
+    final List<dynamic> results = response.data['results'] ?? response.data;
+    return results
+        .map((json) => ScheduleSlotModel.fromJson(json as Map<String, dynamic>))
         .toList();
   }
 

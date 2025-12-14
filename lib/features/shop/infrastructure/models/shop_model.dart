@@ -359,3 +359,75 @@ class ShopDateAvailabilityModel {
         isOpen: isOpen ?? true,
       );
 }
+
+/// Weekly business hours model.
+/// Represents which weekdays (0=Monday to 6=Sunday) a shop is open.
+@JsonSerializable()
+class WeeklyBusinessHoursModel {
+  const WeeklyBusinessHoursModel({
+    required this.id,
+    required this.shop,
+    required this.weekday,
+    this.openTime,
+    this.closeTime,
+    this.isClosed,
+  });
+
+  final int id;
+  final int shop;
+  /// Weekday number: 0=Monday, 1=Tuesday, ..., 6=Sunday
+  final int weekday;
+  @JsonKey(name: 'open_time')
+  final String? openTime;
+  @JsonKey(name: 'close_time')
+  final String? closeTime;
+  @JsonKey(name: 'is_closed')
+  final bool? isClosed;
+
+  factory WeeklyBusinessHoursModel.fromJson(Map<String, dynamic> json) =>
+      _$WeeklyBusinessHoursModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$WeeklyBusinessHoursModelToJson(this);
+
+  WeeklyBusinessHours toDomain() => WeeklyBusinessHours(
+        id: id,
+        shopId: shop,
+        weekday: weekday,
+        openTime: openTime,
+        closeTime: closeTime,
+        isClosed: isClosed ?? false,
+      );
+}
+
+/// Schedule slot model for a specific date.
+/// Returned by /api/shop/schedule/ endpoint.
+@JsonSerializable()
+class ScheduleSlotModel {
+  const ScheduleSlotModel({
+    required this.slotNumber,
+    required this.startTime,
+    required this.endTime,
+    this.isBooked,
+  });
+
+  @JsonKey(name: 'slot_number')
+  final int slotNumber;
+  @JsonKey(name: 'start_time')
+  final String startTime;
+  @JsonKey(name: 'end_time')
+  final String endTime;
+  @JsonKey(name: 'is_booked')
+  final bool? isBooked;
+
+  factory ScheduleSlotModel.fromJson(Map<String, dynamic> json) =>
+      _$ScheduleSlotModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ScheduleSlotModelToJson(this);
+
+  ShopTimeSlot toDomain() => ShopTimeSlot(
+        slotNumber: slotNumber,
+        startTime: startTime,
+        endTime: endTime,
+        isAvailable: !(isBooked ?? false),
+      );
+}

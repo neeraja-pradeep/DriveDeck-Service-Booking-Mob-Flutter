@@ -2015,3 +2015,250 @@ abstract class _ShopDateAvailability implements ShopDateAvailability {
   _$$ShopDateAvailabilityImplCopyWith<_$ShopDateAvailabilityImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
+
+WeeklyBusinessHours _$WeeklyBusinessHoursFromJson(Map<String, dynamic> json) {
+  return _WeeklyBusinessHours.fromJson(json);
+}
+
+/// @nodoc
+mixin _$WeeklyBusinessHours {
+  int get id => throw _privateConstructorUsedError;
+  int get shopId => throw _privateConstructorUsedError;
+  int get weekday => throw _privateConstructorUsedError;
+  String? get openTime => throw _privateConstructorUsedError;
+  String? get closeTime => throw _privateConstructorUsedError;
+  bool get isClosed => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $WeeklyBusinessHoursCopyWith<WeeklyBusinessHours> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $WeeklyBusinessHoursCopyWith<$Res> {
+  factory $WeeklyBusinessHoursCopyWith(
+          WeeklyBusinessHours value, $Res Function(WeeklyBusinessHours) then) =
+      _$WeeklyBusinessHoursCopyWithImpl<$Res, WeeklyBusinessHours>;
+  @useResult
+  $Res call(
+      {int id,
+      int shopId,
+      int weekday,
+      String? openTime,
+      String? closeTime,
+      bool isClosed});
+}
+
+/// @nodoc
+class _$WeeklyBusinessHoursCopyWithImpl<$Res,
+        $Val extends WeeklyBusinessHours>
+    implements $WeeklyBusinessHoursCopyWith<$Res> {
+  _$WeeklyBusinessHoursCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? shopId = null,
+    Object? weekday = null,
+    Object? openTime = freezed,
+    Object? closeTime = freezed,
+    Object? isClosed = null,
+  }) {
+    return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      shopId: null == shopId
+          ? _value.shopId
+          : shopId // ignore: cast_nullable_to_non_nullable
+              as int,
+      weekday: null == weekday
+          ? _value.weekday
+          : weekday // ignore: cast_nullable_to_non_nullable
+              as int,
+      openTime: freezed == openTime
+          ? _value.openTime
+          : openTime // ignore: cast_nullable_to_non_nullable
+              as String?,
+      closeTime: freezed == closeTime
+          ? _value.closeTime
+          : closeTime // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isClosed: null == isClosed
+          ? _value.isClosed
+          : isClosed // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$WeeklyBusinessHoursImplCopyWith<$Res>
+    implements $WeeklyBusinessHoursCopyWith<$Res> {
+  factory _$$WeeklyBusinessHoursImplCopyWith(_$WeeklyBusinessHoursImpl value,
+          $Res Function(_$WeeklyBusinessHoursImpl) then) =
+      __$$WeeklyBusinessHoursImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {int id,
+      int shopId,
+      int weekday,
+      String? openTime,
+      String? closeTime,
+      bool isClosed});
+}
+
+/// @nodoc
+class __$$WeeklyBusinessHoursImplCopyWithImpl<$Res>
+    extends _$WeeklyBusinessHoursCopyWithImpl<$Res, _$WeeklyBusinessHoursImpl>
+    implements _$$WeeklyBusinessHoursImplCopyWith<$Res> {
+  __$$WeeklyBusinessHoursImplCopyWithImpl(_$WeeklyBusinessHoursImpl _value,
+      $Res Function(_$WeeklyBusinessHoursImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? shopId = null,
+    Object? weekday = null,
+    Object? openTime = freezed,
+    Object? closeTime = freezed,
+    Object? isClosed = null,
+  }) {
+    return _then(_$WeeklyBusinessHoursImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      shopId: null == shopId
+          ? _value.shopId
+          : shopId // ignore: cast_nullable_to_non_nullable
+              as int,
+      weekday: null == weekday
+          ? _value.weekday
+          : weekday // ignore: cast_nullable_to_non_nullable
+              as int,
+      openTime: freezed == openTime
+          ? _value.openTime
+          : openTime // ignore: cast_nullable_to_non_nullable
+              as String?,
+      closeTime: freezed == closeTime
+          ? _value.closeTime
+          : closeTime // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isClosed: null == isClosed
+          ? _value.isClosed
+          : isClosed // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$WeeklyBusinessHoursImpl implements _WeeklyBusinessHours {
+  const _$WeeklyBusinessHoursImpl(
+      {required this.id,
+      required this.shopId,
+      required this.weekday,
+      this.openTime,
+      this.closeTime,
+      this.isClosed = false});
+
+  factory _$WeeklyBusinessHoursImpl.fromJson(Map<String, dynamic> json) =>
+      _$$WeeklyBusinessHoursImplFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final int shopId;
+  @override
+  final int weekday;
+  @override
+  final String? openTime;
+  @override
+  final String? closeTime;
+  @override
+  @JsonKey()
+  final bool isClosed;
+
+  @override
+  String toString() {
+    return 'WeeklyBusinessHours(id: $id, shopId: $shopId, weekday: $weekday, openTime: $openTime, closeTime: $closeTime, isClosed: $isClosed)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$WeeklyBusinessHoursImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.shopId, shopId) || other.shopId == shopId) &&
+            (identical(other.weekday, weekday) || other.weekday == weekday) &&
+            (identical(other.openTime, openTime) ||
+                other.openTime == openTime) &&
+            (identical(other.closeTime, closeTime) ||
+                other.closeTime == closeTime) &&
+            (identical(other.isClosed, isClosed) ||
+                other.isClosed == isClosed));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, id, shopId, weekday, openTime, closeTime, isClosed);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$WeeklyBusinessHoursImplCopyWith<_$WeeklyBusinessHoursImpl> get copyWith =>
+      __$$WeeklyBusinessHoursImplCopyWithImpl<_$WeeklyBusinessHoursImpl>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$WeeklyBusinessHoursImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _WeeklyBusinessHours implements WeeklyBusinessHours {
+  const factory _WeeklyBusinessHours(
+      {required final int id,
+      required final int shopId,
+      required final int weekday,
+      final String? openTime,
+      final String? closeTime,
+      final bool isClosed}) = _$WeeklyBusinessHoursImpl;
+
+  factory _WeeklyBusinessHours.fromJson(Map<String, dynamic> json) =
+      _$WeeklyBusinessHoursImpl.fromJson;
+
+  @override
+  int get id;
+  @override
+  int get shopId;
+  @override
+  int get weekday;
+  @override
+  String? get openTime;
+  @override
+  String? get closeTime;
+  @override
+  bool get isClosed;
+  @override
+  @JsonKey(ignore: true)
+  _$$WeeklyBusinessHoursImplCopyWith<_$WeeklyBusinessHoursImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}

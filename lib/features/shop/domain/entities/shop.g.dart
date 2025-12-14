@@ -185,3 +185,25 @@ Map<String, dynamic> _$$ShopDateAvailabilityImplToJson(
       'slots': instance.slots,
       'isOpen': instance.isOpen,
     };
+
+_$WeeklyBusinessHoursImpl _$$WeeklyBusinessHoursImplFromJson(
+        Map<String, dynamic> json) =>
+    _$WeeklyBusinessHoursImpl(
+      id: (json['id'] as num).toInt(),
+      shopId: (json['shopId'] as num).toInt(),
+      weekday: (json['weekday'] as num).toInt(),
+      openTime: json['openTime'] as String?,
+      closeTime: json['closeTime'] as String?,
+      isClosed: json['isClosed'] as bool? ?? false,
+    );
+
+Map<String, dynamic> _$$WeeklyBusinessHoursImplToJson(
+        _$WeeklyBusinessHoursImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'shopId': instance.shopId,
+      'weekday': instance.weekday,
+      'openTime': instance.openTime,
+      'closeTime': instance.closeTime,
+      'isClosed': instance.isClosed,
+    };

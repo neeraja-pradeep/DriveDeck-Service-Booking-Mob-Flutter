@@ -126,10 +126,17 @@ class Endpoints {
   static String shopAccessories(int shopId) =>
       '$apiPrefix/shop/v1/shops/$shopId/accessories/';
 
-  /// Get shop availability/schedule.
-  /// GET /api/shop/shop_schedule
-  static String shopAvailability(int shopId) =>
-      '$apiPrefix/shop/shop_schedule/';
+  /// Get shop availability/schedule for a specific date.
+  /// GET /api/shop/schedule/
+  /// Query params: shop_id, date (YYYY-MM-DD)
+  /// Returns available time slots for the given date
+  static String shopSchedule() => '$apiPrefix/shop/schedule/';
+
+  /// Get weekly business hours for a shop.
+  /// GET /api/shop/v1/weekly_businesses/
+  /// Query params: shop (shop ID)
+  /// Returns which weekdays (0=Monday, 6=Sunday) have business hours
+  static String weeklyBusinessHours() => '$apiPrefix/shop/v1/weekly_businesses/';
 
   /// Get shop time slots (legacy).
   static String shopTimeSlots(String shopId) =>

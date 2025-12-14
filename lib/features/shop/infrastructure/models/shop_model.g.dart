@@ -563,3 +563,41 @@ Map<String, dynamic> _$ShopDateAvailabilityModelToJson(
       'slots': instance.slots,
       'is_open': instance.isOpen,
     };
+
+WeeklyBusinessHoursModel _$WeeklyBusinessHoursModelFromJson(
+        Map<String, dynamic> json) =>
+    WeeklyBusinessHoursModel(
+      id: (json['id'] as num).toInt(),
+      shop: (json['shop'] as num).toInt(),
+      weekday: (json['weekday'] as num).toInt(),
+      openTime: json['open_time'] as String?,
+      closeTime: json['close_time'] as String?,
+      isClosed: json['is_closed'] as bool?,
+    );
+
+Map<String, dynamic> _$WeeklyBusinessHoursModelToJson(
+        WeeklyBusinessHoursModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'shop': instance.shop,
+      'weekday': instance.weekday,
+      'open_time': instance.openTime,
+      'close_time': instance.closeTime,
+      'is_closed': instance.isClosed,
+    };
+
+ScheduleSlotModel _$ScheduleSlotModelFromJson(Map<String, dynamic> json) =>
+    ScheduleSlotModel(
+      slotNumber: (json['slot_number'] as num).toInt(),
+      startTime: json['start_time'] as String,
+      endTime: json['end_time'] as String,
+      isBooked: json['is_booked'] as bool?,
+    );
+
+Map<String, dynamic> _$ScheduleSlotModelToJson(ScheduleSlotModel instance) =>
+    <String, dynamic>{
+      'slot_number': instance.slotNumber,
+      'start_time': instance.startTime,
+      'end_time': instance.endTime,
+      'is_booked': instance.isBooked,
+    };
