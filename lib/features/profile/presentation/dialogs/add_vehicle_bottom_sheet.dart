@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../app/theme/colors.dart';
 import '../../application/providers/garage_providers.dart';
+import '../../domain/entities/vehicle.dart';
 import '../../domain/repositories/garage_repository.dart';
 
 /// Bottom sheet for adding a new vehicle.
@@ -28,19 +28,14 @@ class AddVehicleBottomSheet extends ConsumerStatefulWidget {
 
 class _AddVehicleBottomSheetState extends ConsumerState<AddVehicleBottomSheet> {
   final _formKey = GlobalKey<FormState>();
-  final _makeController = TextEditingController();
-  final _modelController = TextEditingController();
-  final _yearController = TextEditingController();
-  final _licensePlateController = TextEditingController();
+  final _registrationController = TextEditingController();
 
+  CarType _selectedCarType = CarType.sedan;
   bool _isFavourite = false;
 
   @override
   void dispose() {
-    _makeController.dispose();
-    _modelController.dispose();
-    _yearController.dispose();
-    _licensePlateController.dispose();
+    _registrationController.dispose();
     super.dispose();
   }
 
@@ -78,9 +73,9 @@ class _AddVehicleBottomSheetState extends ConsumerState<AddVehicleBottomSheet> {
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: DraggableScrollableSheet(
-        initialChildSize: 0.75,
-        minChildSize: 0.5,
-        maxChildSize: 0.9,
+        initialChildSize: 0.6,
+        minChildSize: 0.4,
+        maxChildSize: 0.8,
         expand: false,
         builder: (context, scrollController) {
           return SingleChildScrollView(
@@ -114,69 +109,33 @@ class _AddVehicleBottomSheetState extends ConsumerState<AddVehicleBottomSheet> {
                   ),
                   SizedBox(height: 24.h),
 
-                  // Make field (required)
-                  _buildLabel('Make *'),
+                  // Car Type dropdown (required)
+                  _buildLabel('Car Type *'),
                   SizedBox(height: 8.h),
-                  TextFormField(
-                    controller: _makeController,
-                    enabled: !isLoading,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: _buildInputDecoration('e.g., Toyota, Honda, BMW'),
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Make is required';
-                      }
-                      return null;
-                    },
+                  DropdownButtonFormField<CarType>(
+                    value: _selectedCarType,
+                    decoration: _buildInputDecoration('Select car type'),
+                    items: CarType.values.map((type) {
+                      return DropdownMenuItem(
+                        value: type,
+                        child: Text(type.displayName),
+                      );
+                    }).toList(),
+                    onChanged: isLoading
+                        ? null
+                        : (value) {
+                            if (value != null) {
+                              setState(() => _selectedCarType = value);
+                            }
+                          },
                   ),
                   SizedBox(height: 16.h),
 
-                  // Model field (required)
-                  _buildLabel('Model *'),
+                  // Registration field (optional)
+                  _buildLabel('Registration'),
                   SizedBox(height: 8.h),
                   TextFormField(
-                    controller: _modelController,
-                    enabled: !isLoading,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: _buildInputDecoration('e.g., Camry, Civic, X5'),
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Model is required';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.h),
-
-                  // Year field (optional)
-                  _buildLabel('Year'),
-                  SizedBox(height: 8.h),
-                  TextFormField(
-                    controller: _yearController,
-                    enabled: !isLoading,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(4),
-                    ],
-                    decoration: _buildInputDecoration('e.g., 2024'),
-                    validator: (value) {
-                      if (value != null && value.isNotEmpty) {
-                        final year = int.tryParse(value);
-                        if (year == null || year < 1900 || year > 2100) {
-                          return 'Enter a valid year';
-                        }
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 16.h),
-
-                  // License Plate field (optional)
-                  _buildLabel('License Plate'),
-                  SizedBox(height: 8.h),
-                  TextFormField(
-                    controller: _licensePlateController,
+                    controller: _registrationController,
                     enabled: !isLoading,
                     textCapitalization: TextCapitalization.characters,
                     decoration: _buildInputDecoration('e.g., KA 01 AB 1234'),
@@ -285,13 +244,10 @@ class _AddVehicleBottomSheetState extends ConsumerState<AddVehicleBottomSheet> {
   void _onAddVehicle() {
     if (_formKey.currentState?.validate() != true) return;
 
-    final yearText = _yearController.text.trim();
     final request = AddVehicleRequest(
-      make: _makeController.text.trim(),
-      model: _modelController.text.trim(),
-      year: yearText.isNotEmpty ? int.tryParse(yearText) : null,
-      licensePlate: _licensePlateController.text.trim().isNotEmpty
-          ? _licensePlateController.text.trim()
+      carType: _selectedCarType,
+      registration: _registrationController.text.trim().isNotEmpty
+          ? _registrationController.text.trim()
           : null,
       isFavourite: _isFavourite,
     );

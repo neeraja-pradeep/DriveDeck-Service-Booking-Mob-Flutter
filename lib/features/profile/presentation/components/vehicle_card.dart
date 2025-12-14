@@ -93,10 +93,10 @@ class VehicleCard extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 4.h),
-                    if (vehicle.licensePlate != null &&
-                        vehicle.licensePlate!.isNotEmpty)
+                    if (vehicle.registration != null &&
+                        vehicle.registration!.isNotEmpty)
                       Text(
-                        vehicle.licensePlate!,
+                        vehicle.registration!,
                         style: TextStyle(
                           fontSize: 12.sp,
                           color: Colors.grey[600],

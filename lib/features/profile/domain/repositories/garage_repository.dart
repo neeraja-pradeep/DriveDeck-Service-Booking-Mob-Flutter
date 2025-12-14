@@ -4,27 +4,22 @@ import '../../../../core/error/failure.dart';
 import '../entities/vehicle.dart';
 
 /// Request to add a new vehicle/car.
-/// API expects: { "make": "string", "model": "string", "year": 2024, "license_plate": "string" }
+/// API expects: { "car_type": "sedan", "registration": "string" }
 class AddVehicleRequest {
   const AddVehicleRequest({
-    required this.make,
-    required this.model,
-    this.year,
-    this.licensePlate,
+    required this.carType,
+    this.registration,
     this.isFavourite = false,
   });
 
-  final String make;
-  final String model;
-  final int? year;
-  final String? licensePlate;
+  final CarType carType;
+  final String? registration;
   final bool isFavourite;
 
   Map<String, dynamic> toJson() => {
-        'make': make,
-        'model': model,
-        if (year != null) 'year': year,
-        if (licensePlate != null) 'license_plate': licensePlate,
+        'car_type': carType.apiValue,
+        if (registration != null && registration!.isNotEmpty)
+          'registration': registration,
         'is_favourite': isFavourite,
       };
 }

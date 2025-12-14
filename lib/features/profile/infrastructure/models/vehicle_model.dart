@@ -7,14 +7,12 @@ part 'vehicle_model.g.dart';
 /// Vehicle model for API serialization.
 /// API Response format:
 /// {
-///   "id": 0,
+///   "id": 1,
 ///   "user": "string",
-///   "make": "string",
-///   "model": "string",
-///   "year": 2024,
-///   "license_plate": "string",
-///   "image_url": "string",
-///   "is_favourite": true,
+///   "car_type": "hatchback",
+///   "registration": null,
+///   "image_url": null,
+///   "is_favourite": false,
 ///   "created_at": "2025-12-12T18:59:21.218Z",
 ///   "updated_at": "2025-12-12T18:59:21.218Z"
 /// }
@@ -23,10 +21,8 @@ class VehicleModel {
   const VehicleModel({
     required this.id,
     this.user,
-    required this.make,
-    required this.model,
-    this.year,
-    this.licensePlate,
+    required this.carType,
+    this.registration,
     this.imageUrl,
     this.isFavourite = false,
     this.createdAt,
@@ -38,11 +34,9 @@ class VehicleModel {
 
   final int id;
   final String? user;
-  final String make;
-  final String model;
-  final int? year;
-  @JsonKey(name: 'license_plate')
-  final String? licensePlate;
+  @JsonKey(name: 'car_type')
+  final String carType;
+  final String? registration;
   @JsonKey(name: 'image_url')
   final String? imageUrl;
   @JsonKey(name: 'is_favourite')
@@ -58,10 +52,8 @@ class VehicleModel {
   Vehicle toDomain() {
     return Vehicle(
       id: id,
-      make: make,
-      model: model,
-      year: year,
-      licensePlate: licensePlate,
+      carType: CarTypeX.fromApiValue(carType),
+      registration: registration,
       imageUrl: imageUrl,
       isFavourite: isFavourite,
       createdAt: createdAt != null ? DateTime.tryParse(createdAt!) : null,
