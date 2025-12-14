@@ -165,7 +165,8 @@ class ShopApiImpl implements ShopApi {
           },
         );
 
-        final List<dynamic> slotsJson = response.data['results'] ?? response.data;
+        // API returns { "shop": 2, "start_date": "...", "dates": [...] }
+        final List<dynamic> slotsJson = response.data['dates'] ?? [];
         // Convert ScheduleSlotModel format to ShopTimeSlotModel format
         final slots = slotsJson.map((json) {
           final scheduleSlot = ScheduleSlotModel.fromJson(json as Map<String, dynamic>);
@@ -220,8 +221,9 @@ class ShopApiImpl implements ShopApi {
       },
     );
 
-    final List<dynamic> results = response.data['results'] ?? response.data;
-    return results
+    // API returns { "shop": 2, "start_date": "...", "dates": [...] }
+    final List<dynamic> dates = response.data['dates'] ?? [];
+    return dates
         .map((json) => ScheduleSlotModel.fromJson(json as Map<String, dynamic>))
         .toList();
   }
