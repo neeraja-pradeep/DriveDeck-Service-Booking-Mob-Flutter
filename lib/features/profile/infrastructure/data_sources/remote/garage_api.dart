@@ -83,8 +83,10 @@ class GarageApiImpl implements GarageApi {
   @override
   Future<VehicleModel> setFavouriteVehicle(int vehicleId) async {
     debugPrint('🚗 GarageApi: Setting vehicle $vehicleId as favourite');
+    // Use PATCH to update the is_favourite field on the vehicle
     final response = await _apiClient.patch(
-      '${Endpoints.vehicleById(vehicleId)}set-favourite/',
+      Endpoints.vehicleById(vehicleId),
+      data: {'is_favourite': true},
     );
 
     debugPrint('🚗 GarageApi: Favourite vehicle set successfully');

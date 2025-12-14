@@ -135,13 +135,18 @@ class Endpoints {
   static String shopTimeSlots(String shopId) =>
       '$apiPrefix/shop/v1/shops/$shopId/slots/';
 
-  /// Shop favorites.
-  /// GET/POST /api/shop/v1/favorites/
-  static String shopFavorites() => '$apiPrefix/shop/v1/favorites/';
+  /// Add shop to favorites.
+  /// POST /api/shop/v1/favorites/create
+  /// Required: shop (shop ID)
+  static String addShopFavorite() => '$apiPrefix/shop/v1/favorites/create';
 
-  /// Shop favorite by ID.
+  /// List favorite shops.
+  /// GET /api/shop/v1/favorites/list
+  static String listShopFavorites() => '$apiPrefix/shop/v1/favorites/list';
+
+  /// Remove shop from favorites.
   /// DELETE /api/shop/v1/favorites/{id}/
-  static String shopFavorite(int shopId) =>
+  static String removeShopFavorite(int shopId) =>
       '$apiPrefix/shop/v1/favorites/$shopId/';
 
   // ============================================================================

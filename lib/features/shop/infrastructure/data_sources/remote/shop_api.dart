@@ -159,19 +159,19 @@ class ShopApiImpl implements ShopApi {
   @override
   Future<void> addToFavorites(int shopId) async {
     await apiClient.post(
-      Endpoints.shopFavorites(),
-      data: {'shop_id': shopId},
+      Endpoints.addShopFavorite(),
+      data: {'shop': shopId},
     );
   }
 
   @override
   Future<void> removeFromFavorites(int shopId) async {
-    await apiClient.delete(Endpoints.shopFavorite(shopId));
+    await apiClient.delete(Endpoints.removeShopFavorite(shopId));
   }
 
   @override
   Future<List<ShopModel>> getFavoriteShops() async {
-    final response = await apiClient.get(Endpoints.shopFavorites());
+    final response = await apiClient.get(Endpoints.listShopFavorites());
     final List<dynamic> results = response.data['results'] ?? response.data;
     return results.map((json) => ShopModel.fromJson(json)).toList();
   }
@@ -200,7 +200,7 @@ class ShopApiImpl implements ShopApi {
   @override
   Future<BookingConfirmationModel> createBooking(BookingRequest request) async {
     final response = await apiClient.post(
-      Endpoints.bookings(),
+      Endpoints.initiateBooking(),
       data: request.toJson(),
     );
     return BookingConfirmationModel.fromJson(response.data);
