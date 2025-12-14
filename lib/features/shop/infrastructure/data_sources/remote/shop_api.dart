@@ -165,20 +165,29 @@ class ShopApiImpl implements ShopApi {
           },
         );
 
-        final List<dynamic> slots = response.data['results'] ?? response.data;
-        final hasSlots = slots.isNotEmpty;
+        final List<dynamic> slotsJson = response.data['results'] ?? response.data;
+        // Convert ScheduleSlotModel format to ShopTimeSlotModel format
+        final slots = slotsJson.map((json) {
+          final scheduleSlot = ScheduleSlotModel.fromJson(json as Map<String, dynamic>);
+          return ShopTimeSlotModel(
+            slotNumber: scheduleSlot.slotNumber,
+            startTime: scheduleSlot.startTime,
+            endTime: scheduleSlot.endTime,
+            isAvailable: !(scheduleSlot.isBooked ?? false),
+          );
+        }).toList();
 
         availabilityList.add(ShopDateAvailabilityModel(
           date: date.toIso8601String().split('T').first,
-          isAvailable: hasSlots,
-          availableSlots: slots.length,
+          slots: slots,
+          isOpen: slots.isNotEmpty,
         ));
       } catch (_) {
         // If fetching fails for a date, mark as unavailable
         availabilityList.add(ShopDateAvailabilityModel(
           date: date.toIso8601String().split('T').first,
-          isAvailable: false,
-          availableSlots: 0,
+          slots: [],
+          isOpen: false,
         ));
       }
     }
