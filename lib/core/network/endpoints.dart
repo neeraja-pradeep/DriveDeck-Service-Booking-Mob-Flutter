@@ -82,6 +82,25 @@ class Endpoints {
       '$apiPrefix/booking/v1/bookings/$bookingId/reschedule/';
 
   // ============================================================================
+  // Payment Endpoints
+  // ============================================================================
+
+  /// Initiate booking with payment.
+  /// POST /api/booking/v1/initiate/
+  /// Required: shop_id, service_id, appointment_date, start_slot
+  static String initiateBooking() => '$apiPrefix/booking/v1/initiate/';
+
+  /// Verify payment after Razorpay callback.
+  /// POST /api/booking/v1/verify-payment/
+  /// Required: razorpay_payment_id, razorpay_order_id, razorpay_signature
+  static String verifyPayment() => '$apiPrefix/booking/v1/verify-payment/';
+
+  /// Initiate refund for a booking.
+  /// POST /api/booking/v1/initiate-refund/
+  /// Required: booking_id
+  static String initiateRefund() => '$apiPrefix/booking/v1/initiate-refund/';
+
+  // ============================================================================
   // Shop Endpoints
   // ============================================================================
 
