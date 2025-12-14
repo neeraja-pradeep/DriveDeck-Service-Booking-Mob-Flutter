@@ -151,21 +151,39 @@ class ShopApiImpl implements ShopApi {
     required DateTime startDate,
     int days = 7,
   }) async {
-    final queryParams = <String, dynamic>{
-      'shop': shopId,
-      'start_date': startDate.toIso8601String().split('T').first,
-      'days': days,
-    };
+    // Legacy method - now uses date-day endpoint for single day
+    // For multi-day availability, loop through days
+    final availabilityList = <ShopDateAvailabilityModel>[];
 
-    final response = await apiClient.get(
-      Endpoints.shopSchedule(),
-      queryParameters: queryParams,
-    );
+    for (int i = 0; i < days; i++) {
+      final date = startDate.add(Duration(days: i));
+      try {
+        final response = await apiClient.get(
+          Endpoints.shopDateDay(shopId),
+          queryParameters: {
+            'date': date.toIso8601String().split('T').first,
+          },
+        );
 
-    final List<dynamic> results = response.data['results'] ?? response.data;
-    return results
-        .map((json) => ShopDateAvailabilityModel.fromJson(json))
-        .toList();
+        final List<dynamic> slots = response.data['results'] ?? response.data;
+        final hasSlots = slots.isNotEmpty;
+
+        availabilityList.add(ShopDateAvailabilityModel(
+          date: date.toIso8601String().split('T').first,
+          isAvailable: hasSlots,
+          availableSlots: slots.length,
+        ));
+      } catch (_) {
+        // If fetching fails for a date, mark as unavailable
+        availabilityList.add(ShopDateAvailabilityModel(
+          date: date.toIso8601String().split('T').first,
+          isAvailable: false,
+          availableSlots: 0,
+        ));
+      }
+    }
+
+    return availabilityList;
   }
 
   @override
@@ -187,9 +205,8 @@ class ShopApiImpl implements ShopApi {
     required DateTime date,
   }) async {
     final response = await apiClient.get(
-      Endpoints.shopSchedule(),
+      Endpoints.shopDateDay(shopId),
       queryParameters: {
-        'shop_id': shopId,
         'date': date.toIso8601String().split('T').first,
       },
     );
