@@ -347,57 +347,64 @@ class _TimeSelectionScreenState extends ConsumerState<TimeSelectionScreen> {
               ),
             )
           else
-            Wrap(
-              spacing: 12.w,
-              runSpacing: 12.h,
-              children: slots.map((slot) {
-                final isSelected = selectedSlot?.id == slot.id;
-                final isAvailable = slot.isAvailable;
+            SizedBox(
+              height: 40.h,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: slots.length,
+                separatorBuilder: (context, index) => SizedBox(width: 8.w),
+                itemBuilder: (context, index) {
+                  final slot = slots[index];
+                  final isSelected = selectedSlot?.id == slot.id;
+                  final isAvailable = slot.isAvailable;
 
-                return GestureDetector(
-                  onTap: isAvailable
-                      ? () {
-                          ref.read(selectedTimeSlotProvider.notifier).state =
-                              slot;
-                          ref
-                              .read(bookingDataProvider.notifier)
-                              .selectTimeSlot(slot.id, slot.displayTime);
-                        }
-                      : null,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 10.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? AppColors.primary
-                          : isAvailable
-                          ? Colors.transparent
-                          : AppColors.grey100,
-                      border: Border.all(
+                  return GestureDetector(
+                    onTap: isAvailable
+                        ? () {
+                            ref.read(selectedTimeSlotProvider.notifier).state =
+                                slot;
+                            ref
+                                .read(bookingDataProvider.notifier)
+                                .selectTimeSlot(slot.id, slot.displayTime);
+                          }
+                        : null,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 8.h,
+                      ),
+                      decoration: BoxDecoration(
                         color: isSelected
                             ? AppColors.primary
                             : isAvailable
-                            ? AppColors.grey300
-                            : AppColors.grey200,
+                            ? AppColors.primary.withValues(alpha: 0.1)
+                            : AppColors.grey100,
+                        border: Border.all(
+                          color: isSelected
+                              ? AppColors.primary
+                              : isAvailable
+                              ? AppColors.primary.withValues(alpha: 0.3)
+                              : AppColors.grey200,
+                        ),
+                        borderRadius: BorderRadius.circular(20.r),
                       ),
-                      borderRadius: BorderRadius.circular(20.r),
-                    ),
-                    child: Text(
-                      slot.displayTime,
-                      style: AppTypography.labelMedium.copyWith(
-                        color: isSelected
-                            ? Colors.white
-                            : isAvailable
-                            ? AppColors.textPrimary
-                            : AppColors.textHint,
-                        fontWeight: isSelected ? FontWeight.w600 : null,
+                      child: Center(
+                        child: Text(
+                          slot.displayTime,
+                          style: AppTypography.labelMedium.copyWith(
+                            color: isSelected
+                                ? Colors.white
+                                : isAvailable
+                                ? AppColors.primary
+                                : AppColors.textHint,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                );
-              }).toList(),
+                  );
+                },
+              ),
             ),
         ],
       ),

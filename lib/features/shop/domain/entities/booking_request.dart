@@ -40,7 +40,7 @@ class BookingRequest with _$BookingRequest {
     @JsonKey(name: 'start_slot') required int timeSlotId,
 
     @JsonKey(name: 'vehicle_type') required VehicleType vehicleType,
-    @JsonKey(name: 'pickup_and_delivery') @Default(false) bool pickupAndDelivery,
+    @JsonKey(name: 'pick_up') @Default(false) bool pickupAndDelivery,
     @JsonKey(name: 'promo_code') String? promoCode,
     @JsonKey(name: 'payment_method') String? paymentMethod,
     @JsonKey(name: 'vehicle_id') String? vehicleId,
