@@ -17,8 +17,8 @@ import '../../domain/entities/time_slot.dart';
 /// Provider for current booking data.
 final bookingDataProvider =
     StateNotifierProvider<BookingDataNotifier, BookingData?>((ref) {
-  return BookingDataNotifier();
-});
+      return BookingDataNotifier();
+    });
 
 /// State notifier for managing booking data across screens.
 class BookingDataNotifier extends StateNotifier<BookingData?> {
@@ -89,19 +89,13 @@ class BookingDataNotifier extends StateNotifier<BookingData?> {
   /// Apply promo code.
   void applyPromoCode(String code, double discount) {
     if (state == null) return;
-    state = state!.copyWith(
-      promoCode: code,
-      discount: discount,
-    );
+    state = state!.copyWith(promoCode: code, discount: discount);
   }
 
   /// Remove promo code.
   void removePromoCode() {
     if (state == null) return;
-    state = state!.copyWith(
-      promoCode: null,
-      discount: 0.0,
-    );
+    state = state!.copyWith(promoCode: null, discount: 0.0);
   }
 
   /// Clear booking data.
@@ -141,43 +135,45 @@ final pickupDeliveryProvider = StateProvider<bool>((ref) => false);
 /// Fetches slots from /api/shop/schedule/ based on selected date and shop.
 final availableTimeSlotsAsyncProvider =
     FutureProvider.autoDispose<List<TimeSlot>>((ref) async {
-  final bookingData = ref.watch(bookingDataProvider);
-  final selectedDate = ref.watch(selectedDateProvider);
+      final bookingData = ref.watch(bookingDataProvider);
+      final selectedDate = ref.watch(selectedDateProvider);
 
-  // If no shop or date selected, return empty list
-  if (bookingData == null || selectedDate == null) {
-    return [];
-  }
+      // If no shop or date selected, return empty list
+      if (bookingData == null || selectedDate == null) {
+        return [];
+      }
 
-  final shopId = int.tryParse(bookingData.shopId);
-  if (shopId == null) {
-    return [];
-  }
+      final shopId = int.tryParse(bookingData.shopId);
+      if (shopId == null) {
+        return [];
+      }
 
-  try {
-    final shopApi = ref.watch(shopApiProvider);
-    final scheduleSlots = await shopApi.getShopSchedule(
-      shopId: shopId,
-      date: selectedDate,
-    );
+      try {
+        final shopApi = ref.watch(shopApiProvider);
+        final scheduleSlots = await shopApi.getShopSchedule(
+          shopId: shopId,
+          date: selectedDate,
+        );
 
-    debugPrint('📅 Fetched ${scheduleSlots.length} slots for $selectedDate');
+        debugPrint(
+          '📅 Fetched ${scheduleSlots.length} slots for $selectedDate',
+        );
 
-    // Convert API slots to TimeSlot entities
-    return scheduleSlots.map((slot) {
-      final domainSlot = slot.toDomain();
-      return TimeSlot(
-        id: domainSlot.slotNumber.toString(),
-        time: domainSlot.startTime,
-        displayTime: _formatTimeDisplay(domainSlot.startTime),
-        isAvailable: domainSlot.isAvailable,
-      );
-    }).toList();
-  } catch (e) {
-    debugPrint('❌ Failed to fetch slots: $e');
-    return [];
-  }
-});
+        // Convert API slots to TimeSlot entities
+        return scheduleSlots.map((slot) {
+          final domainSlot = slot.toDomain();
+          return TimeSlot(
+            id: domainSlot.slotNumber.toString(),
+            time: domainSlot.startTime,
+            displayTime: _formatTimeDisplay(domainSlot.startTime),
+            isAvailable: domainSlot.isAvailable,
+          );
+        }).toList();
+      } catch (e) {
+        debugPrint('❌ Failed to fetch slots: $e');
+        return [];
+      }
+    });
 
 /// Format time for display (e.g., "09:00" -> "9:00 AM")
 String _formatTimeDisplay(String time) {
@@ -206,27 +202,29 @@ final availableTimeSlotsProvider = Provider<List<TimeSlot>>((ref) {
 /// Provider for weekly business hours (to disable unavailable weekdays in calendar).
 final weeklyBusinessHoursProvider =
     FutureProvider.autoDispose<List<WeeklyBusinessHours>>((ref) async {
-  final bookingData = ref.watch(bookingDataProvider);
+      final bookingData = ref.watch(bookingDataProvider);
 
-  if (bookingData == null) {
-    return [];
-  }
+      if (bookingData == null) {
+        return [];
+      }
 
-  final shopId = int.tryParse(bookingData.shopId);
-  if (shopId == null) {
-    return [];
-  }
+      final shopId = int.tryParse(bookingData.shopId);
+      if (shopId == null) {
+        return [];
+      }
 
-  try {
-    final shopApi = ref.watch(shopApiProvider);
-    final hoursModels = await shopApi.getWeeklyBusinessHours(shopId);
-    debugPrint('📆 Fetched ${hoursModels.length} business hours for shop $shopId');
-    return hoursModels.map((m) => m.toDomain()).toList();
-  } catch (e) {
-    debugPrint('❌ Failed to fetch weekly business hours: $e');
-    return [];
-  }
-});
+      try {
+        final shopApi = ref.watch(shopApiProvider);
+        final hoursModels = await shopApi.getWeeklyBusinessHours(shopId);
+        debugPrint(
+          '📆 Fetched ${hoursModels.length} business hours for shop $shopId',
+        );
+        return hoursModels.map((m) => m.toDomain()).toList();
+      } catch (e) {
+        debugPrint('❌ Failed to fetch weekly business hours: $e');
+        return [];
+      }
+    });
 
 /// Provider that returns a set of valid weekdays (0=Monday to 6=Sunday).
 /// Use this to enable/disable dates in the calendar.
@@ -235,10 +233,7 @@ final availableWeekdaysProvider = Provider<Set<int>>((ref) {
   return hoursAsync.when(
     data: (hours) {
       // Only include weekdays that have hours defined and are not marked as closed
-      return hours
-          .where((h) => !h.isClosed)
-          .map((h) => h.weekday)
-          .toSet();
+      return hours.where((h) => !h.isClosed).map((h) => h.weekday).toSet();
     },
     loading: () => {0, 1, 2, 3, 4, 5, 6}, // Allow all while loading
     error: (_, __) => {0, 1, 2, 3, 4, 5, 6}, // Allow all on error
@@ -307,8 +302,18 @@ bool isToday(DateTime date) {
 /// Format month name.
 String getMonthName(int month) {
   const months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ];
   return months[month - 1];
 }
@@ -482,9 +487,7 @@ class BookingCreationNotifier extends StateNotifier<BookingCreationState> {
       }
     } catch (e) {
       debugPrint('❌ Booking creation exception: $e');
-      state = BookingCreationError(
-        Failure.unknown(message: e.toString()),
-      );
+      state = BookingCreationError(Failure.unknown(message: e.toString()));
       return false;
     }
   }
@@ -537,12 +540,15 @@ class BookingCreationNotifier extends StateNotifier<BookingCreationState> {
     return BookingRequest(
       shopId: shopId,
       userId: userId,
-      selectedServiceIds:
-          bookingData.selectedServices.map((s) => s.id).toList(),
-      selectedPackageIds:
-          bookingData.selectedPackages.map((p) => p.id).toList(),
-      selectedAccessoryIds:
-          bookingData.selectedAccessories.map((a) => a.id).toList(),
+      selectedServiceIds: bookingData.selectedServices
+          .map((s) => s.id)
+          .toList(),
+      selectedPackageIds: bookingData.selectedPackages
+          .map((p) => p.id)
+          .toList(),
+      selectedAccessoryIds: bookingData.selectedAccessories
+          .map((a) => a.id)
+          .toList(),
       appointmentDate: bookingData.selectedDate!,
       serviceId: _resolveServiceId(bookingData),
       timeSlotId: timeSlotId,
@@ -564,7 +570,8 @@ class BookingCreationNotifier extends StateNotifier<BookingCreationState> {
 
   /// Estimate duration in blocks; fallback to 1 when unknown.
   int _calculateDurationInBlocks(BookingData bookingData) {
-    final itemCount = bookingData.selectedServices.length +
+    final itemCount =
+        bookingData.selectedServices.length +
         bookingData.selectedPackages.length +
         bookingData.selectedAccessories.length;
     return itemCount > 0 ? itemCount : 1;
@@ -576,21 +583,16 @@ class BookingCreationNotifier extends StateNotifier<BookingCreationState> {
     final candidate = bookingData.selectedServices.isNotEmpty
         ? bookingData.selectedServices.first.id
         : bookingData.selectedPackages.isNotEmpty
-            ? bookingData.selectedPackages.first.id
-            : bookingData.selectedAccessories.isNotEmpty
-                ? bookingData.selectedAccessories.first.id
-                : null;
+        ? bookingData.selectedPackages.first.id
+        : bookingData.selectedAccessories.isNotEmpty
+        ? bookingData.selectedAccessories.first.id
+        : null;
 
     final parsed = candidate != null ? int.tryParse(candidate) : null;
     if (parsed == null) {
       throw Exception('Missing or invalid service_id');
     }
     return parsed;
-  }
-
-  /// Reset state to initial.
-  void reset() {
-    state = const BookingCreationInitial();
   }
 
   /// Clear booking data after success screen is dismissed.
@@ -604,5 +606,5 @@ class BookingCreationNotifier extends StateNotifier<BookingCreationState> {
 /// Provider for booking creation state.
 final bookingCreationProvider =
     StateNotifierProvider<BookingCreationNotifier, BookingCreationState>((ref) {
-  return BookingCreationNotifier(ref);
-});
+      return BookingCreationNotifier(ref);
+    });

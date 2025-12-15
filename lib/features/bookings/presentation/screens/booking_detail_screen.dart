@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_map/flutter_map.dart'; // 🟢 Added flutter_map
+import 'package:latlong2/latlong.dart'; // 🟢 Added latlong2
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../app/theme/colors.dart';
@@ -49,7 +50,14 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          onPressed: () => context.pop(),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              // Navigate to home if there is no back history
+              context.go('/home');
+            }
+          },
           icon: Icon(
             Icons.arrow_back,
             color: AppColors.textPrimary,
@@ -58,9 +66,7 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
         ),
         title: Text(
           'Details',
-          style: AppTypography.titleLarge.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppTypography.titleLarge.copyWith(fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
         actions: [
@@ -85,12 +91,15 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
       BookingDetailStateInitial() => _buildLoadingState(),
       BookingDetailStateLoading() => _buildLoadingState(),
       BookingDetailStateCancelling() => _buildLoadingState(),
-      BookingDetailStateLoaded(booking: final booking) =>
-        _buildLoadedState(booking),
-      BookingDetailStateCancelled(booking: final booking) =>
-        _buildLoadedState(booking),
-      BookingDetailStateError(failure: final failure) =>
-        _buildErrorState(failure),
+      BookingDetailStateLoaded(booking: final booking) => _buildLoadedState(
+        booking,
+      ),
+      BookingDetailStateCancelled(booking: final booking) => _buildLoadedState(
+        booking,
+      ),
+      BookingDetailStateError(failure: final failure) => _buildErrorState(
+        failure,
+      ),
     };
   }
 
@@ -127,6 +136,7 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
     );
   }
 
+  // ... (Keep _buildCenterSection exactly the same as your original code) ...
   Widget _buildCenterSection(Booking booking) {
     return Container(
       color: Colors.white,
@@ -203,7 +213,11 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
                           ),
                           Row(
                             children: [
-                              Icon(Icons.star, color: Colors.amber, size: 16.sp),
+                              Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                                size: 16.sp,
+                              ),
                               SizedBox(width: 4.w),
                               Text(
                                 '4.7',
@@ -318,31 +332,43 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
             ],
           ),
           SizedBox(height: 12.h),
-          // Map Preview
+          // 🟢 Map Preview (Flutter Map Implementation)
           SizedBox(
             height: 160.h,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(12.r),
               child: hasCoords
-                  ? GoogleMap(
-                      initialCameraPosition: CameraPosition(
-                        target: target,
-                        zoom: 15,
-                      ),
-                      markers: {
-                        Marker(
-                          markerId: const MarkerId('shop'),
-                          position: target,
-                          infoWindow: InfoWindow(title: booking.shopName),
+                  ? FlutterMap(
+                      options: MapOptions(
+                        initialCenter: target,
+                        initialZoom: 15.0,
+                        interactionOptions: const InteractionOptions(
+                          flags: InteractiveFlag
+                              .none, // Disable gestures for "lite mode" feel
                         ),
-                      },
-                      zoomControlsEnabled: false,
-                      myLocationButtonEnabled: false,
-                      liteModeEnabled: true,
-                      compassEnabled: false,
-                      scrollGesturesEnabled: false,
-                      tiltGesturesEnabled: false,
-                      rotateGesturesEnabled: false,
+                      ),
+                      children: [
+                        TileLayer(
+                          urlTemplate:
+                              'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                          userAgentPackageName:
+                              'com.nexotech.driveto', // Replace with your app package
+                        ),
+                        MarkerLayer(
+                          markers: [
+                            Marker(
+                              point: target,
+                              width: 40.w,
+                              height: 40.h,
+                              child: Icon(
+                                Icons.location_on,
+                                color: Colors.red,
+                                size: 40.sp,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     )
                   : CustomPaint(
                       size: Size(double.infinity, 160.h),
@@ -356,13 +382,24 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
   }
 
   Future<void> _openInMaps(LatLng target) async {
+    // 🟢 Updated URL scheme to work with both Google Maps and other map apps
     final uri = Uri.parse(
-      'https://www.google.com/maps/search/?api=1&query=${target.latitude},${target.longitude}',
+      'geo:${target.latitude},${target.longitude}?q=${target.latitude},${target.longitude}',
     );
     if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
+      await launchUrl(uri);
+    } else {
+      // Fallback to web map if app not found
+      final webUri = Uri.parse(
+        'https://www.google.com/maps/search/?api=1&query=${target.latitude},${target.longitude}',
+      );
+      if (await canLaunchUrl(webUri)) {
+        await launchUrl(webUri, mode: LaunchMode.externalApplication);
+      }
     }
   }
+
+  // ... (Keep _buildYourBookingSection, _buildProgressTracker, and other methods the same) ...
 
   Widget _buildYourBookingSection(Booking booking) {
     return Container(
@@ -419,10 +456,7 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
         SizedBox(width: 12.w),
         Text(
           label,
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: AppColors.textSecondary,
-          ),
+          style: TextStyle(fontSize: 14.sp, color: AppColors.textSecondary),
         ),
         const Spacer(),
         Text(
@@ -494,7 +528,9 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
             width: 26.w,
             height: 26.h,
             decoration: BoxDecoration(
-              color: isCompleted ? Colors.white : Colors.white.withValues(alpha: 0.3),
+              color: isCompleted
+                  ? Colors.white
+                  : Colors.white.withValues(alpha: 0.3),
               shape: BoxShape.circle,
             ),
             child: Center(
@@ -546,8 +582,18 @@ class _BookingDetailScreenState extends ConsumerState<BookingDetailScreen> {
 
   String _formatDate(DateTime date) {
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     return '${date.day} - ${months[date.month - 1]} ${date.year}';
   }

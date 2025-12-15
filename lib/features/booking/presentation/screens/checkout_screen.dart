@@ -6,6 +6,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../../../app/theme/colors.dart';
 import '../../../../app/theme/typography.dart';
+// 1. Import your app routes
+import '../../../../app/router/routes.dart';
 import '../../../shop/domain/entities/booking_confirmation.dart';
 import '../../application/providers/booking_provider.dart';
 import '../../domain/entities/booking_data.dart';
@@ -35,9 +37,19 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
     // Listen for booking creation state changes
     ref.listen<BookingCreationState>(bookingCreationProvider, (previous, next) {
-      if (next is BookingCreationSuccess) {
+      // 1. Handle Payment Success (Razorpay Flow)
+      if (next is BookingPaymentSuccess) {
+        final bookingId = next.verifyResponse.bookingId;
+
+        // ✅ UPDATED: Use BookingDetailRoute type-safe navigation
+        BookingDetailRoute(bookingId: bookingId.toString()).go(context);
+      }
+      // 2. Handle Standard Creation Success (Non-Payment Flow)
+      else if (next is BookingCreationSuccess) {
         _showBookingSuccessDialog(context, next.confirmation);
-      } else if (next is BookingCreationError) {
+      }
+      // 3. Handle Errors
+      else if (next is BookingCreationError) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(next.failure.message ?? 'Booking failed'),
@@ -62,7 +74,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               ),
               SizedBox(height: 16.h),
               ElevatedButton(
-                onPressed: () => context.go('/home'),
+                onPressed: () => const HomeRoute().go(
+                  context,
+                ), // Updated to type-safe if available
                 child: const Text('Go to Home'),
               ),
             ],
@@ -110,7 +124,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             ),
 
             // Select payment button
-            _buildSelectPaymentButton(context, bookingData, bookingCreationState),
+            _buildSelectPaymentButton(
+              context,
+              bookingData,
+              bookingCreationState,
+            ),
           ],
         ),
       ),
@@ -128,7 +146,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               if (context.canPop()) {
                 context.pop();
               } else {
-                context.go('/home');
+                const HomeRoute().go(context);
               }
             },
             child: Icon(
@@ -156,6 +174,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       ),
     );
   }
+
+  // ... (Keep _buildShopCard, _buildYourBookingSection, _buildInfoRow, _buildPriceDetailsSection, _buildPriceRow as they were) ...
+
+  // NOTE: I've omitted the middle UI widgets for brevity as they haven't changed.
+  // Paste them back here if you are copying the full file.
 
   Widget _buildShopCard(BookingData bookingData) {
     return Container(
@@ -708,9 +731,9 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         Navigator.pop(sheetContext);
 
         // Create the booking via API
-        await ref.read(bookingCreationProvider.notifier).createBooking(
-              paymentMethod: paymentMethod,
-            );
+        await ref
+            .read(bookingCreationProvider.notifier)
+            .createBooking(paymentMethod: paymentMethod);
       },
       borderRadius: BorderRadius.circular(12.r),
       child: Container(
@@ -832,7 +855,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   child: OutlinedButton(
                     onPressed: () {
                       Navigator.pop(dialogContext);
-                      context.go('/home');
+                      // ✅ UPDATED: Use type-safe HomeRoute
+                      const HomeRoute().go(context);
                     },
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: AppColors.primary),
@@ -853,7 +877,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pop(dialogContext);
-                      context.go('/bookings');
+                      // ✅ UPDATED: Use type-safe BookingsRoute (List)
+                      const BookingsRoute().go(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
