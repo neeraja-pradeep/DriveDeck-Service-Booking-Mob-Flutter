@@ -1,12 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/error/failure.dart';
+import '../../../../core/services/payment_service.dart';
 import '../../../bookings/application/providers/bookings_providers.dart';
 import '../../../shop/application/providers/shop_providers.dart';
 import '../../../shop/domain/entities/booking_confirmation.dart';
 import '../../../shop/domain/entities/booking_request.dart';
 import '../../../shop/domain/entities/shop.dart';
 import '../../../shop/domain/entities/vehicle_type.dart';
+import '../../../shop/infrastructure/models/payment_models.dart';
 import '../../../shop/infrastructure/models/shop_model.dart';
 import '../../../home/application/providers/home_provider.dart';
 import '../../domain/entities/booking_data.dart';
@@ -325,15 +327,32 @@ class BookingCreationInitial extends BookingCreationState {
   const BookingCreationInitial();
 }
 
-/// Loading state - booking is being created.
+/// Loading state - booking is being initiated.
 class BookingCreationLoading extends BookingCreationState {
   const BookingCreationLoading();
 }
 
-/// Success state - booking was created successfully.
+/// Awaiting payment - Razorpay SDK is open.
+class BookingAwaitingPayment extends BookingCreationState {
+  final BookingInitiateResponse initiateResponse;
+  const BookingAwaitingPayment(this.initiateResponse);
+}
+
+/// Verifying payment with backend.
+class BookingVerifyingPayment extends BookingCreationState {
+  const BookingVerifyingPayment();
+}
+
+/// Success state - booking was created and paid successfully.
 class BookingCreationSuccess extends BookingCreationState {
   final BookingConfirmation confirmation;
   const BookingCreationSuccess(this.confirmation);
+}
+
+/// Payment success state (when we don't have full confirmation model).
+class BookingPaymentSuccess extends BookingCreationState {
+  final PaymentVerifyResponse verifyResponse;
+  const BookingPaymentSuccess(this.verifyResponse);
 }
 
 /// Error state - booking creation failed.
@@ -342,15 +361,29 @@ class BookingCreationError extends BookingCreationState {
   const BookingCreationError(this.failure);
 }
 
+/// Payment cancelled by user.
+class BookingPaymentCancelled extends BookingCreationState {
+  final String message;
+  const BookingPaymentCancelled([this.message = 'Payment was cancelled']);
+}
+
 /// Notifier for booking creation process.
 class BookingCreationNotifier extends StateNotifier<BookingCreationState> {
   BookingCreationNotifier(this._ref) : super(const BookingCreationInitial());
 
   final Ref _ref;
 
-  /// Create a booking from the current booking data.
+  /// Create a booking with Razorpay payment flow.
+  ///
+  /// Flow:
+  /// 1. Initiate booking -> get Razorpay order ID
+  /// 2. Open Razorpay SDK -> user pays
+  /// 3. Verify payment -> confirm booking
   Future<bool> createBooking({
     required String paymentMethod,
+    String? userEmail,
+    String? userPhone,
+    String? userName,
   }) async {
     final bookingData = _ref.read(bookingDataProvider);
     if (bookingData == null) {
@@ -378,93 +411,74 @@ class BookingCreationNotifier extends StateNotifier<BookingCreationState> {
     state = const BookingCreationLoading();
 
     try {
-      // Parse shopId to int
-      final shopId = int.tryParse(bookingData.shopId);
-      if (shopId == null) {
-        state = const BookingCreationError(
-          Failure.validation(message: 'Invalid shop ID'),
-        );
-        return false;
-      }
+      // Build and validate request
+      final request = _buildBookingRequest(bookingData, paymentMethod);
+      if (request == null) return false;
 
-      // Parse timeSlotId to int
-      final timeSlotId = int.tryParse(bookingData.selectedTimeSlotId!);
-      if (timeSlotId == null) {
-        state = const BookingCreationError(
-          Failure.validation(message: 'Invalid time slot ID'),
-        );
-        return false;
-      }
+      debugPrint('📦 Step 1: Initiating booking...');
+      debugPrint('📦 Request: ${request.toJson()}');
 
-      // Resolve authenticated user id (required in body).
-      final userIdStr = _ref.read(currentUserIdProvider);
-      if (userIdStr == null || userIdStr.isEmpty) {
-        state = const BookingCreationError(
-          Failure.validation(message: 'Missing user ID'),
-        );
-        return false;
-      }
+      // Step 1: Initiate booking and get Razorpay order
+      final shopApi = _ref.read(shopApiProvider);
+      final initiateResponse = await shopApi.initiateBooking(request);
 
-      final userId = int.tryParse(userIdStr);
-      if (userId == null) {
-        state = const BookingCreationError(
-          Failure.validation(message: 'Invalid user ID'),
-        );
-        return false;
-      }
+      debugPrint('✅ Booking initiated: ${initiateResponse.bookingId}');
+      debugPrint('💳 Razorpay Order: ${initiateResponse.razorpayOrderId}');
+      debugPrint('💰 Amount: ₹${initiateResponse.amountInRupees}');
 
-      // Parse vehicle type
-      final vehicleType = bookingData.vehicleType != null
-          ? VehicleTypeExtension.fromString(bookingData.vehicleType!)
-          : VehicleType.sedan;
+      // Update state to show payment is awaiting
+      state = BookingAwaitingPayment(initiateResponse);
 
-      // Build booking request
-      final request = BookingRequest(
-        shopId: shopId,
-        userId: userId,
-        selectedServiceIds:
-            bookingData.selectedServices.map((s) => s.id).toList(),
-        selectedPackageIds:
-            bookingData.selectedPackages.map((p) => p.id).toList(),
-        selectedAccessoryIds:
-            bookingData.selectedAccessories.map((a) => a.id).toList(),
-        appointmentDate: bookingData.selectedDate!,
-        serviceId: _resolveServiceId(bookingData),
-        timeSlotId: timeSlotId,
-        vehicleType: vehicleType,
-        pickupAndDelivery: bookingData.pickupAndDelivery,
-        promoCode: bookingData.promoCode,
-        paymentMethod: paymentMethod,
-        vehicleId: bookingData.vehicleId,
-        durationInBlocks: _calculateDurationInBlocks(bookingData),
-        amount: bookingData.totalPrice,
-        status: 'pending',
+      // Step 2: Open Razorpay payment
+      debugPrint('📦 Step 2: Opening Razorpay payment...');
+      final paymentService = _ref.read(paymentServiceProvider);
+      final paymentResult = await paymentService.openPaymentSheet(
+        initiateResponse: initiateResponse,
+        userEmail: userEmail ?? 'customer@drivedeck.com',
+        userPhone: userPhone ?? '9999999999',
+        userName: userName,
       );
 
-      debugPrint('📦 Creating booking with request: ${request.toJson()}');
+      if (!paymentResult.success) {
+        debugPrint('❌ Payment failed: ${paymentResult.errorMessage}');
+        state = BookingPaymentCancelled(
+          paymentResult.errorMessage ?? 'Payment was cancelled',
+        );
+        return false;
+      }
 
-      // Call the use case
-      final useCase = _ref.read(createBookingUseCaseProvider);
-      final result = await useCase(request);
+      debugPrint('✅ Payment successful: ${paymentResult.paymentId}');
 
-      return result.fold(
-        (failure) {
-          debugPrint('❌ Booking creation failed: ${failure.message}');
-          state = BookingCreationError(failure);
-          return false;
-        },
-        (confirmation) {
-          debugPrint(
-            '✅ Booking created: ${confirmation.bookingReference}',
-          );
-          state = BookingCreationSuccess(confirmation);
-          // Clear booking data after successful creation
-          _ref.read(bookingDataProvider.notifier).clearBooking();
-          // Invalidate bookings list so it refreshes when user navigates to it
-          _ref.invalidate(bookingsStateProvider);
-          return true;
-        },
-      );
+      // Step 3: Verify payment
+      debugPrint('📦 Step 3: Verifying payment...');
+      state = const BookingVerifyingPayment();
+
+      final verifyRequest = paymentResult.toVerifyRequest();
+      if (verifyRequest == null) {
+        state = const BookingCreationError(
+          Failure.unknown(message: 'Invalid payment response'),
+        );
+        return false;
+      }
+
+      final verifyResponse = await shopApi.verifyPayment(verifyRequest);
+
+      if (verifyResponse.success) {
+        debugPrint('✅ Payment verified! Booking confirmed.');
+        state = BookingPaymentSuccess(verifyResponse);
+
+        // Clear booking data after successful creation
+        _ref.read(bookingDataProvider.notifier).clearBooking();
+        // Invalidate bookings list so it refreshes
+        _ref.invalidate(bookingsStateProvider);
+        return true;
+      } else {
+        debugPrint('❌ Payment verification failed: ${verifyResponse.message}');
+        state = BookingCreationError(
+          Failure.server(message: verifyResponse.message),
+        );
+        return false;
+      }
     } catch (e) {
       debugPrint('❌ Booking creation exception: $e');
       state = BookingCreationError(
@@ -472,6 +486,79 @@ class BookingCreationNotifier extends StateNotifier<BookingCreationState> {
       );
       return false;
     }
+  }
+
+  /// Build booking request from booking data.
+  BookingRequest? _buildBookingRequest(
+    BookingData bookingData,
+    String paymentMethod,
+  ) {
+    // Parse shopId to int
+    final shopId = int.tryParse(bookingData.shopId);
+    if (shopId == null) {
+      state = const BookingCreationError(
+        Failure.validation(message: 'Invalid shop ID'),
+      );
+      return null;
+    }
+
+    // Parse timeSlotId to int
+    final timeSlotId = int.tryParse(bookingData.selectedTimeSlotId!);
+    if (timeSlotId == null) {
+      state = const BookingCreationError(
+        Failure.validation(message: 'Invalid time slot ID'),
+      );
+      return null;
+    }
+
+    // Resolve authenticated user id
+    final userIdStr = _ref.read(currentUserIdProvider);
+    if (userIdStr == null || userIdStr.isEmpty) {
+      state = const BookingCreationError(
+        Failure.validation(message: 'Missing user ID'),
+      );
+      return null;
+    }
+
+    final userId = int.tryParse(userIdStr);
+    if (userId == null) {
+      state = const BookingCreationError(
+        Failure.validation(message: 'Invalid user ID'),
+      );
+      return null;
+    }
+
+    // Parse vehicle type
+    final vehicleType = bookingData.vehicleType != null
+        ? VehicleTypeExtension.fromString(bookingData.vehicleType!)
+        : VehicleType.sedan;
+
+    return BookingRequest(
+      shopId: shopId,
+      userId: userId,
+      selectedServiceIds:
+          bookingData.selectedServices.map((s) => s.id).toList(),
+      selectedPackageIds:
+          bookingData.selectedPackages.map((p) => p.id).toList(),
+      selectedAccessoryIds:
+          bookingData.selectedAccessories.map((a) => a.id).toList(),
+      appointmentDate: bookingData.selectedDate!,
+      serviceId: _resolveServiceId(bookingData),
+      timeSlotId: timeSlotId,
+      vehicleType: vehicleType,
+      pickupAndDelivery: bookingData.pickupAndDelivery,
+      promoCode: bookingData.promoCode,
+      paymentMethod: paymentMethod,
+      vehicleId: bookingData.vehicleId,
+      durationInBlocks: _calculateDurationInBlocks(bookingData),
+      amount: bookingData.totalPrice,
+      status: 'pending',
+    );
+  }
+
+  /// Reset state to initial.
+  void reset() {
+    state = const BookingCreationInitial();
   }
 
   /// Estimate duration in blocks; fallback to 1 when unknown.

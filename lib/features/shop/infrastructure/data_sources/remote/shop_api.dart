@@ -2,6 +2,7 @@ import '../../../../../core/network/api_client.dart';
 import '../../../../../core/network/endpoints.dart';
 import '../../../domain/entities/booking_request.dart';
 import '../../models/booking_confirmation_model.dart';
+import '../../models/payment_models.dart';
 import '../../models/shop_model.dart';
 
 /// Remote data source for shop API calls.
@@ -64,7 +65,14 @@ abstract class ShopApi {
   /// Get shops via reviews feed.
   Future<List<ShopModel>> getShopReviews({int page, int pageSize});
 
-  /// Create a new booking.
+  /// Initiate a booking and get Razorpay order details.
+  /// Returns order_id needed for Razorpay SDK.
+  Future<BookingInitiateResponse> initiateBooking(BookingRequest request);
+
+  /// Verify payment after Razorpay SDK callback.
+  Future<PaymentVerifyResponse> verifyPayment(PaymentVerifyRequest request);
+
+  /// Create a new booking (legacy - use initiateBooking + verifyPayment).
   Future<BookingConfirmationModel> createBooking(BookingRequest request);
 }
 
@@ -279,7 +287,26 @@ class ShopApiImpl implements ShopApi {
   }
 
   @override
+  Future<BookingInitiateResponse> initiateBooking(BookingRequest request) async {
+    final response = await apiClient.post(
+      Endpoints.initiateBooking(),
+      data: request.toJson(),
+    );
+    return BookingInitiateResponse.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  @override
+  Future<PaymentVerifyResponse> verifyPayment(PaymentVerifyRequest request) async {
+    final response = await apiClient.post(
+      Endpoints.verifyPayment(),
+      data: request.toJson(),
+    );
+    return PaymentVerifyResponse.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  @override
   Future<BookingConfirmationModel> createBooking(BookingRequest request) async {
+    // Legacy method - initiates booking but doesn't handle payment flow
     final response = await apiClient.post(
       Endpoints.initiateBooking(),
       data: request.toJson(),
