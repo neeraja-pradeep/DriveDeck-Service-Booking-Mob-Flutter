@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '../../../../../core/network/api_client.dart';
 import '../../../../../core/network/endpoints.dart';
 import '../../../domain/entities/booking_request.dart';
@@ -215,34 +217,49 @@ class ShopApiImpl implements ShopApi {
     required int shopId,
     required DateTime date,
   }) async {
-    final response = await apiClient.get(
-      Endpoints.shopDateDay(shopId),
-      queryParameters: {
-        'date': date.toIso8601String().split('T').first,
-      },
-    );
-
-    // API returns { "shop": 2, "start_date": "...", "dates": [...] }
-    // Each date has: { "date": "...", "day": "MON", "closed": false, "window": {...} }
-    final List<dynamic> dates = response.data['dates'] ?? [];
     final dateStr = date.toIso8601String().split('T').first;
+    debugPrint('📅 Fetching schedule for shop $shopId on $dateStr');
+    debugPrint('📅 Endpoint: ${Endpoints.shopDateDay(shopId)}');
 
-    // Find the matching date entry
-    for (final dateJson in dates) {
-      final dateDayModel = DateDayModel.fromJson(dateJson as Map<String, dynamic>);
-      if (dateDayModel.date == dateStr) {
-        // Convert business window to time slots
-        final timeSlots = dateDayModel.toTimeSlots();
-        return timeSlots.map((slot) => ScheduleSlotModel(
-          slotNumber: slot.slotNumber,
-          startTime: slot.startTime,
-          endTime: slot.endTime,
-          isBooked: !slot.isAvailable,
-        )).toList();
+    try {
+      final response = await apiClient.get(
+        Endpoints.shopDateDay(shopId),
+        queryParameters: {
+          'date': dateStr,
+        },
+      );
+
+      debugPrint('📅 Response: ${response.data}');
+
+      // API returns { "shop": 2, "start_date": "...", "dates": [...] }
+      // Each date has: { "date": "...", "day": "MON", "closed": false, "window": {...} }
+      final List<dynamic> dates = response.data['dates'] ?? [];
+      debugPrint('📅 Found ${dates.length} dates in response');
+
+      // Find the matching date entry
+      for (final dateJson in dates) {
+        final dateDayModel = DateDayModel.fromJson(dateJson as Map<String, dynamic>);
+        debugPrint('📅 Checking date: ${dateDayModel.date} vs $dateStr, closed: ${dateDayModel.closed}');
+        if (dateDayModel.date == dateStr) {
+          // Convert business window to time slots
+          final timeSlots = dateDayModel.toTimeSlots();
+          debugPrint('📅 Generated ${timeSlots.length} time slots');
+          return timeSlots.map((slot) => ScheduleSlotModel(
+            slotNumber: slot.slotNumber,
+            startTime: slot.startTime,
+            endTime: slot.endTime,
+            isBooked: !slot.isAvailable,
+          )).toList();
+        }
       }
-    }
 
-    return [];
+      debugPrint('📅 No matching date found in response');
+      return [];
+    } catch (e, stack) {
+      debugPrint('❌ getShopSchedule error: $e');
+      debugPrint('❌ Stack: $stack');
+      rethrow;
+    }
   }
 
   @override
