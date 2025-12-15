@@ -3,33 +3,57 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'vehicle.freezed.dart';
 part 'vehicle.g.dart';
 
-/// Vehicle type enum.
-enum GarageVehicleType {
+/// Vehicle/Car type enum matching API values.
+/// API accepts: sedan, hatchback, suv, convertible
+enum CarType {
   sedan,
-  suv,
   hatchback,
+  suv,
+  convertible,
   muv,
   luxury,
 }
 
-/// Extension for VehicleType display properties.
-extension GarageVehicleTypeX on GarageVehicleType {
+/// Extension for CarType display properties.
+extension CarTypeX on CarType {
   String get displayName => switch (this) {
-        GarageVehicleType.sedan => 'SEDAN',
-        GarageVehicleType.suv => 'SUV',
-        GarageVehicleType.hatchback => 'HATCHBACK',
-        GarageVehicleType.muv => 'MUV',
-        GarageVehicleType.luxury => 'LUXURY',
+        CarType.sedan => 'Sedan',
+        CarType.hatchback => 'Hatchback',
+        CarType.suv => 'SUV',
+        CarType.convertible => 'Convertible',
+        CarType.muv => 'MUV',
+        CarType.luxury => 'Luxury',
       };
 
   /// Get the API value for car_type field.
   String get apiValue => switch (this) {
-        GarageVehicleType.sedan => 'sedan',
-        GarageVehicleType.suv => 'suv',
-        GarageVehicleType.hatchback => 'hatchback',
-        GarageVehicleType.muv => 'muv',
-        GarageVehicleType.luxury => 'luxury',
+        CarType.sedan => 'sedan',
+        CarType.hatchback => 'hatchback',
+        CarType.suv => 'suv',
+        CarType.convertible => 'convertible',
+        CarType.muv => 'muv',
+        CarType.luxury => 'luxury',
       };
+
+  /// Parse from API string value.
+  static CarType fromApiValue(String? value) {
+    switch (value?.toLowerCase()) {
+      case 'sedan':
+        return CarType.sedan;
+      case 'hatchback':
+        return CarType.hatchback;
+      case 'suv':
+        return CarType.suv;
+      case 'convertible':
+        return CarType.convertible;
+      case 'muv':
+        return CarType.muv;
+      case 'luxury':
+        return CarType.luxury;
+      default:
+        return CarType.sedan;
+    }
+  }
 }
 
 /// Vehicle entity representing a user's car in their garage.
@@ -38,7 +62,7 @@ extension GarageVehicleTypeX on GarageVehicleType {
 class Vehicle with _$Vehicle {
   const factory Vehicle({
     required int id,
-    required GarageVehicleType carType,
+    required CarType carType,
     String? registration,
     String? imageUrl,
     @Default(false) bool isFavourite,
@@ -54,7 +78,7 @@ extension VehicleX on Vehicle {
   /// Get display name based on car type.
   String get displayName => carType.displayName;
 
-  /// Get formatted registration or vehicle type display.
+  /// Get formatted registration or car type display.
   String get subtitle {
     if (registration != null && registration!.isNotEmpty) {
       return registration!;

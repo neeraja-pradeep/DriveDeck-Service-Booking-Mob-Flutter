@@ -82,6 +82,25 @@ class Endpoints {
       '$apiPrefix/booking/v1/bookings/$bookingId/reschedule/';
 
   // ============================================================================
+  // Payment Endpoints
+  // ============================================================================
+
+  /// Initiate booking with payment.
+  /// POST /api/booking/v1/initiate/
+  /// Required: shop_id, service_id, appointment_date, start_slot
+  static String initiateBooking() => '$apiPrefix/booking/v1/initiate/';
+
+  /// Verify payment after Razorpay callback.
+  /// POST /api/booking/v1/verify-payment/
+  /// Required: razorpay_payment_id, razorpay_order_id, razorpay_signature
+  static String verifyPayment() => '$apiPrefix/booking/v1/verify-payment/';
+
+  /// Initiate refund for a booking.
+  /// POST /api/booking/v1/initiate-refund/
+  /// Required: booking_id
+  static String initiateRefund() => '$apiPrefix/booking/v1/initiate-refund/';
+
+  // ============================================================================
   // Shop Endpoints
   // ============================================================================
 
@@ -107,20 +126,37 @@ class Endpoints {
   static String shopAccessories(int shopId) =>
       '$apiPrefix/shop/v1/shops/$shopId/accessories/';
 
-  /// Get shop availability for date range.
-  static String shopAvailability(int shopId) =>
+  /// Get shop availability/schedule for a specific date.
+  /// GET /api/shop/v1/shops/{id}/date-day/
+  /// Query params: date (YYYY-MM-DD)
+  /// Returns available time slots for the given date
+  static String shopDateDay(int shopId) =>
       '$apiPrefix/shop/v1/shops/$shopId/date-day/';
+
+  /// Get weekly business hours for a shop.
+  /// GET /api/shop/v1/shop_weekly_businesses/
+  /// Query params: shop (shop ID)
+  /// Returns which weekdays (0=Monday, 6=Sunday) have business hours
+  static String weeklyBusinessHours() =>
+      '$apiPrefix/shop/v1/shop-weekly-businesses/';
 
   /// Get shop time slots (legacy).
   static String shopTimeSlots(String shopId) =>
       '$apiPrefix/shop/v1/shops/$shopId/slots/';
 
-  /// Shop favorites.
-  static String shopFavorites() => '$apiPrefix/shop/favorites/';
+  /// Add shop to favorites.
+  /// POST /api/shop/v1/favorites/create
+  /// Required: shop (shop ID)
+  static String addShopFavorite() => '$apiPrefix/shop/v1/favorites/create';
 
-  /// Shop favorite by ID.
-  static String shopFavorite(int shopId) =>
-      '$apiPrefix/shop/favorites/$shopId/';
+  /// List favorite shops.
+  /// GET /api/shop/v1/favorites/list
+  static String listShopFavorites() => '$apiPrefix/shop/v1/favorites/list';
+
+  /// Remove shop from favorites.
+  /// DELETE /api/shop/v1/favorites/{id}/
+  static String removeShopFavorite(int shopId) =>
+      '$apiPrefix/shop/v1/favorites/$shopId/';
 
   // ============================================================================
   // User Endpoints

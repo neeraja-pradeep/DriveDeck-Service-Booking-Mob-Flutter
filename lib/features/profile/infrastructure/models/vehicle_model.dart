@@ -7,12 +7,12 @@ part 'vehicle_model.g.dart';
 /// Vehicle model for API serialization.
 /// API Response format:
 /// {
-///   "id": 0,
+///   "id": 1,
 ///   "user": "string",
-///   "car_type": "sedan",
-///   "registration": "string",
-///   "image_url": "string",
-///   "is_favourite": true,
+///   "car_type": "hatchback",
+///   "registration": null,
+///   "image_url": null,
+///   "is_favourite": false,
 ///   "created_at": "2025-12-12T18:59:21.218Z",
 ///   "updated_at": "2025-12-12T18:59:21.218Z"
 /// }
@@ -52,29 +52,12 @@ class VehicleModel {
   Vehicle toDomain() {
     return Vehicle(
       id: id,
-      carType: _parseVehicleType(carType),
+      carType: CarTypeX.fromApiValue(carType),
       registration: registration,
       imageUrl: imageUrl,
       isFavourite: isFavourite,
       createdAt: createdAt != null ? DateTime.tryParse(createdAt!) : null,
       updatedAt: updatedAt != null ? DateTime.tryParse(updatedAt!) : null,
     );
-  }
-
-  GarageVehicleType _parseVehicleType(String type) {
-    switch (type.toLowerCase()) {
-      case 'sedan':
-        return GarageVehicleType.sedan;
-      case 'suv':
-        return GarageVehicleType.suv;
-      case 'hatchback':
-        return GarageVehicleType.hatchback;
-      case 'muv':
-        return GarageVehicleType.muv;
-      case 'luxury':
-        return GarageVehicleType.luxury;
-      default:
-        return GarageVehicleType.sedan;
-    }
   }
 }

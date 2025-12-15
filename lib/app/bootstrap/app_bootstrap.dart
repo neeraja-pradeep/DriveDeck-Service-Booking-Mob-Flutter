@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../core/storage/hive/boxes.dart';
@@ -27,6 +28,9 @@ class AppBootstrap {
   static Future<void> initialize({Environment? environment}) async {
     debugPrint('🚀 AppBootstrap: Starting app initialization');
 
+    // Load .env file for Razorpay and other secrets
+    await _loadDotEnv();
+
     // Initialize environment configuration
     await _initializeEnvironment(environment);
 
@@ -34,6 +38,21 @@ class AppBootstrap {
     await _initializeHive();
 
     debugPrint('✅ AppBootstrap: App initialization completed');
+  }
+
+  /// Load environment variables from .env file.
+  static Future<void> _loadDotEnv() async {
+    debugPrint('🔐 AppBootstrap: Loading .env file');
+    try {
+      await dotenv.load(fileName: '.env');
+      debugPrint('✅ AppBootstrap: .env file loaded');
+      debugPrint(
+        '🔑 AppBootstrap: Razorpay key configured: ${dotenv.env['RAZORPAY_KEY_ID']?.isNotEmpty ?? false}',
+      );
+    } catch (e) {
+      debugPrint('⚠️ AppBootstrap: Could not load .env file: $e');
+      debugPrint('⚠️ AppBootstrap: Razorpay payments may not work');
+    }
   }
 
   /// Initialize environment configuration.

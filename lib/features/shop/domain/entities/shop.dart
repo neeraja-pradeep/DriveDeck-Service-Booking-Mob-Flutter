@@ -124,3 +124,21 @@ class ShopDateAvailability with _$ShopDateAvailability {
   factory ShopDateAvailability.fromJson(Map<String, dynamic> json) =>
       _$ShopDateAvailabilityFromJson(json);
 }
+
+/// Weekly business hours for a shop.
+/// Represents which weekdays (0=Monday to 6=Sunday) a shop is open.
+@freezed
+class WeeklyBusinessHours with _$WeeklyBusinessHours {
+  const factory WeeklyBusinessHours({
+    required int id,
+    required int shopId,
+    /// Weekday number: 0=Monday, 1=Tuesday, ..., 6=Sunday
+    required int weekday,
+    String? openTime,
+    String? closeTime,
+    @Default(false) bool isClosed,
+  }) = _WeeklyBusinessHours;
+
+  factory WeeklyBusinessHours.fromJson(Map<String, dynamic> json) =>
+      _$WeeklyBusinessHoursFromJson(json);
+}

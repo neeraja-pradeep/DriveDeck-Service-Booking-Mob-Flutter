@@ -9,7 +9,7 @@ part of 'vehicle_model.dart';
 VehicleModel _$VehicleModelFromJson(Map<String, dynamic> json) => VehicleModel(
       id: (json['id'] as num).toInt(),
       user: json['user'] as String?,
-      carType: json['car_type'] as String,
+      carType: json['car_type'] as String? ?? 'sedan',
       registration: json['registration'] as String?,
       imageUrl: json['image_url'] as String?,
       isFavourite: json['is_favourite'] as bool? ?? false,

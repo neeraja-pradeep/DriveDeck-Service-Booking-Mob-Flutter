@@ -4,6 +4,7 @@ import '../../../../../core/network/api_client.dart';
 import '../../../../../core/network/endpoints.dart';
 import '../../models/booking_model.dart';
 import '../../models/bookings_list_model.dart';
+import '../../models/payment_models.dart';
 
 /// Abstract class defining the remote data source for bookings.
 abstract class BookingsApi {
@@ -30,6 +31,16 @@ abstract class BookingsApi {
     required DateTime newDate,
     required String newSlotId,
   });
+
+  /// Initiates a booking with payment.
+  /// Returns Razorpay order details for payment processing.
+  Future<InitiateBookingResponse> initiateBooking(InitiateBookingRequest request);
+
+  /// Verifies payment after Razorpay callback.
+  Future<VerifyPaymentResponse> verifyPayment(VerifyPaymentRequest request);
+
+  /// Initiates a refund for a booking.
+  Future<InitiateRefundResponse> initiateRefund(InitiateRefundRequest request);
 }
 
 /// Response wrapper for conditional API requests.
@@ -157,5 +168,41 @@ class BookingsApiImpl implements BookingsApi {
     );
 
     return BookingModel.fromJson(response.data!);
+  }
+
+  @override
+  Future<InitiateBookingResponse> initiateBooking(
+    InitiateBookingRequest request,
+  ) async {
+    final response = await apiClient.post<Map<String, dynamic>>(
+      Endpoints.initiateBooking(),
+      data: request.toJson(),
+    );
+
+    return InitiateBookingResponse.fromJson(response.data!);
+  }
+
+  @override
+  Future<VerifyPaymentResponse> verifyPayment(
+    VerifyPaymentRequest request,
+  ) async {
+    final response = await apiClient.post<Map<String, dynamic>>(
+      Endpoints.verifyPayment(),
+      data: request.toJson(),
+    );
+
+    return VerifyPaymentResponse.fromJson(response.data!);
+  }
+
+  @override
+  Future<InitiateRefundResponse> initiateRefund(
+    InitiateRefundRequest request,
+  ) async {
+    final response = await apiClient.post<Map<String, dynamic>>(
+      Endpoints.initiateRefund(),
+      data: request.toJson(),
+    );
+
+    return InitiateRefundResponse.fromJson(response.data!);
   }
 }

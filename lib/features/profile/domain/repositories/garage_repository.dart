@@ -12,13 +12,14 @@ class AddVehicleRequest {
     this.isFavourite = false,
   });
 
-  final GarageVehicleType carType;
+  final CarType carType;
   final String? registration;
   final bool isFavourite;
 
   Map<String, dynamic> toJson() => {
         'car_type': carType.apiValue,
-        if (registration != null) 'registration': registration,
+        if (registration != null && registration!.isNotEmpty)
+          'registration': registration,
         'is_favourite': isFavourite,
       };
 }

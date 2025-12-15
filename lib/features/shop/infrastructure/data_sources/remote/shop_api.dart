@@ -1,7 +1,10 @@
+import 'package:flutter/foundation.dart';
+
 import '../../../../../core/network/api_client.dart';
 import '../../../../../core/network/endpoints.dart';
 import '../../../domain/entities/booking_request.dart';
 import '../../models/booking_confirmation_model.dart';
+import '../../models/payment_models.dart';
 import '../../models/shop_model.dart';
 
 /// Remote data source for shop API calls.
@@ -33,11 +36,23 @@ abstract class ShopApi {
   /// Get accessories for a shop.
   Future<List<ShopAccessoryModel>> getShopAccessories(int shopId);
 
-  /// Get shop availability for date range.
+  /// Get shop availability for date range (legacy).
   Future<List<ShopDateAvailabilityModel>> getShopAvailability({
     required int shopId,
     required DateTime startDate,
     int days = 7,
+  });
+
+  /// Get weekly business hours for a shop.
+  /// Returns which weekdays (0=Monday to 6=Sunday) have business hours defined.
+  /// Use this to disable unavailable days in the calendar.
+  Future<List<WeeklyBusinessHoursModel>> getWeeklyBusinessHours(int shopId);
+
+  /// Get available time slots for a specific date.
+  /// Use this to show available booking slots after user selects a date.
+  Future<List<ScheduleSlotModel>> getShopSchedule({
+    required int shopId,
+    required DateTime date,
   });
 
   /// Add shop to favorites.
@@ -52,7 +67,14 @@ abstract class ShopApi {
   /// Get shops via reviews feed.
   Future<List<ShopModel>> getShopReviews({int page, int pageSize});
 
-  /// Create a new booking.
+  /// Initiate a booking and get Razorpay order details.
+  /// Returns order_id needed for Razorpay SDK.
+  Future<BookingInitiateResponse> initiateBooking(BookingRequest request);
+
+  /// Verify payment after Razorpay SDK callback.
+  Future<PaymentVerifyResponse> verifyPayment(PaymentVerifyRequest request);
+
+  /// Create a new booking (legacy - use initiateBooking + verifyPayment).
   Future<BookingConfirmationModel> createBooking(BookingRequest request);
 }
 
@@ -139,38 +161,123 @@ class ShopApiImpl implements ShopApi {
     required DateTime startDate,
     int days = 7,
   }) async {
-    final queryParams = <String, dynamic>{
-      'start_date': startDate.toIso8601String().split('T').first,
-      'days': days,
-    };
+    // Fetch date-day data which returns multiple dates at once
+    try {
+      final response = await apiClient.get(
+        Endpoints.shopDateDay(shopId),
+        queryParameters: {
+          'date': startDate.toIso8601String().split('T').first,
+        },
+      );
 
+      // API returns { "shop": 2, "start_date": "...", "dates": [...] }
+      final List<dynamic> datesJson = response.data['dates'] ?? [];
+      final availabilityList = <ShopDateAvailabilityModel>[];
+
+      for (final dateJson in datesJson) {
+        final dateDayModel = DateDayModel.fromJson(dateJson as Map<String, dynamic>);
+        final timeSlots = dateDayModel.toTimeSlots();
+
+        // Convert to ShopTimeSlotModel
+        final slots = timeSlots.map((slot) => ShopTimeSlotModel(
+          slotNumber: slot.slotNumber,
+          startTime: slot.startTime,
+          endTime: slot.endTime,
+          isAvailable: slot.isAvailable,
+        )).toList();
+
+        availabilityList.add(ShopDateAvailabilityModel(
+          date: dateDayModel.date,
+          slots: slots,
+          isOpen: !dateDayModel.closed,
+        ));
+      }
+
+      return availabilityList;
+    } catch (_) {
+      return [];
+    }
+  }
+
+  @override
+  Future<List<WeeklyBusinessHoursModel>> getWeeklyBusinessHours(int shopId) async {
     final response = await apiClient.get(
-      Endpoints.shopAvailability(shopId),
-      queryParameters: queryParams,
+      Endpoints.weeklyBusinessHours(),
+      queryParameters: {'shop': shopId},
     );
 
     final List<dynamic> results = response.data['results'] ?? response.data;
     return results
-        .map((json) => ShopDateAvailabilityModel.fromJson(json))
+        .map((json) => WeeklyBusinessHoursModel.fromJson(json as Map<String, dynamic>))
         .toList();
+  }
+
+  @override
+  Future<List<ScheduleSlotModel>> getShopSchedule({
+    required int shopId,
+    required DateTime date,
+  }) async {
+    final dateStr = date.toIso8601String().split('T').first;
+    debugPrint('📅 Fetching schedule for shop $shopId on $dateStr');
+    debugPrint('📅 Endpoint: ${Endpoints.shopDateDay(shopId)}');
+
+    try {
+      final response = await apiClient.get(
+        Endpoints.shopDateDay(shopId),
+        queryParameters: {
+          'date': dateStr,
+        },
+      );
+
+      debugPrint('📅 Response: ${response.data}');
+
+      // API returns { "shop": 2, "start_date": "...", "dates": [...] }
+      // Each date has: { "date": "...", "day": "MON", "closed": false, "window": {...} }
+      final List<dynamic> dates = response.data['dates'] ?? [];
+      debugPrint('📅 Found ${dates.length} dates in response');
+
+      // Find the matching date entry
+      for (final dateJson in dates) {
+        final dateDayModel = DateDayModel.fromJson(dateJson as Map<String, dynamic>);
+        debugPrint('📅 Checking date: ${dateDayModel.date} vs $dateStr, closed: ${dateDayModel.closed}');
+        if (dateDayModel.date == dateStr) {
+          // Convert business window to time slots
+          final timeSlots = dateDayModel.toTimeSlots();
+          debugPrint('📅 Generated ${timeSlots.length} time slots');
+          return timeSlots.map((slot) => ScheduleSlotModel(
+            slotNumber: slot.slotNumber,
+            startTime: slot.startTime,
+            endTime: slot.endTime,
+            isBooked: !slot.isAvailable,
+          )).toList();
+        }
+      }
+
+      debugPrint('📅 No matching date found in response');
+      return [];
+    } catch (e, stack) {
+      debugPrint('❌ getShopSchedule error: $e');
+      debugPrint('❌ Stack: $stack');
+      rethrow;
+    }
   }
 
   @override
   Future<void> addToFavorites(int shopId) async {
     await apiClient.post(
-      Endpoints.shopFavorites(),
-      data: {'shop_id': shopId},
+      Endpoints.addShopFavorite(),
+      data: {'shop': shopId},
     );
   }
 
   @override
   Future<void> removeFromFavorites(int shopId) async {
-    await apiClient.delete(Endpoints.shopFavorite(shopId));
+    await apiClient.delete(Endpoints.removeShopFavorite(shopId));
   }
 
   @override
   Future<List<ShopModel>> getFavoriteShops() async {
-    final response = await apiClient.get(Endpoints.shopFavorites());
+    final response = await apiClient.get(Endpoints.listShopFavorites());
     final List<dynamic> results = response.data['results'] ?? response.data;
     return results.map((json) => ShopModel.fromJson(json)).toList();
   }
@@ -197,9 +304,28 @@ class ShopApiImpl implements ShopApi {
   }
 
   @override
-  Future<BookingConfirmationModel> createBooking(BookingRequest request) async {
+  Future<BookingInitiateResponse> initiateBooking(BookingRequest request) async {
     final response = await apiClient.post(
-      Endpoints.bookings(),
+      Endpoints.initiateBooking(),
+      data: request.toJson(),
+    );
+    return BookingInitiateResponse.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  @override
+  Future<PaymentVerifyResponse> verifyPayment(PaymentVerifyRequest request) async {
+    final response = await apiClient.post(
+      Endpoints.verifyPayment(),
+      data: request.toJson(),
+    );
+    return PaymentVerifyResponse.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  @override
+  Future<BookingConfirmationModel> createBooking(BookingRequest request) async {
+    // Legacy method - initiates booking but doesn't handle payment flow
+    final response = await apiClient.post(
+      Endpoints.initiateBooking(),
       data: request.toJson(),
     );
     return BookingConfirmationModel.fromJson(response.data);

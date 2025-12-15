@@ -21,7 +21,7 @@ Vehicle _$VehicleFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Vehicle {
   int get id => throw _privateConstructorUsedError;
-  GarageVehicleType get carType => throw _privateConstructorUsedError;
+  CarType get carType => throw _privateConstructorUsedError;
   String? get registration => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
   bool get isFavourite => throw _privateConstructorUsedError;
@@ -40,7 +40,7 @@ abstract class $VehicleCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      GarageVehicleType carType,
+      CarType carType,
       String? registration,
       String? imageUrl,
       bool isFavourite,
@@ -77,7 +77,7 @@ class _$VehicleCopyWithImpl<$Res, $Val extends Vehicle>
       carType: null == carType
           ? _value.carType
           : carType // ignore: cast_nullable_to_non_nullable
-              as GarageVehicleType,
+              as CarType,
       registration: freezed == registration
           ? _value.registration
           : registration // ignore: cast_nullable_to_non_nullable
@@ -111,7 +111,7 @@ abstract class _$$VehicleImplCopyWith<$Res> implements $VehicleCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      GarageVehicleType carType,
+      CarType carType,
       String? registration,
       String? imageUrl,
       bool isFavourite,
@@ -146,7 +146,7 @@ class __$$VehicleImplCopyWithImpl<$Res>
       carType: null == carType
           ? _value.carType
           : carType // ignore: cast_nullable_to_non_nullable
-              as GarageVehicleType,
+              as CarType,
       registration: freezed == registration
           ? _value.registration
           : registration // ignore: cast_nullable_to_non_nullable
@@ -189,7 +189,7 @@ class _$VehicleImpl implements _Vehicle {
   @override
   final int id;
   @override
-  final GarageVehicleType carType;
+  final CarType carType;
   @override
   final String? registration;
   @override
@@ -248,7 +248,7 @@ class _$VehicleImpl implements _Vehicle {
 abstract class _Vehicle implements Vehicle {
   const factory _Vehicle(
       {required final int id,
-      required final GarageVehicleType carType,
+      required final CarType carType,
       final String? registration,
       final String? imageUrl,
       final bool isFavourite,
@@ -260,7 +260,7 @@ abstract class _Vehicle implements Vehicle {
   @override
   int get id;
   @override
-  GarageVehicleType get carType;
+  CarType get carType;
   @override
   String? get registration;
   @override

@@ -30,7 +30,7 @@ class _AddVehicleBottomSheetState extends ConsumerState<AddVehicleBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   final _registrationController = TextEditingController();
 
-  GarageVehicleType _selectedCarType = GarageVehicleType.sedan;
+  CarType _selectedCarType = CarType.sedan;
   bool _isFavourite = false;
 
   @override
@@ -109,13 +109,13 @@ class _AddVehicleBottomSheetState extends ConsumerState<AddVehicleBottomSheet> {
                   ),
                   SizedBox(height: 24.h),
 
-                  // Car Type dropdown
+                  // Car Type dropdown (required)
                   _buildLabel('Car Type *'),
                   SizedBox(height: 8.h),
-                  DropdownButtonFormField<GarageVehicleType>(
+                  DropdownButtonFormField<CarType>(
                     value: _selectedCarType,
                     decoration: _buildInputDecoration('Select car type'),
-                    items: GarageVehicleType.values.map((type) {
+                    items: CarType.values.map((type) {
                       return DropdownMenuItem(
                         value: type,
                         child: Text(type.displayName),
@@ -131,7 +131,7 @@ class _AddVehicleBottomSheetState extends ConsumerState<AddVehicleBottomSheet> {
                   ),
                   SizedBox(height: 16.h),
 
-                  // Registration field
+                  // Registration field (optional)
                   _buildLabel('Registration'),
                   SizedBox(height: 8.h),
                   TextFormField(
