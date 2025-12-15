@@ -6,6 +6,7 @@ import '../../../../app/theme/colors.dart';
 
 import '../../../../app/router/routes.dart';
 import '../../application/providers/bookings_providers.dart';
+import '../../application/states/bookings_list_state.dart';
 import '../../application/states/bookings_state.dart';
 import '../../domain/entities/bookings_tab.dart';
 import '../components/booking_card_redesigned.dart';
@@ -184,7 +185,11 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen>
     BookingsState bookingsState, {
     required bool isUpcoming,
   }) {
-    if (bookingsState.isLoading) {
+    // Handle initial and loading states - show shimmer
+    final isInitialOrLoading = bookingsState.isLoading ||
+        bookingsState.listState is BookingsListStateInitial;
+
+    if (isInitialOrLoading) {
       return const BookingsListShimmer();
     }
 
