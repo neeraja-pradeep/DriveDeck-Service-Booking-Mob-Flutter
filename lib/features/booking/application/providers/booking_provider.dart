@@ -467,9 +467,10 @@ class BookingCreationNotifier extends StateNotifier<BookingCreationState> {
         debugPrint('✅ Payment verified! Booking confirmed.');
         state = BookingPaymentSuccess(verifyResponse);
 
-        // Clear booking data after successful creation
-        _ref.read(bookingDataProvider.notifier).clearBooking();
-        // Invalidate bookings list so it refreshes
+        // DON'T clear booking data here - the success screen needs it!
+        // Call clearBookingAfterSuccess() after the user dismisses the success screen
+
+        // Invalidate bookings list so it refreshes when user views it
         _ref.invalidate(bookingsStateProvider);
         return true;
       } else {
@@ -589,6 +590,13 @@ class BookingCreationNotifier extends StateNotifier<BookingCreationState> {
 
   /// Reset state to initial.
   void reset() {
+    state = const BookingCreationInitial();
+  }
+
+  /// Clear booking data after success screen is dismissed.
+  /// Call this when user navigates away from the success screen.
+  void clearBookingAfterSuccess() {
+    _ref.read(bookingDataProvider.notifier).clearBooking();
     state = const BookingCreationInitial();
   }
 }
