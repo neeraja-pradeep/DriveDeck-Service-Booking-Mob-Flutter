@@ -128,6 +128,10 @@ class AuthRepositoryImpl implements AuthRepository {
       debugPrint('👤 Repository: Username: ${credentials.username}');
       debugPrint('📧 Repository: Email: ${credentials.email}');
 
+      // Format phone number - backend expects just 10 digits without country code
+      final cleanPhone = _formatPhoneForRegister(credentials.phoneNumber);
+      debugPrint('📱 Repository: Formatted phone for register: $cleanPhone');
+
       final dto = RegisterRequestDto(
         username: credentials.username,
         email: credentials.email,
@@ -135,7 +139,7 @@ class AuthRepositoryImpl implements AuthRepository {
         passwordConfirm: credentials.confirmPassword,
         firstName: credentials.firstName,
         lastName: credentials.lastName,
-        phone: credentials.phoneNumber,
+        phone: cleanPhone,
       );
 
       debugPrint('📦 Repository: Created registration DTO: ${dto.toJson()}');
@@ -251,5 +255,25 @@ class AuthRepositoryImpl implements AuthRepository {
 
     // Return with +91 prefix for any other case
     return '+91$cleanPhone';
+  }
+
+  /// Formats phone number for registration - removes country code prefix.
+  /// Register API expects just 10 digits: { "phone": "1234567890" }
+  String _formatPhoneForRegister(String phoneNumber) {
+    // Remove any special characters (including +)
+    final cleanPhone = phoneNumber.replaceAll(RegExp(r'[^\d]'), '');
+
+    // If phone starts with 91 and is 12 digits, remove the 91 prefix
+    if (cleanPhone.startsWith('91') && cleanPhone.length == 12) {
+      return cleanPhone.substring(2);
+    }
+
+    // If phone is already 10 digits, return as-is
+    if (cleanPhone.length == 10) {
+      return cleanPhone;
+    }
+
+    // Return the clean phone for any other case
+    return cleanPhone;
   }
 }
