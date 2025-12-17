@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../app/router/routes.dart';
 import '../../../../core/error/failure.dart';
 import '../../application/providers/auth_providers.dart';
+import '../../application/providers/auth_screen_notifier.dart';
 import '../../application/states/login_state.dart';
 import '../../application/states/register_state.dart';
 import '../components/auth_mode_toggle.dart';
@@ -14,18 +15,14 @@ import '../components/register_form_section.dart';
 import '../components/social_login_section.dart';
 
 /// Main authentication screen with toggle between Login/Register.
-class LoginScreen extends ConsumerStatefulWidget {
+class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
   @override
-  ConsumerState<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends ConsumerState<LoginScreen> {
-  AuthMode _currentMode = AuthMode.login;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Watch the auth screen state for current mode
+    final authScreenState = ref.watch(authScreenStateProvider);
+    final currentMode = authScreenState.currentMode;
     // Listen to login state for navigation
     ref.listen<LoginState>(loginStateProvider, (previous, next) {
       next.whenOrNull(
@@ -199,11 +196,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
               // Auth mode toggle
               AuthModeToggle(
-                currentMode: _currentMode,
+                currentMode: currentMode,
                 onModeChanged: (mode) {
-                  setState(() {
-                    _currentMode = mode;
-                  });
+                  ref.read(authScreenStateProvider.notifier).setMode(mode);
                   // Reset states when switching modes
                   ref.read(loginStateProvider.notifier).resetState();
                   ref.read(registerStateProvider.notifier).resetState();
@@ -215,7 +210,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               // Form content based on mode
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
-                child: _currentMode == AuthMode.login
+                child: currentMode == AuthMode.login
                     ? const LoginFormSection(key: ValueKey('login'))
                     : const RegisterFormSection(key: ValueKey('register')),
               ),
@@ -228,13 +223,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               SizedBox(height: 24.h),
 
               // "Already have an account?" text for register mode
-              if (_currentMode == AuthMode.register)
+              if (currentMode == AuthMode.register)
                 Center(
                   child: GestureDetector(
                     onTap: () {
-                      setState(() {
-                        _currentMode = AuthMode.login;
-                      });
+                      ref.read(authScreenStateProvider.notifier).switchToLogin();
                       // Reset states when switching modes
                       ref.read(loginStateProvider.notifier).resetState();
                       ref.read(registerStateProvider.notifier).resetState();

@@ -16,6 +16,7 @@ import '../usecases/register_usecase.dart';
 import '../usecases/request_otp_usecase.dart';
 import '../usecases/verify_otp_usecase.dart';
 import 'auth_notifier.dart';
+import 'auth_screen_notifier.dart';
 import 'login_notifier.dart';
 import 'register_notifier.dart';
 
@@ -266,3 +267,14 @@ final AutoDisposeFutureProvider<String?> xcsrfTokenProvider =
         return null;
       }
     });
+
+/// Auth screen UI state provider.
+/// Manages auth mode (login/register), form data, and validation errors.
+/// Uses autoDispose to clean up state when navigating away from auth screens.
+final AutoDisposeStateNotifierProvider<AuthScreenNotifier, AuthScreenState>
+    authScreenStateProvider =
+    StateNotifierProvider.autoDispose<AuthScreenNotifier, AuthScreenState>((
+  ref,
+) {
+  return AuthScreenNotifier();
+});
